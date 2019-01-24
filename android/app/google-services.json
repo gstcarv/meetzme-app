@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "556310465762",
+    "firebase_url": "https://meetzme.firebaseio.com",
+    "project_id": "meetzme",
+    "storage_bucket": "meetzme.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556310465762:android:e5670360b883d813",
+        "android_client_info": {
+          "package_name": "com.meetzme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556310465762-t4gjsftbe3k18jvfvungig2g53r12git.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRcru8yoo8ci6dCMw23fXAea-pYKAMBhE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
