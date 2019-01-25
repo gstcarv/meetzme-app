@@ -8,12 +8,14 @@ import {
   Image
 } from 'react-native'
 
+import { withNavigation } from 'react-navigation'
+
 import colors from "@/resources/colors"
 import fonts from "@/resources/fonts"
 
 import { Button } from '@/components/forms'
 
-export default class Principal extends Component {
+class Principal extends Component {
   render() {
     return (
       <ImageBackground style={styles.container}
@@ -29,13 +31,12 @@ export default class Principal extends Component {
                 outline
                 rounded
                 width={250}
-                fontSize={15}
                 color={"#fff"}
-                style={{marginBottom: 10}}>Login</Button>
+                style={{marginBottom: 10}}
+                onPress={() => this.props.navigation.navigate("Login")}>Login</Button>
           <Button
                 rounded
                 width={250}
-                fontSize={15}
                 color={"#353F4B"}>Cadastre-se</Button>
         </View>
       </ImageBackground>
@@ -58,3 +59,5 @@ const styles = StyleSheet.create({
     letterSpacing: 15
   }
 })
+
+export default withNavigation(Principal)

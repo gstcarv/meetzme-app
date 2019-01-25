@@ -19,7 +19,7 @@ export default class Button extends Component {
     let propStyles = {}
     let textPropStyle = {}
 
-    if(this.props.fullwidth){
+    if(this.props.fullWidth){
       propStyles.width = "100%"
       textPropStyle.textAlign = "center"
     }
@@ -32,11 +32,13 @@ export default class Button extends Component {
       propStyles.borderRadius = 100
     }
 
-    propStyles.background = this.props.background || "#fff";
-    propStyles.width = this.props.width || 200;
+    propStyles.backgroundColor = this.props.background || "#fff";
     textPropStyle.color = this.props.color || "#000"
-    textPropStyle.fontSize = this.props.fontSize || 20
+    textPropStyle.fontSize = this.props.fontSize || 15
     
+    if(this.props.width){
+      propStyles.width = this.props.width
+    }
 
     if(this.props.outline){
       propStyles.backgroundColor = "transparent"
@@ -47,7 +49,7 @@ export default class Button extends Component {
     return (
       <RippleView style={[styles.container, propStyles, this.props.style]}
                   onPress={() => this.onPress()}>
-        <Text style={[styles.textStyle, textPropStyle]}>{this.props.children}</Text>
+        <Text style={[styles.textStyle, textPropStyle]}>{this.props.children || "My Button"}</Text>
       </RippleView>
     )
   }
@@ -63,7 +65,6 @@ const styles = StyleSheet.create({
   textStyle: {
     fontFamily: fonts.primary,
     color: '#000',
-    fontSize: 15,
     textAlign: 'center'
   }
 })
