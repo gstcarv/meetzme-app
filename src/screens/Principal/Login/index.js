@@ -3,9 +3,10 @@ import {
   Text,
   StyleSheet,
   View,
-  Dimensions,
   StatusBar,
-  Image
+  Image,
+  Alert,
+  ScrollView
 } from 'react-native'
 
 import Waves from '@/components/Waves'
@@ -16,20 +17,35 @@ import {
   Line
 } from '@/components/forms'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import BackButton from '@/components/BackButton'
+
 
 import colors from "@/resources/colors"
 import fonts from "@/resources/fonts"
 
 export default class Login extends Component {
+
+  constructor(){
+    super();
+    this.state = {
+      email: "",
+      password: ""
+    }
+  }
+
+  signIn(){
+    const { email, password } = this.state;
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <StatusBar backgroundColor={colors.primaryDark} />
         <View style={styles.header}>
+          <BackButton />
           <Waves>
             <Image source={require("@assets/images/app-logo.png")}
-                   style={{width: 70, height: 70}}></Image>
+                   style={{width: 50, height: 50}}></Image>
           </Waves>
           <Text style={styles.loginTitle}>LOGIN</Text>
         </View>
@@ -38,20 +54,27 @@ export default class Login extends Component {
             placeholder="Digite seu email"
             autoFocus
             style={{ marginBottom: 30 }}
-            type="email-address" />
+            type="email-address"
+            onWrite={(email) => this.setState({email})} />
 
           <TextField labelText="Senha"
             placeholder="Digite sua senha"
             password
-            style={{ marginBottom: 40 }} />
+            style={{ marginBottom: 40 }}
+            onWrite={(password) => this.setState({password})} />
 
           <Button background="#353F4B"
                   color="#fff"
                   textBold
-                  fullWidth>Login</Button>
-          <Line spaceVertical={30}></Line>
+                  fullWidth
+                  onPress={() => this.signIn()}
+                  style={{marginBottom: 4}}>Login</Button>
+
+          <Button style={styles.forgotPasswordButton}
+                  fontSize={12}
+                  color="#353F4B">ESQUECÍ A SENHA</Button>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -63,11 +86,15 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#343D49",
-    height: "45%",
-    justifyContent: "center",
-    alignItems: "center"
+    height: 250,
+    justifyContent: "space-around",
+    alignItems: "center",
+    padding: 10
   },
   loginTitle: {
+    bottom: 0,
+    marginBottom: 10,
+    marginTop: 10,
     fontSize: 25,
     color: "white",
     fontFamily: fonts.primaryBold,
@@ -76,5 +103,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 30,
     marginTop: 40
+  },
+  forgotPasswordButton: {
+    alignSelf: "center"
   }
 })

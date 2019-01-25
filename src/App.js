@@ -19,7 +19,7 @@ const Guest = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: "Login"
+    initialRouteName: "Principal"
   }
 )
 

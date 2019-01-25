@@ -8,10 +8,13 @@ export default class Waves extends Component {
 
     return (
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
-        <View style={[styles.wave, styles.wave3]}></View>
-        <View style={[styles.wave, styles.wave2]}></View>
-        <View style={[styles.wave, styles.wave1]}></View>
-        <View style={styles.element}>{this.props.children}</View>
+        <View style={[styles.wave, styles.wave3]}>
+          <View style={[styles.wave, styles.wave2]}>
+            <View style={[styles.wave, styles.wave1]}>
+              <View style={styles.element}>{this.props.children}</View>
+            </View>
+          </View>
+        </View>
       </View>
     )
   }
@@ -22,7 +25,8 @@ const styles = StyleSheet.create({
 
   },
   wave: {
-    position: 'absolute',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 100,
     backgroundColor: "rgba(255, 255, 255, .07)",
   },
