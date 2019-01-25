@@ -29,13 +29,15 @@ class Cadastro extends Component {
       nome: "",
       email: "",
       telefone: "",
-      senha: "",
-      confirmacaoSenha: ""
+      password: "",
+      passwordConfirm: ""
     }
   }
 
   validaCadastro(){
-    this.props.navigation.navigate("FinalizaCadastro");
+    this.props.navigation.navigate("FinalizaCadastro", {
+      userInfo: this.state
+    });
   }
 
   render() {
@@ -75,14 +77,14 @@ class Cadastro extends Component {
               placeholder="Digite sua senha"
               password
               style={styles.field}
-              onWrite={senha => this.setState({senha})}
+              onWrite={password => this.setState({password})}
             />
 
             <TextField labelText="Confirmação de senha"
               placeholder="Digite sua senha novamente"
               password
               style={styles.field}
-              onWrite={confirmacaoSenha => this.setState({confirmacaoSenha})}
+              onWrite={passwordConfirm => this.setState({passwordConfirm})}
             />
 
           </View>

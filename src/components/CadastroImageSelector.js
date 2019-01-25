@@ -28,6 +28,7 @@ export default class CadastroImageSelector extends Component {
           ]
         );
     } else {
+      const _reactComponent = this;
       ImagePicker.openPicker({
         width: 400,
         height: 400,
@@ -36,6 +37,7 @@ export default class CadastroImageSelector extends Component {
         includeBase64: true
       }).then(image => {
         this.setState({image})
+        _reactComponent.props.onSelectImage(image)
       });
     } 
   }

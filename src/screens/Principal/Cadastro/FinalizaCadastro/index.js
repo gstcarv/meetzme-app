@@ -23,13 +23,34 @@ import CadastroImageSelector from '@/components/CadastroImageSelector'
 
 import defaultStyles from '@/resources/defaultStyles'
 
+import firebase from 'react-native-firebase'
+
 class Cadastro extends Component {
 
   constructor(){
     super();
     this.state = {
-      username: ""
+      username: "",
+      image: null
     }
+  }
+
+  finalizaCadastro(){
+    const { username, image } = this.state;
+    const userInfo = this.props.navigation.getParam('userInfo');
+    let newUser = {
+      ...userInfo,
+      username,
+      image
+    }
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+        .then(r => {
+          console.log(r)
+        })
+        .catch(err => console.log(err))
   }
 
   render() {
@@ -44,7 +65,8 @@ class Cadastro extends Component {
             <Text style={defaultStyles.subtitleWhite}>Selecione sua foto e digite seu nome de usuário</Text>
           </View>
           <View style={{ marginTop: 40 }}>
-            <CadastroImageSelector />
+            <CadastroImageSelector 
+                onSelectImage={(image) => this.setState({image})} />
             <TextField labelText="Nome de Usuário"
               placeholder="Insira seu Nome de Usuário"
               style={styles.field}
@@ -55,7 +77,8 @@ class Cadastro extends Component {
             textBold
             fullWidth
             color="white"
-            style={{marginBottom: 20}}>Finalizar Cadastro</Button>
+            style={{marginBottom: 20}}
+            onPress={() => this.finalizaCadastro()}>Finalizar Cadastro</Button>
         </ScrollView>
       </View>
     )
