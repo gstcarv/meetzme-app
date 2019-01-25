@@ -33,7 +33,7 @@ export default class TextField extends Component {
                     placeholderTextColor="#ddd"
                     style={styles.textInput}
                     maxLength={this.props.maxLenght}
-                    multiline={this.props.maxLenght}
+                    multiline={this.props.multiline}
                     secureTextEntry={this.props.password}
                     onChangeText={(text) => this.onWrite(text)}
                     keyboardType={this.props.type}

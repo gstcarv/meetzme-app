@@ -17,10 +17,14 @@ import { Button } from '@/components/forms'
 
 class Principal extends Component {
   render() {
+
+    const { navigate } = this.props.navigation;
+
     return (
       <ImageBackground style={styles.container}
                        source={require("@assets/images/main-background.jpg")}>
-        <StatusBar backgroundColor={colors.primaryDark} />
+        <StatusBar backgroundColor={colors.primaryDark} 
+                   animated />
         <View style={{alignItems: 'center'}}>
           <Image source={require("@assets/images/app-logo.png")}
                  style={{ width: 170, height: 170 }}></Image>
@@ -33,11 +37,12 @@ class Principal extends Component {
                 width={250}
                 color={"#fff"}
                 style={{marginBottom: 10}}
-                onPress={() => this.props.navigation.navigate("Login")}>Login</Button>
+                onPress={() => navigate("Login")}>Login</Button>
           <Button
                 rounded
                 width={250}
-                color={"#353F4B"}>Cadastre-se</Button>
+                color={"#353F4B"}
+                onPress={() => navigate("Cadastro")}>Cadastre-se</Button>
         </View>
       </ImageBackground>
     )
