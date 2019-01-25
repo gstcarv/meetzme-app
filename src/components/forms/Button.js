@@ -48,7 +48,9 @@ export default class Button extends Component {
 
     return (
       <RippleView style={[styles.container, propStyles, this.props.style]}
-                  onPress={() => this.onPress()}>
+                  onPress={() => this.onPress()}
+                  rippleDuration={650}
+                  rippleOpacity={.6}>
         <Text style={[styles.textStyle, textPropStyle]}>{this.props.children || "My Button"}</Text>
       </RippleView>
     )

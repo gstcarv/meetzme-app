@@ -29,7 +29,7 @@ const Guest = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: "Cadastro",
+    initialRouteName: "FinalizaCadastro",
     transitionConfig: getSlideFromRightTransition
   }
 )

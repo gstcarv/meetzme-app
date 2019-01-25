@@ -90,7 +90,8 @@ class Cadastro extends Component {
             textBold
             fullWidth
             color="white"
-            onPress={() => this.validaCadastro()}>Próximo</Button>
+            onPress={() => this.validaCadastro()}
+            style={{marginBottom: 20}}>Próximo</Button>
         </ScrollView>
       </View>
     )
