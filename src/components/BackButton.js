@@ -4,11 +4,20 @@ import FAIcon from 'react-native-vector-icons/FontAwesome5'
 import { withNavigation } from 'react-navigation'
 
 class Waves extends Component {
-  render() {
 
+  gotoRoute(){
+    const { navigate, goBack } = this.props.navigation
+    if(this.props.path){
+      navigate(this.props.path)
+    } else {
+      goBack()
+    }
+  }
+
+  render() {
     return (
       <RippleView 
-        onPress={() => this.props.navigation.goBack()}
+        onPress={() => this.gotoRoute()}
         style={{
               borderRadius: 100,
               overflow: "hidden",

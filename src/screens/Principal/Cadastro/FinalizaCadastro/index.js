@@ -68,7 +68,7 @@ class Cadastro extends Component {
                 contentType: image.mime
               })
     
-              downloadURL = fileUpload;
+              downloadURL = fileUpload.downloadURL;
             }
           
             const firestoreRef = firebase.firestore();
@@ -82,7 +82,7 @@ class Cadastro extends Component {
   
             return res.user.updateProfile(
               {
-                displayName: newUser.username,
+                displayName: newUser.name,
                 photoURL: downloadURL
               }
             ).then(() => this.props.navigation.navigate('Login'));

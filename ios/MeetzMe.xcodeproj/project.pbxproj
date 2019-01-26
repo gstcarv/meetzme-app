@@ -66,6 +66,7 @@
 		0825800AA9DA468288AAC588 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9337C6C1EF004B1BA67B938D /* libRNGestureHandler.a */; };
 		808819D1E51746DC90EE6CE1 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 402D827E17C144EDB839F194 /* libReactNativePermissions.a */; };
 		2AB12ED4E69C4887997900AC /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30054D5BF2BF4F098F08F118 /* libimageCropPicker.a */; };
+		337193C111E0441EB31538DF /* libRNSnackbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E755BC71F2C4736ABD991A2 /* libRNSnackbar.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -406,6 +407,8 @@
 		402D827E17C144EDB839F194 /* libReactNativePermissions.a */ = {isa = PBXFileReference; name = "libReactNativePermissions.a"; path = "libReactNativePermissions.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		7241D52E390C4CE4A101D4B7 /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; name = "imageCropPicker.xcodeproj"; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		30054D5BF2BF4F098F08F118 /* libimageCropPicker.a */ = {isa = PBXFileReference; name = "libimageCropPicker.a"; path = "libimageCropPicker.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		AA035A3069264F02B9276CEB /* RNSnackbar.xcodeproj */ = {isa = PBXFileReference; name = "RNSnackbar.xcodeproj"; path = "../node_modules/react-native-snackbar/ios/RNSnackbar.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		7E755BC71F2C4736ABD991A2 /* libRNSnackbar.a */ = {isa = PBXFileReference; name = "libRNSnackbar.a"; path = "libRNSnackbar.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -440,6 +443,7 @@
 				0825800AA9DA468288AAC588 /* libRNGestureHandler.a in Frameworks */,
 				808819D1E51746DC90EE6CE1 /* libReactNativePermissions.a in Frameworks */,
 				2AB12ED4E69C4887997900AC /* libimageCropPicker.a in Frameworks */,
+				337193C111E0441EB31538DF /* libRNSnackbar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +641,7 @@
 				72F74F8FDA13447BA5C64DED /* RNGestureHandler.xcodeproj */,
 				582CEDBFC9BB4659BDF8D86A /* ReactNativePermissions.xcodeproj */,
 				7241D52E390C4CE4A101D4B7 /* imageCropPicker.xcodeproj */,
+				AA035A3069264F02B9276CEB /* RNSnackbar.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1320,6 +1325,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-gesture-handler\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-permissions\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-snackbar\ios",
 				);
 			};
 			name = Debug;
@@ -1350,6 +1356,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-gesture-handler\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-permissions\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-snackbar\ios",
 				);
 			};
 			name = Release;
@@ -1378,6 +1385,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-gesture-handler\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-permissions\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-snackbar\ios",
 				);
 			};
 			name = Debug;
@@ -1405,6 +1413,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-gesture-handler\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-permissions\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-snackbar\ios",
 				);
 			};
 			name = Release;
@@ -1443,6 +1452,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-gesture-handler\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-permissions\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-snackbar\ios",
 				);
 			};
 			name = Debug;
@@ -1481,6 +1491,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-gesture-handler\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-permissions\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-snackbar\ios",
 				);
 			};
 			name = Release;
@@ -1518,6 +1529,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-gesture-handler\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-permissions\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-snackbar\ios",
 				);
 			};
 			name = Debug;
@@ -1555,6 +1567,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-gesture-handler\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-permissions\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-image-crop-picker\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-snackbar\ios",
 				);
 			};
 			name = Release;

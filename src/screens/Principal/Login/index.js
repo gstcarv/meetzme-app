@@ -6,7 +6,8 @@ import {
   StatusBar,
   Image,
   Alert,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from 'react-native'
 
 import Waves from '@/components/Waves'
@@ -18,7 +19,8 @@ import {
 } from '@/components/forms'
 
 import BackButton from '@/components/BackButton'
-
+import Snackbar from 'react-native-snackbar'
+import firebase from 'react-native-firebase'
 
 import colors from "@/resources/colors"
 import fonts from "@/resources/fonts"
@@ -27,14 +29,62 @@ export default class Login extends Component {
 
   constructor(){
     super();
+    this.unsubscribe = null;
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      loading: false
     }
   }
 
-  signIn(){
-    const { email, password } = this.state;
+  componentWillMount() {
+    const { navigate } = this.props.navigation;
+    this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
+      const userData = await AsyncStorage.getItem("USER_DATA");
+      if(auth){
+        const user  = auth._user;
+        if(!userData){
+          const { displayName, email, phoneNumber, photoURL, uid } = user;
+          AsyncStorage.setItem("USER_DATA", JSON.stringify({
+            displayName,
+            email,
+            phoneNumber,
+            photoURL,
+            uid
+          }))
+        }
+        navigate('Logado');
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  async signIn(){
+    const email = this.state.email || "gueti2010@gmail.com"
+    const password = this.state.password || "pai152123"
+
+    this.setState({
+      loading: true
+    })
+
+    try {
+      const user = await firebase.auth()
+          .signInWithEmailAndPassword(email, password)
+    } catch (err) {
+      Snackbar.show({
+        title: 'Login ou Senha incorretos',
+        duration: Snackbar.LENGTH_SHORT,
+        backgroundColor: '#b71b25'
+      })
+    }
+
+    this.setState({
+      loading: false
+    })
+
   }
 
   render() {
@@ -42,7 +92,7 @@ export default class Login extends Component {
       <ScrollView style={styles.container}>
         <StatusBar backgroundColor={colors.primaryDark} />
         <View style={styles.header}>
-          <BackButton />
+          <BackButton path="Principal"/>
           <Waves>
             <Image source={require("@assets/images/app-logo.png")}
                    style={{width: 50, height: 50}}></Image>
@@ -68,7 +118,8 @@ export default class Login extends Component {
                   textBold
                   fullWidth
                   onPress={() => this.signIn()}
-                  style={{marginBottom: 4}}>Login</Button>
+                  style={{marginBottom: 4}}
+                  loading={this.state.loading}>Login</Button>
 
           <Button style={styles.forgotPasswordButton}
                   fontSize={12}
