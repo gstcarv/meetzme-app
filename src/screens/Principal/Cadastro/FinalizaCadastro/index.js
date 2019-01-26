@@ -4,7 +4,8 @@ import {
   StyleSheet,
   View,
   StatusBar,
-  ScrollView
+  ScrollView,
+  Alert
 } from 'react-native'
 
 import {
@@ -27,15 +28,21 @@ import firebase from 'react-native-firebase'
 
 class Cadastro extends Component {
 
-  constructor(){
+  constructor() {
     super();
     this.state = {
       username: "",
-      image: null
+      image: null,
+      loading: false
     }
   }
 
-  finalizaCadastro(){
+  finalizaCadastro() {
+
+    this.setState({
+      loading: true
+    })
+
     const { username, image } = this.state;
     const userInfo = this.props.navigation.getParam('userInfo');
     let newUser = {
@@ -47,10 +54,49 @@ class Cadastro extends Component {
     firebase
       .auth()
       .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
-        .then(r => {
-          console.log(r)
+        .then(async res => {
+
+          const { user } = res;
+
+          try {
+
+            let downloadURL = null
+
+            if(this.state.image){
+              const userProfileImageRef = firebase.storage().ref('profile').child(user.uid)
+              var fileUpload = await userProfileImageRef.putFile(image.path, {
+                contentType: image.mime
+              })
+    
+              downloadURL = fileUpload;
+            }
+          
+            const firestoreRef = firebase.firestore();
+  
+            firestoreRef.collection('users').doc(user.uid).set({
+              name: newUser.name,
+              phone: newUser.phone,
+              username: newUser.username,
+              photoURL: downloadURL
+            })
+  
+            return res.user.updateProfile(
+              {
+                displayName: newUser.username,
+                photoURL: downloadURL
+              }
+            ).then(() => this.props.navigation.navigate('Login'));
+          } catch (error) {
+            console.log(error)
+          }
+
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          Alert.alert("Erro", "Ocorreu um erro, tente novamente mais tarde");
+          this.setState({
+            loading: false
+          })
+        })
   }
 
   render() {
@@ -65,19 +111,20 @@ class Cadastro extends Component {
             <Text style={defaultStyles.subtitleWhite}>Selecione sua foto e digite seu nome de usuário</Text>
           </View>
           <View style={{ marginTop: 40 }}>
-            <CadastroImageSelector 
-                onSelectImage={(image) => this.setState({image})} />
+            <CadastroImageSelector
+              onSelectImage={(image) => this.setState({ image })} />
             <TextField labelText="Nome de Usuário"
               placeholder="Insira seu Nome de Usuário"
               style={styles.field}
               maxLenght={25}
-              onWrite={(username) => this.setState({username})} />
+              onWrite={(username) => this.setState({ username })} />
           </View>
           <Button background="#353F4B"
             textBold
             fullWidth
             color="white"
-            style={{marginBottom: 20}}
+            style={{ marginBottom: 20 }}
+            loading={this.state.loading}
             onPress={() => this.finalizaCadastro()}>Finalizar Cadastro</Button>
         </ScrollView>
       </View>

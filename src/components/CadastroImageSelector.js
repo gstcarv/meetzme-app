@@ -34,7 +34,12 @@ export default class CadastroImageSelector extends Component {
         height: 400,
         cropping: true,
         cropperToolbarTitle: "MeetzMe",
-        includeBase64: true
+        includeBase64: true,
+        cropperCircleOverlay: true,
+        enableRotationGesture: false,
+        hideBottomControls: true,
+        showCropGuidelines: false,
+        compressImageQuality: .6
       }).then(image => {
         this.setState({image})
         _reactComponent.props.onSelectImage(image)

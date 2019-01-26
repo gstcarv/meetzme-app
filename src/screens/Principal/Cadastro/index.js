@@ -26,9 +26,9 @@ class Cadastro extends Component {
   constructor(){
     super();
     this.state = {
-      nome: "",
+      name: "",
       email: "",
-      telefone: "",
+      phone: "",
       password: "",
       passwordConfirm: ""
     }
@@ -56,7 +56,7 @@ class Cadastro extends Component {
               placeholder="Digite seu Nome"
               style={styles.field}
               maxLenght={25}
-              onWrite={(nome) => this.setState({nome})} />
+              onWrite={(name) => this.setState({name})} />
 
             <TextField labelText="Email"
               placeholder="Digite seu Email"
@@ -69,7 +69,7 @@ class Cadastro extends Component {
               placeholder="Digite seu Telefone"
               type="phone-pad"
               maxLenght={20}
-              onWrite={(telefone) => this.setState({telefone})}/>
+              onWrite={(phone) => this.setState({phone})}/>
 
             <Line spaceVertical={40}></Line>
 
