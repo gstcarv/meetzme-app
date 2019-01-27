@@ -37,31 +37,6 @@ export default class Login extends Component {
     }
   }
 
-  componentWillMount() {
-    const { navigate } = this.props.navigation;
-    this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
-      const userData = await AsyncStorage.getItem("USER_DATA");
-      if(auth){
-        const user  = auth._user;
-        if(!userData){
-          const { displayName, email, phoneNumber, photoURL, uid } = user;
-          AsyncStorage.setItem("USER_DATA", JSON.stringify({
-            displayName,
-            email,
-            phoneNumber,
-            photoURL,
-            uid
-          }))
-        }
-        navigate('Logado');
-      }
-    })
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
   async signIn(){
     const email = this.state.email || "gueti2010@gmail.com"
     const password = this.state.password || "pai152123"

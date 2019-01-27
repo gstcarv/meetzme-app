@@ -5,12 +5,12 @@ import {
   View,
   StatusBar,
   Image,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native'
 
-import RippleView from 'react-native-material-ripple'
+import TouchableScale from 'react-native-touchable-scale'
 
-import FAIcon from 'react-native-vector-icons/FontAwesome5'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
@@ -41,13 +41,19 @@ export default class MainToolbar extends Component {
         <StatusBar backgroundColor={colors.primaryDark} 
                    animated />
         <View style={styles.toolbarContainer}>
-          <RippleView style={styles.userImageContainer}
-                    rippleSpeed={.6}>
-            <Image style={styles.userImage}
-                   source={{ uri: this.state.profileImage }}></Image>
-          </RippleView>
-          <Text style={styles.toolbarTitle}>{this.props.children || "Toolbar Title"}</Text>
-          <FAIcon size={20} color="#fff" name="bell"></FAIcon>
+          <View style={styles.titleContainer}>
+            <TouchableScale style={styles.userImageContainer}
+                      rippleSpeed={.6}>
+              <Image style={styles.userImage}
+                    source={{ uri: this.state.profileImage }}></Image>
+            </TouchableScale>
+            <Text style={styles.toolbarTitle}>{this.props.children || "Toolbar Title"}</Text>
+          </View>
+          <TouchableScale>
+            <View>
+              <Icon size={20} color="#fff" name="bell"></Icon>
+            </View>
+          </TouchableScale>
         </View>
       </View>
     )
@@ -66,16 +72,22 @@ const styles = StyleSheet.create({
   toolbarTitle: {
     color: '#fff',
     fontFamily: fonts.primaryBold,
-    fontSize: 20
+    fontSize: 20,
+    marginLeft: 15
   },
   userImage: {
-    width: 35,
-    height: 35,
+    width: 30,
+    height: 30,
   },
   userImageContainer: {
     borderRadius: 100,
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: '#68727D',
     overflow: 'hidden'
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
