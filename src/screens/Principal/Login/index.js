@@ -102,7 +102,6 @@ export default class Login extends Component {
         <View style={styles.loginForm}>
           <TextField labelText="Email"
             placeholder="Digite seu email"
-            autoFocus
             style={{ marginBottom: 30 }}
             type="email-address"
             onWrite={(email) => this.setState({email})} />

@@ -17,7 +17,9 @@
     "react-native-shadow": "^1.2.2",
     "react-native-snackbar": "^0.5.3",
     "react-native-svg": "^9.0.3",
+    "react-native-touchable-scale": "^2.0.0",
     "react-native-vector-icons": "^6.2.0",
+    "react-native-view-overflow": "^0.0.4",
     "react-navigation": "^3.0.9",
     "react-navigation-slide-from-right-transition": "^1.0.4"
   },

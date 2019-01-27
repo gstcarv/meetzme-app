@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import {
   Text,
   ActivityIndicator,
-  StyleSheet
+  StyleSheet,
 } from 'react-native'
 import RippleView from 'react-native-material-ripple'
 
 import fonts from '@/resources/fonts'
 
 export default class Button extends Component {
-
+  
   onPress() {
     if (this.props.onPress) {
       if(!this.props.loading){

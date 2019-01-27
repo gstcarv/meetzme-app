@@ -30,14 +30,17 @@ export default class TextField extends Component {
         <View style={{flexDirection: "row", alignItems: "center"}}>
           {icon}
           <TextInput placeholder={this.props.placeholder || ""}
-                    placeholderTextColor="#ddd"
+                    placeholderTextColor="#dbdbdb"
                     style={styles.textInput}
                     maxLength={this.props.maxLenght}
                     multiline={this.props.multiline}
                     secureTextEntry={this.props.password}
                     onChangeText={(text) => this.onWrite(text)}
                     keyboardType={this.props.type}
-                    autoFocus={this.props.autoFocus}/>
+                    autoFocus={this.props.autoFocus}
+                    autoCorrect={false}
+                    autocomplete="off"
+                    {...this.props.textInput}/>
         </View>
       </View>
     )
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: "#ddd",
     borderRadius: 6
   },
   labelStyle: {
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     backgroundColor: "#fff",
     fontFamily: fonts.primaryBold,
-    color: "#bbb",
+    color: "#ddd",
   },
   textInput: {
     paddingHorizontal: 13,
