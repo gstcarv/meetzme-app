@@ -36,7 +36,7 @@ class Principal extends Component {
         }
         navigate('Logado');
       } else {
-        console.log("non user");
+        navigate('Cadastro');
       }
     })
   }

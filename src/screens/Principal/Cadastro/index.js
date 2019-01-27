@@ -40,6 +40,10 @@ class Cadastro extends Component {
     });
   }
 
+  gotoNextInput(fieldName){
+    this.refs[fieldName].focus()
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -56,20 +60,29 @@ class Cadastro extends Component {
               placeholder="Digite seu Nome"
               style={styles.field}
               maxLenght={25}
-              onWrite={(name) => this.setState({name})} />
+              onWrite={(name) => this.setState({name})}
+              ref="nameField"
+              onGoNext={ () => this.gotoNextInput("emailField") }
+              />
 
             <TextField labelText="Email"
               placeholder="Digite seu Email"
               style={styles.field}
               type="email-address"
               maxLenght={40}
-              onWrite={(email) => this.setState({email})} />
+              onWrite={(email) => this.setState({email})}
+              ref="emailField"
+              onGoNext={ () => this.gotoNextInput("telField") }
+              />
 
             <TextField labelText="Telefone"
               placeholder="Digite seu Telefone"
               type="phone-pad"
               maxLenght={20}
-              onWrite={(phone) => this.setState({phone})}/>
+              onWrite={(phone) => this.setState({phone})}
+              ref="telField"
+              onGoNext={ () => this.gotoNextInput("passField") }
+            />
 
             <Line spaceVertical={40}></Line>
 
@@ -78,6 +91,8 @@ class Cadastro extends Component {
               password
               style={styles.field}
               onWrite={password => this.setState({password})}
+              ref="passField"
+              onGoNext={ () => this.gotoNextInput("confirmPassField")}
             />
 
             <TextField labelText="Confirmação de senha"
@@ -85,6 +100,7 @@ class Cadastro extends Component {
               password
               style={styles.field}
               onWrite={passwordConfirm => this.setState({passwordConfirm})}
+              ref="confirmPassField"
             />
 
           </View>

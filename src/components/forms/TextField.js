@@ -16,6 +16,10 @@ export default class TextField extends Component {
     }
   }
 
+  focus(){
+    this.refs.textInputRef.focus()
+  }
+
   render() {
 
     let icon;
@@ -40,6 +44,12 @@ export default class TextField extends Component {
                     autoFocus={this.props.autoFocus}
                     autoCorrect={false}
                     autocomplete="off"
+                    blurOnSubmit={ this.props.onGoNext == null ? true : false }
+                    returnKeyType={ this.props.onGoNext == null ? 'done' : 'next' }
+                    onSubmitEditing={() => {
+                      if(this.props.onGoNext) this.props.onGoNext()
+                    }}
+                    ref="textInputRef"
                     {...this.props.textInput}/>
         </View>
       </View>
