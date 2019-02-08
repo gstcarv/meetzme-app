@@ -4914,6 +4914,13 @@ react-navigation-stack@1.0.6:
   resolved "https://registry.yarnpkg.com/react-navigation-stack/-/react-navigation-stack-1.0.6.tgz#5c2b6617dccc1de6001b387cd967baa6b205132d"
   integrity sha512-7vnoceO6d/KYvtOSi3Ui3u1gvZEF/dBrOn+Gb1zqiZ3t+0oWRPpU36OmXAh/SwI5aokQyoihAlH9UBMfp+fbEA==
 
+react-navigation-switch-transitioner@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-navigation-switch-transitioner/-/react-navigation-switch-transitioner-0.1.1.tgz#48ff08c6fb8d4d18d78cebe1786a8236df08ec33"
+  integrity sha512-UhmF3209LYHiKrEnSXFxNMlQJDUXAw4JvC3GyJxvbKBDGuyHFs3ZZ53hUgG5IaOBQzEeAjd8nCw2TWdDm+kwFw==
+  dependencies:
+    hoist-non-react-statics "^3.0.1"
+
 react-navigation-tabs@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-navigation-tabs/-/react-navigation-tabs-1.0.2.tgz#cc6c61db0c61054388ef6f726a8ffc183d6095b5"
@@ -4923,6 +4930,11 @@ react-navigation-tabs@1.0.2:
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
     react-native-tab-view "^1.0.0"
+
+react-navigation-transitions@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-navigation-transitions/-/react-navigation-transitions-1.0.8.tgz#59ecc341c6da86a616c6a64674a36882d780b2e6"
+  integrity sha512-NDa6ScctQFAICys7OjVAguHyLEfCXQv+9T+lF2uKgy68tbR1xJKAjXE8Pg07r6LUnkuKr7gqFvwxDFZZmF69aA==
 
 react-navigation@^3.0.9:
   version "3.0.9"

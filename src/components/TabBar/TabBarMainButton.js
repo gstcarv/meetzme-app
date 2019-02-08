@@ -11,7 +11,7 @@ import colors from '@/resources/colors'
 export default class TabBarMainButton extends Component {
   render() {
     return (
-      <TouchableScale background={TouchableNativeFeedback.SelectableBackground()}>
+      <TouchableScale activeScale={.7}>
         <View style={styles.button} onPress={() => Alert.alert("ok")}>
           <FAIcon name="plus" size={16} color="#fff" />
         </View>

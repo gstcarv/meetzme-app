@@ -87,7 +87,7 @@ class Cadastro extends Component {
               }
             ).then(() => this.props.navigation.navigate('Login'));
           } catch (error) {
-            console.log(error)
+            // console.log(error)
           }
 
         })

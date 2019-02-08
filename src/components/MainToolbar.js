@@ -28,7 +28,7 @@ export default class MainToolbar extends Component {
     const userData = AsyncStorage.getItem('USER_DATA')
     .then(user => {
       user = JSON.parse(user)
-      console.log(user)
+      // console.log(user)
       this.setState({
         profileImage: user.photoURL
       });

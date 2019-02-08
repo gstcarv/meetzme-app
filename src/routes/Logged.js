@@ -15,7 +15,6 @@ import Procurar from '@/screens/Procurar'
 
 // Components
 import TabBarMainButton from '@/components/TabBar/TabBarMainButton'
-import BottomTabButton from '@/components/TabBar/BottomTabButton'
 import TabBarComponent from '@/components/TabBar/TabBarComponent'
 
 export default createBottomTabNavigator(
@@ -23,21 +22,13 @@ export default createBottomTabNavigator(
     Dashboard: {
       screen: Dashboard,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <BottomTabButton path="Dashboard">
-            <SLIcon name="rocket" size={24} color={tintColor} />
-          </BottomTabButton>
-        )
+        tabBarIcon: ({ tintColor }) => <SLIcon name="rocket" size={24} color={tintColor} />
       }
     },
     Eventos: {
       screen: Eventos,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <BottomTabButton path="Eventos">
-            <FAIcon name="map-marker-alt" size={24} color={tintColor} />
-          </BottomTabButton>
-        )
+        tabBarIcon: ({ tintColor }) => <FAIcon name="map-marker-alt" size={24} color={tintColor} />
       }
     },
     NovoEvento: {
@@ -49,21 +40,13 @@ export default createBottomTabNavigator(
     Contatos: {
       screen: Contatos,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <BottomTabButton path="Contatos">
-            <FAIcon name="address-book" size={24} color={tintColor} />
-          </BottomTabButton>
-        )
+        tabBarIcon: ({ tintColor }) => <FAIcon name="address-book" size={24} color={tintColor} />
       }
     },
     Procurar: {
       screen: Procurar,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => (
-          <BottomTabButton path="Procurar">
-            <SLIcon name="magnifier" size={24} color={tintColor} />
-          </BottomTabButton>
-        )
+        tabBarIcon: ({ tintColor }) => <SLIcon name="magnifier" size={24} color={tintColor} />
       }
     }
   },
