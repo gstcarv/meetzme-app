@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13,
     fontFamily: fonts.primary,
     color: "#929292",
-    width: "100%"
+    width: "100%",
+    fontSize: 16
   }
 })

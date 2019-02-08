@@ -10,6 +10,8 @@ import {
   AsyncStorage
 } from 'react-native'
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import Waves from '@/components/Waves'
 
 import {
@@ -72,7 +74,6 @@ export default class Login extends Component {
             <Image source={require("@assets/images/app-logo.png")}
                    style={{width: 50, height: 50}}></Image>
           </Waves>
-          <Text style={styles.loginTitle}>LOGIN</Text>
         </View>
         <View style={styles.loginForm}>
           <TextField labelText="Email"
@@ -97,7 +98,7 @@ export default class Login extends Component {
 
           <Button style={styles.forgotPasswordButton}
                   fontSize={12}
-                  color="#353F4B">ESQUECÍ A SENHA</Button>
+                  color="#353F4B">Esquecí a senha</Button>
         </View>
       </ScrollView>
     )

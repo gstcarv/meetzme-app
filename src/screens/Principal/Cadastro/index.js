@@ -48,6 +48,7 @@ class Cadastro extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#F5F5F5"
+          barStyle="dark-content"
           animated />
         <BackButton color="#D8D8D8" />
         <ScrollView style={styles.formContainer}>

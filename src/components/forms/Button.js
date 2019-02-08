@@ -3,6 +3,8 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
+  TouchableNativeFeedback,
+  View
 } from 'react-native'
 import RippleView from 'react-native-material-ripple'
 
@@ -82,7 +84,8 @@ const styles = StyleSheet.create({
     padding: 14,
     width: 200,
     backgroundColor: 'white',
-    borderRadius: 3
+    borderRadius: 3,
+    overflow: 'hidden'
   },
   textStyle: {
     fontFamily: fonts.primary,

@@ -29,7 +29,7 @@ export default class TabBarComponent extends React.Component {
     .measure((fx, fy, width, height, px, py) => {
       Animated.timing(this.lineOffset, {
         toValue: px + 20,
-        duration: 700,
+        duration: 350,
         easing: Easing.easing,
         useNativeDriver: true
       }).start()
@@ -57,8 +57,6 @@ export default class TabBarComponent extends React.Component {
 
     const { routes, index: activeRouteIndex } = navigation.state;
 
-    console.log(this.lineOffset)
-
     return (
       <View style={styles.container}>
         {
@@ -70,8 +68,6 @@ export default class TabBarComponent extends React.Component {
               <TouchableHighlight
                 key={routeIndex}
                 ref={"tabButton-" + routeIndex}
-                delayPressIn={10}
-                delayPressOut={10}
                 onPress={(e) => {
                   this.setState({ atualRouteIndex: routeIndex })
                   onTabPress({ route });

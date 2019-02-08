@@ -28,7 +28,6 @@ export default class MainToolbar extends Component {
     const userData = AsyncStorage.getItem('USER_DATA')
     .then(user => {
       user = JSON.parse(user)
-      // console.log(user)
       this.setState({
         profileImage: user.photoURL
       });
@@ -67,7 +66,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    elevation: 4
   },
   toolbarTitle: {
     color: '#fff',
