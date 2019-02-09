@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.6.3",
     "react-native": "0.58.0",
+    "react-native-bottom-sheet-behavior": "^1.0.0",
     "react-native-firebase": "^5.2.1",
     "react-native-gesture-handler": "^1.0.14",
     "react-native-image-crop-picker": "^0.22.0",
@@ -16,6 +17,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-material-ripple": "^0.8.0",
     "react-native-permissions": "^1.1.1",
+    "react-native-raw-bottom-sheet": "^1.1.0",
     "react-native-shadow": "^1.2.2",
     "react-native-snackbar": "^0.5.3",
     "react-native-svg": "^9.0.3",

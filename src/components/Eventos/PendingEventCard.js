@@ -18,7 +18,8 @@ export default class PendingEventCard extends Component {
     let eventDate = eventDateTime.toLocaleDateString();
 
     return (
-      <TouchableScale style={styles.cardContainer}>
+      <TouchableScale style={styles.cardContainer}
+          onPress={this.props.onPress}>
         <Text style={[styles.eventText, styles.eventDate]}>{eventDate}</Text>
         <Text style={[styles.eventText, styles.eventTitle]}>{title}</Text>
       </TouchableScale>

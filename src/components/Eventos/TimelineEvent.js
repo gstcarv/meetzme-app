@@ -52,10 +52,7 @@ export default class TimelineEvent extends Component {
             </Text>
           </View>
 
-
           {
-
-            
               this.props.admin ? (
                 <View style={{
                   alignSelf: 'flex-end',
@@ -67,11 +64,8 @@ export default class TimelineEvent extends Component {
                   <Text style={{ fontFamily: fonts.primaryBold, color: "#fff", fontSize: 10 }}>ADMIN</Text>
                 </View>
               ) : null
-            
-
           }
 
-          
         </TouchableScale>
       </View>
     )

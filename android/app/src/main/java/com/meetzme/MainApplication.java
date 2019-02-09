@@ -3,6 +3,7 @@ package com.meetzme;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.bottomsheetbehavior.BottomSheetBehaviorPackage;
 import com.entria.views.RNViewOverflowPackage;
 import com.azendoo.reactnativesnackbar.SnackbarPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new BottomSheetBehaviorPackage(),
             new RNViewOverflowPackage(),
             new SnackbarPackage(),
             new PickerPackage(),

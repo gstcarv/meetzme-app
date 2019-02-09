@@ -62,6 +62,12 @@ export default class Button extends Component {
       propStyles.opacity = .6
     }
 
+    propStyles.padding = 14;
+
+    if(this.props.small){
+      propStyles.padding = 10
+    }
+
     return (
       <RippleView style={[styles.container, propStyles, this.props.style]}
         onPress={() => this.onPress()}
@@ -85,7 +91,6 @@ export default class Button extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 14,
     width: 200,
     backgroundColor: 'white',
     borderRadius: 3,

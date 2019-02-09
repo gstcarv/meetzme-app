@@ -4747,6 +4747,13 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-bottom-sheet-behavior@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-bottom-sheet-behavior/-/react-native-bottom-sheet-behavior-1.0.0.tgz#2078862694a3048628b036c77ed2809eacb3377f"
+  integrity sha512-IdxvYATca5wMmK2YEDvS2XO1nMBSt9/bakEjGAFlLqdzX8Km8T/HvKfgCkMIr1GG/gCRQ2ek4tQlNmpgZVzM6g==
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-firebase@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.2.1.tgz#2904ccc80880930ea72fa152eae3c7f53a0d5e1c"
@@ -4801,6 +4808,13 @@ react-native-permissions@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"
   integrity sha512-t0Ujm177bagjUOSzhpmkSz+LqFW04HnY9TeZFavDCmV521fQvFz82aD+POXqWsAdsJVOK3umJYBNNqCjC3g0hQ==
+
+react-native-raw-bottom-sheet@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-raw-bottom-sheet/-/react-native-raw-bottom-sheet-1.1.0.tgz#13798ba274540b8969809b93ba4e97c5023938bb"
+  integrity sha512-1WBgeuGr//T+ospX9/cTMGnoJ8X+Y/7LcSKy3xqIoe+CdbRWrjb3oxB1ZGr4Q8eatMYrszN+Ou8w1CE6M2Yz8Q==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-native-safe-area-view@^0.11.0:
   version "0.11.0"
