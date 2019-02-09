@@ -28,12 +28,12 @@ export default class Pendentes extends Component {
                             title={"Aniversário da Laura"}></PendingEventCard>
           <PendingEventCard date={Date.now()}
                             title={"Praia"}></PendingEventCard>
-           <PendingEventCard date={Date.now()}
+          <PendingEventCard date={Date.now()}
                             title={"Casa do seu Jorge"}></PendingEventCard>
-            <PendingEventCard date={Date.now()}
+          <PendingEventCard date={Date.now()}
                             title={"Culto JNI"}></PendingEventCard>
-                    
         </View>
+        <Line spaceVertical={15}/> 
       </ScrollView>
     )
   }

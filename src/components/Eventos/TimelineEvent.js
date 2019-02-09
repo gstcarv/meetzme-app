@@ -7,6 +7,8 @@ import fonts from '@/resources/fonts'
 
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 
+import colors from '@/resources/colors'
+
 export default class TimelineEvent extends Component {
   render() {
 
@@ -49,6 +51,27 @@ export default class TimelineEvent extends Component {
               { local }
             </Text>
           </View>
+
+
+          {
+
+            
+              this.props.admin ? (
+                <View style={{
+                  alignSelf: 'flex-end',
+                  marginTop: 7,
+                  backgroundColor: colors.primaryColor,
+                  padding: 5,
+                  borderRadius: 5
+                }}>
+                  <Text style={{ fontFamily: fonts.primaryBold, color: "#fff", fontSize: 10 }}>ADMIN</Text>
+                </View>
+              ) : null
+            
+
+          }
+
+          
         </TouchableScale>
       </View>
     )
@@ -90,6 +113,7 @@ const styles = StyleSheet.create({
     marginRight: 2,
     minWidth: '40%',
     flex: 1,
+    borderColor: colors.primaryColor
   },
   localContainer: {
     flexDirection: 'row',

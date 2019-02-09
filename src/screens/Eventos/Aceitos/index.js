@@ -29,7 +29,8 @@ export default class Aceitos extends Component {
                       local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
         <TimelineEvent date={Date.now()}
                       title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
+                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"
+                      admin />
         <TimelineEvent date={Date.now()}
                       title="Titulo do Evento"
                       local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
@@ -48,11 +49,11 @@ export default class Aceitos extends Component {
         <TimelineEvent date={Date.now()}
                       title="Titulo do Evento"
                       local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
-          <Line spaceVertical={15}/> 
           {/* <View style={styles.emptyContainer}>
             <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
             <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
           </View> */}
+          <Line spaceVertical={15}/> 
       </ScrollView>
     )
   }

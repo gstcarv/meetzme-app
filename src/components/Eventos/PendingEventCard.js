@@ -4,6 +4,8 @@ import { Text, StyleSheet, View } from 'react-native'
 import fonts from '@/resources/fonts'
 import colors from '@/resources/colors'
 
+import TouchableScale from 'react-native-touchable-scale'
+
 export default class PendingEventCard extends Component {
   render() {
 
@@ -16,10 +18,10 @@ export default class PendingEventCard extends Component {
     let eventDate = eventDateTime.toLocaleDateString();
 
     return (
-      <View style={styles.cardContainer}>
+      <TouchableScale style={styles.cardContainer}>
         <Text style={[styles.eventText, styles.eventDate]}>{eventDate}</Text>
         <Text style={[styles.eventText, styles.eventTitle]}>{title}</Text>
-      </View>
+      </TouchableScale>
     )
   }
 }
