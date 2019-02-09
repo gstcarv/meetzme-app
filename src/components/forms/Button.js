@@ -38,6 +38,10 @@ export default class Button extends Component {
 
     if (this.props.rounded) {
       propStyles.borderRadius = 100
+    } else {
+      if(this.props.noBorder){
+        propStyles.borderRadius = 0
+      }
     }
 
     propStyles.backgroundColor = this.props.background || "#fff";

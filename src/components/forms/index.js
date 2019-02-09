@@ -5,5 +5,5 @@ import Line from './Line'
 export {
   Button,
   TextField,
-  Line
+  Line,
 }

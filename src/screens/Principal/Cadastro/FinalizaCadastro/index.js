@@ -18,7 +18,7 @@ import {
   Button,
   TextField,
   Line
-} from '@/components/forms'
+} from '@/components/Forms'
 
 import CadastroImageSelector from '@/components/CadastroImageSelector'
 

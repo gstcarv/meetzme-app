@@ -52,6 +52,7 @@ export default createBottomTabNavigator(
   },
   {
     tabBarComponent: TabBarComponent,
+    initialRouteName: "Eventos",
     tabBarOptions: {
       showLabel: false,
       inactiveTintColor: "#D6D6D6",

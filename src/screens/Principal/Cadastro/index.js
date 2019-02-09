@@ -4,8 +4,14 @@ import {
   StyleSheet,
   View,
   StatusBar,
-  ScrollView
+  ScrollView,
 } from 'react-native'
+
+import ReactNative from 'react-native'
+
+import InputScrollView from 'react-native-input-scroll-view';
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import {
   withNavigation
@@ -17,7 +23,7 @@ import {
   Button,
   TextField,
   Line
-} from '@/components/forms'
+} from '@/components/Forms'
 
 import defaultStyles from '@/resources/defaultStyles'
 
@@ -41,7 +47,12 @@ class Cadastro extends Component {
   }
 
   gotoNextInput(fieldName){
+    const ref = this.refs[fieldName];
     this.refs[fieldName].focus()
+    this.cadastroScroll.props.scrollToFocusedInput(ReactNative.findNodeHandle(ref))
+  }
+
+  onFocusField(field){
   }
 
   render() {
@@ -51,12 +62,18 @@ class Cadastro extends Component {
           barStyle="dark-content"
           animated />
         <BackButton color="#D8D8D8" />
-        <ScrollView style={styles.formContainer}>
-          <View>
+        <KeyboardAwareScrollView style={{ marginTop: 60 }}
+                    innerRef={ref => {
+                      this.cadastroScroll = ref
+                    }}>
+          <View style={{
+            paddingHorizontal: 20,
+          }}>
             <Text style={defaultStyles.titleWhite}>Cadastro</Text>
             <Text style={defaultStyles.subtitleWhite}>Insira suas informações nos campos abaixo</Text>
           </View>
-          <View style={{ marginTop: 40 }}>
+
+          <View style={styles.formContainer}>
             <TextField labelText="Nome"
               placeholder="Digite seu Nome"
               style={styles.field}
@@ -64,6 +81,9 @@ class Cadastro extends Component {
               onWrite={(name) => this.setState({name})}
               ref="nameField"
               onGoNext={ () => this.gotoNextInput("emailField") }
+              onFocus = { (e) => {
+                this.onFocusField(ReactNative.findNodeHandle(e.target))
+              }}
               />
 
             <TextField labelText="Email"
@@ -103,15 +123,15 @@ class Cadastro extends Component {
               onWrite={passwordConfirm => this.setState({passwordConfirm})}
               ref="confirmPassField"
             />
-
           </View>
+
           <Button background="#353F4B"
             textBold
             fullWidth
             color="white"
             onPress={() => this.validaCadastro()}
-            style={{marginBottom: 20}}>Próximo</Button>
-        </ScrollView>
+            noBorder>Próximo</Button>
+        </KeyboardAwareScrollView>
       </View>
     )
   }
@@ -121,9 +141,10 @@ export default withNavigation(Cadastro);
 
 const styles = StyleSheet.create({
   formContainer: {
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     flex: 1,
-    marginTop: 60
+    marginTop: 40,
+    marginBottom: 20
   },
   field: {
     marginBottom: 20

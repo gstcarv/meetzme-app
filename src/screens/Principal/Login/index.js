@@ -10,15 +10,13 @@ import {
   AsyncStorage
 } from 'react-native'
 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 import Waves from '@/components/Waves'
 
 import {
   Button,
   TextField,
   Line
-} from '@/components/forms'
+} from '@/components/Forms'
 
 import BackButton from '@/components/BackButton'
 import Snackbar from 'react-native-snackbar'
@@ -66,7 +64,8 @@ export default class Login extends Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} 
+          keyboardShouldPersistTaps='always'>
         <StatusBar backgroundColor={colors.primaryDark} />
         <View style={styles.header}>
           <BackButton path="Principal"/>

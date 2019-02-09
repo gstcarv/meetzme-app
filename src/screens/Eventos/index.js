@@ -6,18 +6,19 @@ import fonts from '@/resources/fonts'
 
 import { 
   createMaterialTopTabNavigator,
-  withNavigation,
-  createAppContainer
 } from 'react-navigation'
 
-import MainToolbar from '@/components/MainToolbar'
+// Screens
+import Aceitos from './Aceitos'
+import Pendentes from './Pendentes'
 
 export default createMaterialTopTabNavigator(
   {
-    Aceitos: () => <View></View>,
-    Pendentes: () => <View></View>
+    Aceitos,
+    Pendentes
   },
   {
+    initialRouteName: 'Pendentes',
     tabBarOptions: {
       upperCaseLabel: false,
       activeTintColor: '#e91e63',
@@ -37,18 +38,5 @@ export default createMaterialTopTabNavigator(
   }
 )
 
-// class Eventos extends Component {
-//   render() {
-//     return (
-//       <View>
-//         <Tabs></Tabs>
-//         <MainToolbar>Eventos</MainToolbar>
-//       </View>
-//     )
-//   }
-// }
-
 
 const styles = StyleSheet.create({})
-
-// export default createAppContainer(Eventos)

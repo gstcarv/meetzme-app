@@ -46,6 +46,7 @@ export default class TextField extends Component {
                     autocomplete="off"
                     blurOnSubmit={ this.props.onGoNext == null ? true : false }
                     returnKeyType={ this.props.onGoNext == null ? 'done' : 'next' }
+                    onFocus={ this.props.onFocus }
                     onSubmitEditing={() => {
                       if(this.props.onGoNext) this.props.onGoNext()
                     }}

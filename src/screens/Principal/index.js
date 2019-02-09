@@ -13,7 +13,7 @@ import { withNavigation } from 'react-navigation'
 import colors from "@/resources/colors"
 import fonts from "@/resources/fonts"
 
-import { Button } from '@/components/forms'
+import { Button } from '@/components/Forms'
 
 class Principal extends Component {
   render() {

@@ -4769,6 +4769,14 @@ react-native-image-crop-picker@^0.22.0:
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.22.0.tgz#8f7f657dcde45cc366ac529a624205155571c03f"
   integrity sha512-F8ytcTAbrUgsCaz3v+jm/qi4XAgv4qywxNnFH/qC3cApI0KwvHZ/WjiyzJbWiLQ+6UKDUeUCGum4oY4fzOlzpA==
 
+react-native-input-scroll-view@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-input-scroll-view/-/react-native-input-scroll-view-1.8.0.tgz#9d7d93949cbe71bab2fe8a8ded1150d06314e317"
+  integrity sha512-Kw7BKRNNwL+3Jed1W0QTX8H9FBYIWVbJy+zaydLCCaqp53yqrjPzlPnZAcpSACpNFB/v2uBkkuek+XaJ9Sg3ow==
+  dependencies:
+    lodash "^4.17.10"
+    prop-types "^15.5.10"
+
 react-native-iphone-x-helper@^1.0.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
