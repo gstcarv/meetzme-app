@@ -92,16 +92,22 @@ export default class NovoEvento extends Component {
       edgePadding: {
         left: 100,
         right: 100,
-        top: 300,
+        top: 30,
         bottom: 600
       }
     })
 
-    this.openBox();
-  }
-
-  openBox() {
     this.DirectionInfoBox.show();
+    this.searchField.hide();
+  }
+  onCloseDirectionBox(){
+    this.setState({
+      destination: null
+    })
+
+    this.DirectionInfoBox.hide();
+    this.searchField.show();
+
   }
 
   render() {
@@ -119,7 +125,6 @@ export default class NovoEvento extends Component {
           <View>
             <MapDirections origin={this.state.userLocation}
               destination={this.state.destination}
-              mode={this.state.transportMode}
               onReady={this.onDirectionReady.bind(this)} />
             <DestinationMapMarker
               coordinate={this.state.destination}
@@ -137,29 +142,28 @@ export default class NovoEvento extends Component {
           backgroundColor="rgba(255, 255, 255, 0)"
           barStyle="dark-content" />
 
-        {
-          <MapView style={styles.mapview}
-            ref={ref => this.mapview = ref}
-            provider={PROVIDER_GOOGLE}
-            region={userRegion}
-            showsMyLocationButton={false}
-            showsCompass={false}
-            showsBuildings={false}
-            minZoomLevel={6}
-            maxZoomLevel={16}
-            customMapStyle={require("@assets/mapstyle.json")}
-          >
+        <MapView style={styles.mapview}
+          ref={ref => this.mapview = ref}
+          provider={PROVIDER_GOOGLE}
+          region={userRegion}
+          showsMyLocationButton={false}
+          showsCompass={false}
+          showsBuildings={false}
+          minZoomLevel={6}
+          maxZoomLevel={16}
+          customMapStyle={require("@assets/mapstyle.json")}
+        >
 
-            { this.state.userLocation && 
-                <UserMapMarker coordinate={userRegion}
-                               title="Você"/> }
+          {this.state.userLocation &&
+            <UserMapMarker coordinate={userRegion}
+              title="Você" />}
 
-            { getDirection() }
+          {getDirection()}
 
-          </MapView>
-        }
+        </MapView>
 
-        <GooglePlacesSearch onSelectLocation={this.onSelectLocation.bind(this)} />
+        <GooglePlacesSearch onSelectLocation={this.onSelectLocation.bind(this)}
+            ref={ ref => this.searchField = ref } />
 
         <DirectionInfoBox
           ref={ref => this.DirectionInfoBox = ref}
@@ -167,6 +171,7 @@ export default class NovoEvento extends Component {
           onSelectTransport={
             transportMode => this.setState({ transportMode })
           }
+          onClose={() => this.onCloseDirectionBox()}
         />
 
         <BackButton color={colors.primaryColor} />

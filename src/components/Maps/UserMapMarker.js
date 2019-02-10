@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     width: 13,
     height: 13,
-    backgroundColor: "#4285F4"
+    backgroundColor: "#80a6e8"
   },
   wave: {
     borderRadius: 100,

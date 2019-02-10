@@ -16,8 +16,6 @@ export default class MapDirections extends Component {
       onReady
     } = this.props;
 
-    console.warn(mode)
-
     return (
       <MapViewDirections
         origin={origin}

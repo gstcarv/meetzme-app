@@ -1,45 +1,73 @@
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { Text, StyleSheet, View, Animated } from 'react-native'
 
 import strings from '@/resources/strings'
 import fonts from '@/resources/fonts'
 
-import RNGooglePlaces from 'react-native-google-places';
-
 export default class GooglePlacesSearch extends Component {
+
+  constructor(){
+    super();
+    this.searchTranslateValue = new Animated.Value(0)
+  }
+
+  hide(){
+    Animated.timing(this.searchTranslateValue, {
+      toValue: -130,
+      duration: 1000,
+      delay: 300,
+      useNativeDriver: true
+    }).start()
+  }
+
+  show(){
+    Animated.spring(this.searchTranslateValue, {
+      toValue: 0,
+      duration: 1000,
+      bounciness: 12,
+      useNativeDriver: true
+    }).start()
+  }
+
   render() {
     return (
-      <GooglePlacesAutocomplete
-        placeholder="Insira o Endereço do Local"
-        placeholderTextColor="#ccc"
-        onPress={(data, details) => {
-          this.props.onSelectLocation(data, details)
-        }}
-        query={{
-          key: strings.GoogleMapsKey,
-          language: 'pt'
-        }}
-        returnKeyType={'search'}
-        minLength={2}
-        textInputProps={{
-          autoCorrect: false
-        }}
-        fetchDetails
-        styles={styles}
-        enablePoweredByContainer={false}
-        listViewDisplayed={ false } />
+      <Animated.View style={{
+        position: 'absolute',
+        top: 60,
+        width: "100%",
+        transform: [
+          {
+            translateY: this.searchTranslateValue
+          }
+        ]
+      }}>
+        <GooglePlacesAutocomplete
+          placeholder="Insira o Endereço do Local"
+          placeholderTextColor="#ccc"
+          onPress={(data, details) => {
+            this.props.onSelectLocation(data, details)
+          }}
+          query={{
+            key: strings.GoogleMapsKey,
+            language: 'pt'
+          }}
+          returnKeyType={'search'}
+          minLength={2}
+          textInputProps={{
+            autoCorrect: false
+          }}
+          fetchDetails
+          styles={styles}
+          enablePoweredByContainer={false}
+          listViewDisplayed={false} />
+      </Animated.View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    top: 60,
-    width: "100%"
-  },
   textInputContainer: {
     flex: 1,
     backgroundColor: "transparent",
