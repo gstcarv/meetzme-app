@@ -27,8 +27,6 @@ export default class TimelineEvent extends Component {
     eventTimeFormat = eventTimeFormat.join(":").replace(":", "h")
     eventTime = eventTimeFormat;
 
-    console.warn(eventTimeFormat)
-
     return (
       <View style={styles.container}>
         <View style={styles.timelineTextContainer}>

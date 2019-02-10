@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MeetzMe</string>
+    <string name="google_maps_api_key">AIzaSyBGgQ68-4tZvO_nGU4BMNUjReZBwx9zzKw</string>
 </resources>

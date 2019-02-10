@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
-import { Alert, Text, StyleSheet, View, TouchableNativeFeedback } from 'react-native'
+import {
+  StyleSheet,
+  View,
+} from 'react-native'
 
-import RippleView from 'react-native-material-ripple'
+import {
+  withNavigation
+} from 'react-navigation'
+
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 
 import TouchableScale from 'react-native-touchable-scale'
 
 import colors from '@/resources/colors'
 
-export default class TabBarMainButton extends Component {
+class TabBarMainButton extends Component {
   render() {
     return (
-      <TouchableScale activeScale={.7}>
+      <TouchableScale activeScale={.7} onPress={() => this.props.navigation.push('NovoEvento')}>
         <View style={styles.button} onPress={() => Alert.alert("ok")}>
           <FAIcon name="plus" size={16} color="#fff" />
         </View>
@@ -31,8 +37,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 9,
     transform: [
-        { translateY: -10 }
+      { translateY: -10 }
     ]
-    
+
   }
 })
+
+export default withNavigation(TabBarMainButton)

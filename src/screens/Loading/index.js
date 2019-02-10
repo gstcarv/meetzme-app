@@ -17,7 +17,11 @@ import firebase from 'react-native-firebase'
 class Principal extends Component {
 
   componentDidMount() {
+
     const { navigate } = this.props.navigation;
+
+    navigate('Logado');
+
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
       const userData = await AsyncStorage.getItem("USER_DATA");
       // console.log("Storage", userData);
@@ -34,9 +38,8 @@ class Principal extends Component {
             uid
           }))
         }
-        navigate('Logado');
       } else {
-        navigate('Cadastro');
+        navigate('Logado');
       }
     })
   }

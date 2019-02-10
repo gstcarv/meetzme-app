@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 
-import { createBottomTabNavigator } from 'react-navigation'
+import { 
+  createBottomTabNavigator,
+  createStackNavigator
+} from 'react-navigation'
+
+import { fromRight } from 'react-navigation-transitions';
 
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
@@ -16,8 +21,7 @@ import Procurar from '@/screens/Procurar'
 // Components
 import TabBarMainButton from '@/components/TabBar/TabBarMainButton'
 import TabBarComponent from '@/components/TabBar/TabBarComponent'
-
-export default createBottomTabNavigator(
+var BottomNavigator = createBottomTabNavigator(
   {
     Dashboard: {
       screen: Dashboard,
@@ -58,5 +62,20 @@ export default createBottomTabNavigator(
       inactiveTintColor: "#D6D6D6",
       activeTintColor: colors.primaryColor
     }
+  }
+)
+
+// Screens
+import NovoEvento from '@/screens/NovoEvento'
+
+export default createStackNavigator(
+  {
+    Home: BottomNavigator,
+    NovoEvento
+  },
+  {
+    initialRouteName: 'Home',
+    headerMode: 'none',
+    transitionConfig: () => fromRight()
   }
 )
