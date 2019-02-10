@@ -6,12 +6,14 @@ import { Text, StyleSheet, View } from 'react-native'
 import strings from '@/resources/strings'
 import fonts from '@/resources/fonts'
 
+import RNGooglePlaces from 'react-native-google-places';
+
 export default class GooglePlacesSearch extends Component {
   render() {
     return (
       <GooglePlacesAutocomplete
         placeholder="Insira o Endereço do Local"
-        placeholderTextColor="#E1E1E1"
+        placeholderTextColor="#ccc"
         onPress={(data, details) => {
           this.props.onSelectLocation(data, details)
         }}
@@ -35,7 +37,7 @@ export default class GooglePlacesSearch extends Component {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 40,
+    top: 60,
     width: "100%"
   },
   textInputContainer: {
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     height: 54,
     marginHorizontal: 20,
     borderTopWidth: 0,
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
   },
   textInput: {
     height: 54,
@@ -60,21 +62,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#DDD",
     fontSize: 15,
-    fontFamily: fonts.primary
+    fontFamily: fonts.primary,
+    borderRadius: 3
   },
   listView: {
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: "#DDD",
     backgroundColor: "#FFF",
     marginHorizontal: 20,
-    marginTop: 10,
     fontFamily: fonts.primary
   },
   description: {
-    fontSize: 16
+    fontSize: 13
   },
   row: {
-    padding: 20,
-    height: 58
+    padding: 10,
+    // height: 30
   }
 })

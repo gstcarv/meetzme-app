@@ -3,8 +3,13 @@ import {
   Text,
   StyleSheet,
   View,
-  StatusBar
+  StatusBar,
+  AsyncStorage,
 } from 'react-native'
+
+import BackButton from '@/components/BackButton'
+
+import Snackbar from 'react-native-snackbar'
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 
@@ -12,6 +17,7 @@ import GooglePlacesSearch from '@/components/NovoEvento/GooglePlacesSearch'
 import MapDirections from '@/components/NovoEvento/MapDirections'
 
 import colors from '@/resources/colors'
+import DirectionInfoBox from '@/components/Maps/DirectionInfoBox';
 
 export default class NovoEvento extends Component {
 
@@ -22,21 +28,40 @@ export default class NovoEvento extends Component {
         latitude: 0,
         longitude: 0
       },
+      loading: true,
       destination: null
     }
   }
 
   componentDidMount() {
+
+    this.loading = true;
+
     navigator.geolocation.getCurrentPosition(
-      pos => {
+      async pos => {
         this.setState({
-          userLocation: pos.coords
+          userLocation: pos.coords,
+          loading: false
         })
+        await AsyncStorage.setItem("USER_LAST_LOCATION", JSON.stringify(pos.coords));
       },
-      err => {
-        console.log(err)
+      async err => {
+
+        Snackbar.show({
+          title: 'Ocorreu um erro ao determinar sua localização atual',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#b71b25'
+        })
+
+        const userLastLocation = await AsyncStorage.getItem("USER_LAST_LOCATION");
+        if (userLastLocation) {
+          this.setState({
+            userLocation: JSON.parse(userLastLocation),
+            loading: false
+          })
+        }
       },
-      { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
     )
   }
 
@@ -47,7 +72,10 @@ export default class NovoEvento extends Component {
         longitude: geometry.location.lng
       }
     })
-    console.log(this.state.destination)
+  }
+
+  openBox(){
+    this.DirectionInfoBox.show();
   }
 
   render() {
@@ -68,12 +96,13 @@ export default class NovoEvento extends Component {
               onReady={result => {
                 this.mapview.fitToCoordinates(result.coordinates, {
                   edgePadding: {
-                    left: 30,
-                    right: 30,
-                    top: 30,
-                    bottom: 30
+                    left: 100,
+                    right: 100,
+                    top: 300,
+                    bottom: 600
                   }
                 })
+                this.openBox();
               }} />
             <MapView.Marker title="Destino"
               description="Meu destino"
@@ -86,29 +115,43 @@ export default class NovoEvento extends Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar translucent
+
+        <StatusBar
           animated
           backgroundColor="rgba(255, 255, 255, 0)"
           barStyle="dark-content" />
-        <MapView style={styles.mapview}
-          ref={
-            ref => this.mapview = ref
-          }
-          provider={PROVIDER_GOOGLE}
-          region={userRegion}
-          loadingEnabled
-          showsUserLocation
-          showsMyLocationButton={false}
-          showsCompass={false}
-          showsBuildings={false}
-          customMapStyle={require("@assets/mapstyle.json")}>
 
-          {
-            getDirection()
-          }
+        {
 
-        </MapView>
+          this.state.loading == false && <MapView style={styles.mapview}
+            ref={
+              ref => this.mapview = ref
+            }
+            provider={PROVIDER_GOOGLE}
+            region={userRegion}
+            loadingEnabled
+            showsUserLocation
+            showsMyLocationButton={false}
+            showsCompass={false}
+            showsBuildings={false}
+            customMapStyle={require("@assets/mapstyle.json")}>
+
+            {
+              getDirection()
+            }
+
+          </MapView>
+
+        }
+
         <GooglePlacesSearch onSelectLocation={this.onSelectLocation.bind(this)} />
+
+        <DirectionInfoBox ref={
+          ref => this.DirectionInfoBox = ref
+        }/>
+
+        <BackButton color={colors.primaryColor} />
+
       </View>
     )
   }
