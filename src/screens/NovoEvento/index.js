@@ -18,6 +18,8 @@ import MapDirections from '@/components/NovoEvento/MapDirections'
 
 import colors from '@/resources/colors'
 import DirectionInfoBox from '@/components/Maps/DirectionInfoBox';
+import UserMapMarker from '../../components/Maps/UserMapMarker';
+import DestinationMapMarker from '../../components/Maps/DestinationMapMarker';
 
 export default class NovoEvento extends Component {
 
@@ -29,7 +31,9 @@ export default class NovoEvento extends Component {
         longitude: 0
       },
       loading: true,
-      destination: null
+      destination: null,
+      transportMode: "walking",
+      directionResult: null
     }
   }
 
@@ -74,7 +78,29 @@ export default class NovoEvento extends Component {
     })
   }
 
-  openBox(){
+  onDirectionReady(result) {
+
+    const { distance, duration } = result
+    this.setState({
+      directionResult: {
+        distance,
+        duration
+      }
+    })
+
+    this.mapview.fitToCoordinates(result.coordinates, {
+      edgePadding: {
+        left: 100,
+        right: 100,
+        top: 300,
+        bottom: 600
+      }
+    })
+
+    this.openBox();
+  }
+
+  openBox() {
     this.DirectionInfoBox.show();
   }
 
@@ -93,21 +119,11 @@ export default class NovoEvento extends Component {
           <View>
             <MapDirections origin={this.state.userLocation}
               destination={this.state.destination}
-              onReady={result => {
-                this.mapview.fitToCoordinates(result.coordinates, {
-                  edgePadding: {
-                    left: 100,
-                    right: 100,
-                    top: 300,
-                    bottom: 600
-                  }
-                })
-                this.openBox();
-              }} />
-            <MapView.Marker title="Destino"
-              description="Meu destino"
+              mode={this.state.transportMode}
+              onReady={this.onDirectionReady.bind(this)} />
+            <DestinationMapMarker
               coordinate={this.state.destination}
-              pinColor="indigo" />
+            />
           </View>
         )
       }
@@ -122,33 +138,36 @@ export default class NovoEvento extends Component {
           barStyle="dark-content" />
 
         {
-
-          this.state.loading == false && <MapView style={styles.mapview}
-            ref={
-              ref => this.mapview = ref
-            }
+          <MapView style={styles.mapview}
+            ref={ref => this.mapview = ref}
             provider={PROVIDER_GOOGLE}
             region={userRegion}
-            loadingEnabled
-            showsUserLocation
             showsMyLocationButton={false}
             showsCompass={false}
             showsBuildings={false}
-            customMapStyle={require("@assets/mapstyle.json")}>
+            minZoomLevel={6}
+            maxZoomLevel={16}
+            customMapStyle={require("@assets/mapstyle.json")}
+          >
 
-            {
-              getDirection()
-            }
+            { this.state.userLocation && 
+                <UserMapMarker coordinate={userRegion}
+                               title="Você"/> }
+
+            { getDirection() }
 
           </MapView>
-
         }
 
         <GooglePlacesSearch onSelectLocation={this.onSelectLocation.bind(this)} />
 
-        <DirectionInfoBox ref={
-          ref => this.DirectionInfoBox = ref
-        }/>
+        <DirectionInfoBox
+          ref={ref => this.DirectionInfoBox = ref}
+          directionResult={this.state.directionResult}
+          onSelectTransport={
+            transportMode => this.setState({ transportMode })
+          }
+        />
 
         <BackButton color={colors.primaryColor} />
 

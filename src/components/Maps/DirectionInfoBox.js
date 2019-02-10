@@ -21,6 +21,9 @@ export default class DirectionInfoBox extends Component {
 
   constructor() {
     super();
+    this.state = {
+      transport: "driving"
+    }
     this.boxTranslate = new Animated.Value(initialTranslateValue);
   }
 
@@ -44,14 +47,17 @@ export default class DirectionInfoBox extends Component {
   }
 
   selectTransport(transport){
+    this.setState({ transport })
 
-  }
+    if(this.props.onSelectTransport) 
+      this.props.onSelectTransport(transport);
 
-  componentDidMount() {
-    this.show()
   }
 
   render() {
+
+    const { transport } = this.state;
+
     return (
       <Animated.View
         style={[styles.container, {
@@ -64,20 +70,23 @@ export default class DirectionInfoBox extends Component {
           <Text style={styles.transportText}>Selecione o meio de transporte</Text>
           <View style={styles.transportContainer}>
             <TouchableTransportButton 
-                onPress={() => this.selectTransport('DRIVING')} 
-                active={true}
+                onPress={() => this.selectTransport('driving')} 
+                active={transport == "driving"}
                 iconName="car" />
 
-            <TouchableTransportButton 
-                onPress={() => this.selectTransport('TRANSIT')}
+            <TouchableTransportButton
+                onPress={() => this.selectTransport('transit')}
+                active={transport == "transit"}
                 iconName="bus" />
                 
             <TouchableTransportButton 
-                onPress={() => this.selectTransport('BICYCLING')}
+                onPress={() => this.selectTransport('bicycling')}
+                active={transport == "bicycling"}
                 iconName="bicycle" />
 
             <TouchableTransportButton 
-                onPress={() => this.selectTransport('WALKING')}
+                onPress={() => this.selectTransport('walking')}
+                active={transport == "walking"}
                 iconName="walking" />
           </View>
         </View>

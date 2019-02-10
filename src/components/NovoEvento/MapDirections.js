@@ -12,8 +12,11 @@ export default class MapDirections extends Component {
     const {
       destination,
       origin,
+      mode,
       onReady
     } = this.props;
+
+    console.warn(mode)
 
     return (
       <MapViewDirections
@@ -21,6 +24,7 @@ export default class MapDirections extends Component {
         destination={destination}
         onReady={onReady}
         apikey={string.GoogleMapsKey}
+        mode={mode}
         language="pt"
         strokeWidth={7}
         strokeColor={colors.primaryColor}
