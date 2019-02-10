@@ -5,12 +5,15 @@ import {
   StyleSheet,
   Animated,
   Easing,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  Text
 } from "react-native";
 
 import TouchableRipple from 'react-native-material-ripple'
+import TouchableScale from 'react-native-touchable-scale'
 
 import colors from '@/resources/colors'
+import fonts from '@/resources/fonts'
 
 export default class TabBarComponent extends React.Component {
 
@@ -27,11 +30,12 @@ export default class TabBarComponent extends React.Component {
   moveLine(){
     this.refs["tabButton-" + this.state.atualRouteIndex]
     .measure((fx, fy, width, height, px, py) => {
-      Animated.timing(this.lineOffset, {
+      Animated.spring(this.lineOffset, {
         toValue: px + 20,
         duration: 350,
         easing: Easing.easing,
-        useNativeDriver: true
+        useNativeDriver: true,
+        bounciness: 10
       }).start()
     })
   }
@@ -57,25 +61,38 @@ export default class TabBarComponent extends React.Component {
 
     const { routes, index: activeRouteIndex } = navigation.state;
 
+    const mainButtonIndex = 2;
+
     return (
       <View style={styles.container}>
         {
+
           routes.map((route, routeIndex) => {
             const isRouteActive = routeIndex === activeRouteIndex;
             const tintColor = isRouteActive ? activeTintColor : inactiveTintColor;
+
 
             return (
               <TouchableHighlight
                 key={routeIndex}
                 ref={"tabButton-" + routeIndex}
                 onPress={(e) => {
-                  this.setState({ atualRouteIndex: routeIndex })
-                  onTabPress({ route });
+                  if(routeIndex != mainButtonIndex){
+                    this.setState({ atualRouteIndex: routeIndex })
+                    onTabPress({ route });
+                  }
                 }}
-                underlayColor={"#ededed"} >
+                underlayColor="transparent" >
                 <View style={styles.tabButton}
                 >
                   {renderIcon({ route, focused: isRouteActive, tintColor })}
+
+                  {
+                    routeIndex != mainButtonIndex
+                    ? <Text style={[styles.labelText, { color: tintColor }]}>{ getLabelText({ route }) }</Text>
+                    : null
+                  }
+
                 </View>
               </TouchableHighlight>
             );
@@ -115,7 +132,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 83
+    width: 83,
+    justifyContent: 'space-around',
+    marginTop: 10
   },
   navigationLine: {
     backgroundColor: colors.primaryColor,
@@ -125,6 +144,10 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0
   },
+  labelText: {
+    fontSize: 10,
+    fontFamily: fonts.primary,
+  }
 });
 
 // export default TabBar;
