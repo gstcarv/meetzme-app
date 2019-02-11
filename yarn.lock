@@ -5004,10 +5004,9 @@ react-native-permissions@^1.1.1:
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"
   integrity sha512-t0Ujm177bagjUOSzhpmkSz+LqFW04HnY9TeZFavDCmV521fQvFz82aD+POXqWsAdsJVOK3umJYBNNqCjC3g0hQ==
 
-react-native-raw-bottom-sheet@^1.1.0:
+react-native-raw-bottom-sheet@gstcarv/react-native-raw-bottom-sheet:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-raw-bottom-sheet/-/react-native-raw-bottom-sheet-1.1.0.tgz#13798ba274540b8969809b93ba4e97c5023938bb"
-  integrity sha512-1WBgeuGr//T+ospX9/cTMGnoJ8X+Y/7LcSKy3xqIoe+CdbRWrjb3oxB1ZGr4Q8eatMYrszN+Ou8w1CE6M2Yz8Q==
+  resolved "https://codeload.github.com/gstcarv/react-native-raw-bottom-sheet/tar.gz/28d59303ba4304cf3dea7de1418f601f4d242a1f"
   dependencies:
     prop-types "^15.6.2"
 
