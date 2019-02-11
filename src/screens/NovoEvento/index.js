@@ -33,40 +33,47 @@ export default class NovoEvento extends Component {
       loading: true,
       destination: null,
       transportMode: "walking",
-      directionResult: null
+      directionResult: null,
+      lastLocation: null
     }
   }
 
-  componentDidMount() {
-
+  async componentDidMount() {
     this.loading = true;
 
-    navigator.geolocation.getCurrentPosition(
+    const userLastLocation = await AsyncStorage.getItem("USER_LAST_LOCATION");
+    if (userLastLocation) {
+      this.setState({
+        userLocation: JSON.parse(userLastLocation),
+        loading: false
+      })
+    }
+
+    this.positionSubscription = navigator.geolocation.getCurrentPosition(
       async pos => {
-        this.setState({
-          userLocation: pos.coords,
-          loading: false
-        })
-        await AsyncStorage.setItem("USER_LAST_LOCATION", JSON.stringify(pos.coords));
+        if (!this.isUnmounted) {
+          this.setState({
+            userLocation: pos.coords,
+            loading: false
+          })
+          await AsyncStorage.setItem("USER_LAST_LOCATION", JSON.stringify(pos.coords));
+        }
       },
       async err => {
-
-        Snackbar.show({
-          title: 'Ocorreu um erro ao determinar sua localização atual',
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: '#b71b25'
-        })
-
-        const userLastLocation = await AsyncStorage.getItem("USER_LAST_LOCATION");
-        if (userLastLocation) {
-          this.setState({
-            userLocation: JSON.parse(userLastLocation),
-            loading: false
+        if (!this.isUnmounted) {
+          Snackbar.show({
+            title: 'Ocorreu um erro ao determinar sua localização atual',
+            duration: Snackbar.LENGTH_LONG,
+            backgroundColor: '#b71b25'
           })
         }
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
     )
+  }
+
+  componentWillUnmount() {
+    this.isUnmounted = true;
   }
 
   onSelectLocation(data, { geometry }) {
@@ -79,7 +86,6 @@ export default class NovoEvento extends Component {
   }
 
   onDirectionReady(result) {
-
     const { distance, duration } = result
     this.setState({
       directionResult: {
@@ -100,7 +106,8 @@ export default class NovoEvento extends Component {
     this.DirectionInfoBox.show();
     this.searchField.hide();
   }
-  onCloseDirectionBox(){
+
+  onCloseDirectionBox() {
     this.setState({
       destination: null
     })
@@ -146,6 +153,7 @@ export default class NovoEvento extends Component {
           ref={ref => this.mapview = ref}
           provider={PROVIDER_GOOGLE}
           region={userRegion}
+          initialRegion={this.state.userLastLocation || null}
           showsMyLocationButton={false}
           showsCompass={false}
           showsBuildings={false}
@@ -163,7 +171,7 @@ export default class NovoEvento extends Component {
         </MapView>
 
         <GooglePlacesSearch onSelectLocation={this.onSelectLocation.bind(this)}
-            ref={ ref => this.searchField = ref } />
+          ref={ref => this.searchField = ref} />
 
         <DirectionInfoBox
           ref={ref => this.DirectionInfoBox = ref}
@@ -172,6 +180,7 @@ export default class NovoEvento extends Component {
             transportMode => this.setState({ transportMode })
           }
           onClose={() => this.onCloseDirectionBox()}
+          canReturn={true}
         />
 
         <BackButton color={colors.primaryColor} />

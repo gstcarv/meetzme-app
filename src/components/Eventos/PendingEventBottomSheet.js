@@ -28,7 +28,7 @@ export default class PendingEventBottomSheet extends Component {
           this.EventSheet = ref;
         }}
         height={350}
-        duration={450}
+        duration={300}
         customStyles={{
           container: {
             borderTopLeftRadius: 10,

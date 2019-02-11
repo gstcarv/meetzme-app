@@ -61,8 +61,8 @@ export default class Pendentes extends Component {
   
   render() {
     return (
-      <View>
-        <ScrollView style={styles.container}>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView}>
           <EventsSearchField />
 
 
@@ -83,7 +83,7 @@ export default class Pendentes extends Component {
 
           <Line spaceVertical={15} />
         </ScrollView>
-        <PendingEventBottomSheet ref="eventBottomSheet"/>
+        <PendingEventBottomSheet ref="eventBottomSheet" />
       </View>
     )
   }
@@ -92,7 +92,11 @@ export default class Pendentes extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F9FAFC",
-    padding: 20
+    padding: 20,
+    flex: 1
+  },
+  scrollView: {
+    flex: 1
   },
   eventosContainer: {
     flex: 1,

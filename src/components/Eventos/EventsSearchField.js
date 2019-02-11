@@ -7,7 +7,7 @@ import fonts from '@/resources/fonts'
 export default class EventsSearchField extends Component {
   render() {
     return (
-      <View style={[styles.fieldContainer, ...this.props.style || {}]}>
+      <View style={[styles.fieldContainer, this.props.style || {}]}>
         <SLIcon name="magnifier" size={20} color="#ccc"></SLIcon>
         <TextInput placeholder="Digite o Nome do Evento"
                   style={styles.textInput}></TextInput>

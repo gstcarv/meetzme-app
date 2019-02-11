@@ -3,8 +3,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, Animated } from 'react-native'
 
-import strings from '@/resources/strings'
+import SearchListRow from './GooglePlacesSearch/SearchListRow'
+
 import fonts from '@/resources/fonts'
+import strings from '@/resources/strings'
 
 export default class GooglePlacesSearch extends Component {
 
@@ -58,10 +60,12 @@ export default class GooglePlacesSearch extends Component {
           textInputProps={{
             autoCorrect: false
           }}
+          renderRow={(item) => <SearchListRow item={item} key={item.id} />}
           fetchDetails
           styles={styles}
           enablePoweredByContainer={false}
-          listViewDisplayed={false} />
+          listViewDisplayed={false}
+          enableEmptySections={false} />
       </Animated.View>
     )
   }
@@ -74,7 +78,7 @@ const styles = StyleSheet.create({
     height: 54,
     marginHorizontal: 20,
     borderTopWidth: 0,
-    borderBottomWidth: 0,
+    borderBottomWidth: 0
   },
   textInput: {
     height: 54,
@@ -90,6 +94,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#DDD",
     fontSize: 15,
+    elevation: 8,
     fontFamily: fonts.primary,
     borderRadius: 3
   },
@@ -97,14 +102,11 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderColor: "#DDD",
     backgroundColor: "#FFF",
-    marginHorizontal: 20,
-    fontFamily: fonts.primary
-  },
-  description: {
-    fontSize: 13
+    marginHorizontal: 21,
+    elevation: 8,
+    marginTop: 3
   },
   row: {
-    padding: 10,
-    // height: 30
+    height: 70,
   }
 })

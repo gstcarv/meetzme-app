@@ -5,7 +5,8 @@ import {
   View,
   Animated,
   Easing,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  BackHandler
 } from 'react-native'
 
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
@@ -22,9 +23,25 @@ export default class DirectionInfoBox extends Component {
   constructor() {
     super();
     this.state = {
-      transport: "driving"
+      transport: "driving",
+      visible: false
     }
     this.boxTranslate = new Animated.Value(initialTranslateValue);
+  }
+
+  componentWillMount(){
+    if(this.props.canReturn){
+      BackHandler.addEventListener('hardwareBackPress', () => {
+        this.props.onClose()
+        return true;
+      })
+    }
+  }
+
+  componentWillUnmount(){
+    if(this.props.canReturn){
+      BackHandler.removeEventListener('hardwareBackPress')
+    }
   }
 
   show() {
@@ -35,6 +52,9 @@ export default class DirectionInfoBox extends Component {
       bounciness: 15,
       useNativeDriver: true
     }).start()
+    this.setState({
+      visible: true
+    })
   }
 
   hide() {
@@ -44,6 +64,9 @@ export default class DirectionInfoBox extends Component {
       easing: Easing.ease,
       useNativeDriver: true
     }).start()
+    this.setState({
+      visible: false
+    })
   }
 
   selectTransport(transport){
@@ -90,12 +113,16 @@ export default class DirectionInfoBox extends Component {
                 iconName="walking" />
           </View>
         </View>
-        <TouchableNativeFeedback backgroundColor={TouchableNativeFeedback.Ripple("#eee", true)}
-                  onPress={this.props.onClose}>
-          <View style={styles.closeButton}>
-            <FAIcon name="arrow-left" color="#ccc" size={20}></FAIcon>
-          </View>
-        </TouchableNativeFeedback>
+        {
+          this.props.canReturn &&
+          <TouchableNativeFeedback 
+                    backgroundColor={TouchableNativeFeedback.Ripple("#eee", true)}
+                    onPress={this.props.onClose}>
+            <View style={styles.closeButton}>
+              <FAIcon name="arrow-left" color="#ccc" size={20}></FAIcon>
+            </View>
+          </TouchableNativeFeedback>
+        }
       </Animated.View>
     )
   }
@@ -115,7 +142,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 15,
+    top: 16,
     left: 10,
     padding: 5,
     borderRadius: 50
