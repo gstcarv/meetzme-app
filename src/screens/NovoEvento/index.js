@@ -33,7 +33,10 @@ export default class NovoEvento extends Component {
       loading: true,
       destination: null,
       transportMode: "walking",
-      directionResult: null,
+      directionResult: {
+        distance: 0,
+        duration: 0
+      },
       lastLocation: null
     }
   }
@@ -87,6 +90,7 @@ export default class NovoEvento extends Component {
 
   onDirectionReady(result) {
     const { distance, duration } = result
+
     this.setState({
       directionResult: {
         distance,
@@ -176,9 +180,6 @@ export default class NovoEvento extends Component {
         <DirectionInfoBox
           ref={ref => this.DirectionInfoBox = ref}
           directionResult={this.state.directionResult}
-          onSelectTransport={
-            transportMode => this.setState({ transportMode })
-          }
           onClose={() => this.onCloseDirectionBox()}
           canReturn={true}
         />

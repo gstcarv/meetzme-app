@@ -6,8 +6,11 @@ import {
   Animated,
   Easing,
   TouchableNativeFeedback,
-  BackHandler
+  BackHandler,
+  PanResponder
 } from 'react-native'
+
+import { Button } from "@/components/Forms"
 
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 
@@ -15,8 +18,9 @@ import fonts from '@/resources/fonts'
 import colors from '@/resources/colors'
 import TouchableTransportButton from './DirectionInfoBox/TouchableTransportButton';
 
-const heightValue = 200;
+const heightValue = 260;
 const initialTranslateValue = heightValue + 20;
+const minimizedValue = heightValue - 40;
 
 export default class DirectionInfoBox extends Component {
 
@@ -24,13 +28,32 @@ export default class DirectionInfoBox extends Component {
     super();
     this.state = {
       transport: "driving",
-      visible: false
+      visible: false,
     }
+
     this.boxTranslate = new Animated.Value(initialTranslateValue);
+    this.createPanResponder()
   }
 
-  componentWillMount(){
-    if(this.props.canReturn){
+  createPanResponder() {
+    this.panResponder = PanResponder.create({
+      onPanResponderMove: (e, gestureState) => {
+        gestureState.dy < 0 || gestureState.dy > 400
+          ? null
+          : Animated.event([null, { dy: this.boxTranslate }])(e, gestureState);
+      },
+      onPanResponderRelease: (e, gestureState) => {
+        if (heightValue / 4 - gestureState.dy < 0) {
+          this.minimize()
+        } else {
+          this.show()
+        }
+      }
+    });
+  }
+
+  componentWillMount() {
+    if (this.props.canReturn) {
       BackHandler.addEventListener('hardwareBackPress', () => {
         this.props.onClose()
         return true;
@@ -38,10 +61,22 @@ export default class DirectionInfoBox extends Component {
     }
   }
 
-  componentWillUnmount(){
-    if(this.props.canReturn){
+  componentWillUnmount() {
+    if (this.props.canReturn) {
       BackHandler.removeEventListener('hardwareBackPress')
     }
+  }
+
+  minimize(){
+    Animated.spring(this.boxTranslate, {
+      toValue: minimizedValue,
+      duration: 500,
+      bounciness: 15,
+      useNativeDriver: true
+    }).start()
+    this.setState({
+      visible: false
+    })
   }
 
   show() {
@@ -69,10 +104,10 @@ export default class DirectionInfoBox extends Component {
     })
   }
 
-  selectTransport(transport){
+  selectTransport(transport) {
     this.setState({ transport })
 
-    if(this.props.onSelectTransport) 
+    if (this.props.onSelectTransport)
       this.props.onSelectTransport(transport);
 
   }
@@ -80,9 +115,28 @@ export default class DirectionInfoBox extends Component {
   render() {
 
     const { transport } = this.state;
+    const { distance, duration } = this.props.directionResult;
+
+    let computedDistance = () => {
+      if(distance > 0){
+        return distance.toFixed(1) + "KM"
+      } else {
+        return (distance * 1000).toFixed(0) + "M"
+      }
+    }
+
+    let computedDuration = () => {
+      if(duration <= 60){
+        return duration.toFixed(0) + "MIN"
+      } else {
+        let hours = duration / 60;
+        return hours.toFixed(1) + "H"
+      }
+    }
 
     return (
       <Animated.View
+        { ...this.panResponder.panHandlers }
         style={[styles.container, {
           transform: [
             { translateY: this.boxTranslate }
@@ -92,37 +146,56 @@ export default class DirectionInfoBox extends Component {
         <View style={styles.selectTransport}>
           <Text style={styles.transportText}>Selecione o meio de transporte</Text>
           <View style={styles.transportContainer}>
-            <TouchableTransportButton 
-                onPress={() => this.selectTransport('driving')} 
-                active={transport == "driving"}
-                iconName="car" />
+            <TouchableTransportButton
+              onPress={() => this.selectTransport('driving')}
+              active={transport == "driving"}
+              iconName="car" />
 
             <TouchableTransportButton
-                onPress={() => this.selectTransport('transit')}
-                active={transport == "transit"}
-                iconName="bus" />
-                
-            <TouchableTransportButton 
-                onPress={() => this.selectTransport('bicycling')}
-                active={transport == "bicycling"}
-                iconName="bicycle" />
+              onPress={() => this.selectTransport('transit')}
+              active={transport == "transit"}
+              iconName="bus" />
 
-            <TouchableTransportButton 
-                onPress={() => this.selectTransport('walking')}
-                active={transport == "walking"}
-                iconName="walking" />
+            <TouchableTransportButton
+              onPress={() => this.selectTransport('bicycling')}
+              active={transport == "bicycling"}
+              iconName="bicycle" />
+
+            <TouchableTransportButton
+              onPress={() => this.selectTransport('walking')}
+              active={transport == "walking"}
+              iconName="walking" />
           </View>
         </View>
+
+        <View style={styles.infoContainer}>
+          <View style={styles.textInfoContainer}>
+            <Text style={styles.infoTextLabel}>Distância</Text>
+            <Text style={styles.infoText}>{computedDistance()}</Text>
+          </View>
+          <View style={styles.textInfoContainer}>
+            <Text style={styles.infoTextLabel}>Tempo estimado</Text>
+            <Text style={styles.infoText}>{computedDuration()}</Text>
+          </View>
+        </View>
+
+        <Button color='#47C1CF'
+                outline
+                small
+                style={styles.nextButton}
+                width={100}>Próximo</Button>
+
         {
           this.props.canReturn &&
-          <TouchableNativeFeedback 
-                    backgroundColor={TouchableNativeFeedback.Ripple("#eee", true)}
-                    onPress={this.props.onClose}>
+          <TouchableNativeFeedback
+            backgroundColor={TouchableNativeFeedback.Ripple("#eee", true)}
+            onPress={this.props.onClose}>
             <View style={styles.closeButton}>
               <FAIcon name="arrow-left" color="#ccc" size={20}></FAIcon>
             </View>
           </TouchableNativeFeedback>
         }
+      
       </Animated.View>
     )
   }
@@ -138,7 +211,8 @@ const styles = StyleSheet.create({
     bottom: 20,
     height: heightValue,
     borderRadius: 4,
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 10
   },
   closeButton: {
     position: 'absolute',
@@ -154,6 +228,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: 10,
   },
+  // TRANSPORT CONTAINER
   selectTransport: {
     justifyContent: 'center',
     alignItems: 'center'
@@ -176,5 +251,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ebebeb',
     margin: 5
+  },
+  // INFO CONTAINER
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 15,
+  },
+  textInfoContainer: {
+    alignItems: 'center',
+    marginLeft: 25,
+    marginRight: 25
+  },
+  infoTextLabel: {
+    fontFamily: fonts.primary,
+    color: '#C5C5C5'
+  },
+  infoText: {
+    fontFamily: fonts.primary,
+    color: colors.primaryColor,
+    fontSize: 40
+  },
+  nextButton: {
+    alignSelf: 'flex-end',
+    marginTop: 10
   }
 })
