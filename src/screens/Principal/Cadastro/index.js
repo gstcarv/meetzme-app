@@ -26,10 +26,11 @@ import {
 } from '@/components/Forms'
 
 import defaultStyles from '@/resources/defaultStyles'
+import BackBar from '../../../components/BackBar';
 
 class Cadastro extends Component {
 
-  constructor(){
+  constructor() {
     super();
     this.state = {
       name: "",
@@ -40,19 +41,19 @@ class Cadastro extends Component {
     }
   }
 
-  validaCadastro(){
+  validaCadastro() {
     this.props.navigation.navigate("FinalizaCadastro", {
       userInfo: this.state
     });
   }
 
-  gotoNextInput(fieldName){
+  gotoNextInput(fieldName) {
     const ref = this.refs[fieldName];
     this.refs[fieldName].focus()
     this.cadastroScroll.props.scrollToFocusedInput(ReactNative.findNodeHandle(ref))
   }
 
-  onFocusField(field){
+  onFocusField(field) {
   }
 
   render() {
@@ -61,76 +62,78 @@ class Cadastro extends Component {
         <StatusBar backgroundColor="#F5F5F5"
           barStyle="dark-content"
           animated />
-        <BackButton color="#D8D8D8" />
-        <KeyboardAwareScrollView style={{ marginTop: 60 }}
-                    innerRef={ref => {
-                      this.cadastroScroll = ref
-                    }}>
+
+        <BackBar />
+
+        <KeyboardAwareScrollView
+          innerRef={ref => {
+            this.cadastroScroll = ref
+          }}>
+
           <View style={{
             paddingHorizontal: 20,
+            marginTop: 20
           }}>
             <Text style={defaultStyles.titleWhite}>Cadastro</Text>
             <Text style={defaultStyles.subtitleWhite}>Insira suas informações nos campos abaixo</Text>
           </View>
 
           <View style={styles.formContainer}>
-            <TextField labelText="Nome"
+            <TextField label="Nome"
               placeholder="Digite seu Nome"
               style={styles.field}
-              maxLenght={25}
-              onWrite={(name) => this.setState({name})}
+              value={this.state.name}
+              onChangeText={name => this.setState({ name })}
               ref="nameField"
-              onGoNext={ () => this.gotoNextInput("emailField") }
-              onFocus = { (e) => {
-                this.onFocusField(ReactNative.findNodeHandle(e.target))
-              }}
-              />
+              onGoNext={() => this.gotoNextInput("emailField")}
+            />
 
-            <TextField labelText="Email"
+            <TextField label="Email"
               placeholder="Digite seu Email"
               style={styles.field}
               type="email-address"
               maxLenght={40}
-              onWrite={(email) => this.setState({email})}
+              value={this.state.email}
+              onChangeText={email => this.setState({ email })}
               ref="emailField"
-              onGoNext={ () => this.gotoNextInput("telField") }
-              />
+              onGoNext={() => this.gotoNextInput("telField")}
+            />
 
-            <TextField labelText="Telefone"
+            <TextField label="Telefone"
               placeholder="Digite seu Telefone"
               type="phone-pad"
               maxLenght={20}
-              onWrite={(phone) => this.setState({phone})}
+              value={this.state.phone}
+              onChangeText={phone => this.setState({ phone })}
               ref="telField"
-              onGoNext={ () => this.gotoNextInput("passField") }
+              onGoNext={() => this.gotoNextInput("passField")}
             />
 
             <Line spaceVertical={40}></Line>
 
-            <TextField labelText="Senha"
+            <TextField label="Senha"
               placeholder="Digite sua senha"
-              password
+              secureTextEntry
               style={styles.field}
-              onWrite={password => this.setState({password})}
+              value={this.state.password}
+              onChangeText={password => this.setState({ password })}
               ref="passField"
-              onGoNext={ () => this.gotoNextInput("confirmPassField")}
+              onGoNext={() => this.gotoNextInput("confirmPassField")}
             />
 
-            <TextField labelText="Confirmação de senha"
+            <TextField label="Confirmação de senha"
               placeholder="Digite sua senha novamente"
-              password
+              secureTextEntry
               style={styles.field}
-              onWrite={passwordConfirm => this.setState({passwordConfirm})}
+              value={this.state.passwordConfirm}
+              onChangeText={passwordConfirm => this.setState({ passwordConfirm })}
               ref="confirmPassField"
             />
           </View>
 
-          <Button background="#353F4B"
-            textBold
-            fullWidth
-            color="white"
-            onPress={() => this.validaCadastro()}
-            noBorder>Próximo</Button>
+          <Button mode="contained"
+                noRadius
+              onPress={() => this.validaCadastro()}>Próximo</Button>
         </KeyboardAwareScrollView>
       </View>
     )
@@ -143,10 +146,10 @@ const styles = StyleSheet.create({
   formContainer: {
     paddingHorizontal: 20,
     flex: 1,
-    marginTop: 40,
-    marginBottom: 20
+    marginBottom: 20,
+    marginTop: 20
   },
   field: {
-    marginBottom: 20
+    marginBottom: 7
   }
 })
