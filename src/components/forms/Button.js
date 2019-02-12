@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 export default class AppButton extends Component {
   render() {
 
-    const getButtonRadius = () => {
+    const getRadius = () => {
       if(this.props.noRadius == true){
         return 0
       } else {
@@ -17,12 +17,19 @@ export default class AppButton extends Component {
       } 
     }
 
+    const getPadding = () => {
+      if(this.props.small) return 2
+      else return 7
+    }
+
     return (
       <Button {...this.props} 
         style={
           [ this.props.style, 
-            styles.buttonContainer, 
-            { borderRadius: getButtonRadius() }
+            { 
+              borderRadius: getRadius(),
+              paddingVertical: getPadding()
+            }
           ]
         }>{this.props.children}</Button>
     )
@@ -30,7 +37,4 @@ export default class AppButton extends Component {
 }
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    paddingVertical: 7,
-  }
 })

@@ -3,8 +3,11 @@ import {
   Text,
   StyleSheet,
   View,
-  Image
+  Image,
+  Alert
 } from 'react-native'
+
+import Snackbar from 'react-native-snackbar'
 
 import BottomSheet from "react-native-raw-bottom-sheet";
 
@@ -19,6 +22,24 @@ export default class PendingEventBottomSheet extends Component {
 
   open(eventID) {
     this.EventSheet.open()
+  }
+
+
+  onNext(){
+
+  }
+
+  onRecuse(){
+    this.EventSheet.close();
+    // Snackbar.show({
+    //   title: 'Convite Recusado',
+    //   duration: Snackbar.LENGTH_LONG,
+    //   action: {
+    //     title: 'Desfazer',
+    //     color: '#fff',
+    //     onPress: () => { /* Do something. */ },
+    //   },
+    // })
   }
 
   render() {
@@ -69,15 +90,20 @@ export default class PendingEventBottomSheet extends Component {
         <View style={styles.buttonContainer}>
           <Button color='#C57A7A'
                 rounded
-                outline
-                width={100}
+                mode="outlined"
                 small
-                style={{marginRight: 6}}>Recusar</Button>
+                onPress={() => this.onRecuse()}
+                style={{
+                  marginRight: 6,
+                  borderColor: '#C57A7A',
+                  fontSize: 10
+                }}>Recusar</Button>
           <Button color='#47C1CF'
                 rounded
-                outline
+                mode="outlined"
                 small
-                width={100}>Próximo</Button>
+                icon="keyboard-arrow-right"
+                style={{ borderColor: "#47C1CF", fontSize: 10 }}>Próximo</Button>
         </View>
 
       </BottomSheet>

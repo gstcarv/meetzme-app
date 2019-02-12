@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import Permissions from 'react-native-permissions'
 import ImagePicker from 'react-native-image-crop-picker';
 
-export default class CadastroImageSelector extends Component {
+export default class UserImageSelector extends Component {
 
   constructor() {
     super();

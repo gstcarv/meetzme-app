@@ -20,7 +20,7 @@ import {
   Line
 } from '@/components/Forms'
 
-import CadastroImageSelector from '@/components/CadastroImageSelector'
+import UserImageSelector from '@/components/UserImageSelector'
 
 import defaultStyles from '@/resources/defaultStyles'
 
@@ -114,7 +114,7 @@ class Cadastro extends Component {
             <Text style={defaultStyles.subtitleWhite}>Selecione sua foto e digite seu nome de usuário</Text>
           </View>
           <View style={{ marginTop: 40 }}>
-            <CadastroImageSelector
+            <UserImageSelector
               onSelectImage={(image) => this.setState({ image })} />
             <TextField label="Nome de Usuário"
               placeholder="Insira seu Nome de Usuário"

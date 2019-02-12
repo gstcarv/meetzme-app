@@ -81,8 +81,8 @@ export default class Login extends Component {
         <View style={styles.header}>
           <BackButton path="Principal" />
           <Waves>
-            <Image source={require("@assets/images/app-logo.png")}
-              style={{ width: 50, height: 50 }}></Image>
+            <Image source={require("@assets/images/logo_gray.png")}
+              style={{ width: 75, height: 75 }}></Image>
           </Waves>
         </View>
         <View style={styles.loginForm}>

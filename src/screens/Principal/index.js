@@ -26,7 +26,7 @@ class Principal extends Component {
         <StatusBar backgroundColor={colors.primaryDark} 
                    animated />
         <View style={{alignItems: 'center'}}>
-          <Image source={require("@assets/images/app-logo.png")}
+          <Image source={require("@assets/images/logo_gray.png")}
                  style={{ width: 170, height: 170 }}></Image>
           <Text style={styles.appTitle}>MeetzMe</Text>
         </View>
