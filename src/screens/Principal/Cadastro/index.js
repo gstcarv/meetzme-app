@@ -132,8 +132,9 @@ class Cadastro extends Component {
           </View>
 
           <Button mode="contained"
-                noRadius
-              onPress={() => this.validaCadastro()}>Próximo</Button>
+            noRadius
+            icon="keyboard-arrow-right"
+            onPress={() => this.validaCadastro()}>Próximo</Button>
         </KeyboardAwareScrollView>
       </View>
     )

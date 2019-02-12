@@ -3,7 +3,7 @@ import { withNavigation } from 'react-navigation'
 import { Appbar } from 'react-native-paper';
 import defaultStyles from '@/resources/defaultStyles'
 
-class Waves extends Component {
+class BackBar extends Component {
 
   _goBack(){
     const { navigate, goBack } = this.props.navigation
@@ -25,7 +25,7 @@ class Waves extends Component {
           elevation: 3
         }}>
         <Appbar.BackAction
-          onPress={this._goBack}
+          onPress={this._goBack.bind(this)}
           color={defaultStyles.titleWhite.color}
         />
       </Appbar>
@@ -33,4 +33,4 @@ class Waves extends Component {
   }
 }
 
-export default withNavigation(Waves);
+export default withNavigation(BackBar);

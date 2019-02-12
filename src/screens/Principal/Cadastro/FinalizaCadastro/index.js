@@ -25,6 +25,7 @@ import CadastroImageSelector from '@/components/CadastroImageSelector'
 import defaultStyles from '@/resources/defaultStyles'
 
 import firebase from 'react-native-firebase'
+import BackBar from '../../../../components/BackBar';
 
 class Cadastro extends Component {
 
@@ -42,6 +43,8 @@ class Cadastro extends Component {
     this.setState({
       loading: true
     })
+
+    return ;
 
     const { username, image } = this.state;
     const userInfo = this.props.navigation.getParam('userInfo');
@@ -104,7 +107,7 @@ class Cadastro extends Component {
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#F5F5F5"
           animated />
-        <BackButton color="#D8D8D8" />
+        <BackBar />
         <ScrollView style={styles.formContainer}>
           <View>
             <Text style={defaultStyles.titleWhite}>Finalizar Cadastro</Text>
@@ -113,18 +116,19 @@ class Cadastro extends Component {
           <View style={{ marginTop: 40 }}>
             <CadastroImageSelector
               onSelectImage={(image) => this.setState({ image })} />
-            <TextField labelText="Nome de Usuário"
+            <TextField label="Nome de Usuário"
               placeholder="Insira seu Nome de Usuário"
               style={styles.field}
               maxLenght={25}
-              onWrite={(username) => this.setState({ username })} />
+              value={this.state.username}
+              onChangeText={(username) => this.setState({ username })} />
           </View>
-          <Button background="#353F4B"
-            textBold
-            fullWidth
-            color="white"
+          <Button
+            icon="check"
+            mode="contained"
             style={{ marginBottom: 20 }}
             loading={this.state.loading}
+            disabled={this.state.loading}
             onPress={() => this.finalizaCadastro()}>Finalizar Cadastro</Button>
         </ScrollView>
       </View>
@@ -136,9 +140,9 @@ export default withNavigation(Cadastro);
 
 const styles = StyleSheet.create({
   formContainer: {
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     flex: 1,
-    marginTop: 60
+    paddingTop: 20
   },
   field: {
     marginBottom: 20,

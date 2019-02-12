@@ -3,7 +3,7 @@ import RippleView from 'react-native-material-ripple'
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 import { withNavigation } from 'react-navigation'
 
-class Waves extends Component {
+class BackButton extends Component {
 
   gotoRoute(){
     const { navigate, goBack } = this.props.navigation
@@ -36,4 +36,4 @@ class Waves extends Component {
   }
 }
 
-export default withNavigation(Waves);
+export default withNavigation(BackButton);

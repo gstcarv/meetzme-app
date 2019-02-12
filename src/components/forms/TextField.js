@@ -3,7 +3,7 @@ import { Text, StyleSheet, View } from 'react-native'
 
 import { TextInput } from 'react-native-paper'
 
-export default class TextField extends Component {
+export default class AppTextField extends Component {
   render() {
     return (
       <TextInput {...this.props} 
