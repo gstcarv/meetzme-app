@@ -7,15 +7,15 @@ import {
   Image,
   Alert,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
 } from 'react-native'
 
 import Waves from '@/components/Waves'
 
 import {
-  Button,
   TextField,
-  Line
+  Line,
+  Button
 } from '@/components/Forms'
 
 import BackButton from '@/components/BackButton'
@@ -27,7 +27,7 @@ import fonts from "@/resources/fonts"
 
 export default class Login extends Component {
 
-  constructor(){
+  constructor() {
     super();
     this.unsubscribe = null;
     this.state = {
@@ -37,7 +37,7 @@ export default class Login extends Component {
     }
   }
 
-  async signIn(){
+  async signIn() {
     const email = this.state.email || "gueti2010@gmail.com"
     const password = this.state.password || "pai152123"
 
@@ -45,9 +45,11 @@ export default class Login extends Component {
       loading: true
     })
 
+    /*
+
     try {
       const user = await firebase.auth()
-          .signInWithEmailAndPassword(email, password)
+        .signInWithEmailAndPassword(email, password)
     } catch (err) {
       Snackbar.show({
         title: 'Login ou Senha incorretos',
@@ -55,49 +57,60 @@ export default class Login extends Component {
         backgroundColor: '#b71b25'
       })
     }
-
+    
     this.setState({
       loading: false
     })
+    
+    */
+  }
 
+  onFocusInput(){
+    this.loginScrollView.scrollToEnd({
+      // animated: true
+    })
+    console.warn('scroll')
   }
 
   render() {
     return (
-      <ScrollView style={styles.container} 
-          keyboardShouldPersistTaps='always'>
+      <ScrollView style={styles.scrollView}
+        keyboardShouldPersistTaps='always'
+        ref={ ref => this.loginScrollView = ref }>
         <StatusBar backgroundColor={colors.primaryDark} />
         <View style={styles.header}>
-          <BackButton path="Principal"/>
+          <BackButton path="Principal" />
           <Waves>
             <Image source={require("@assets/images/app-logo.png")}
-                   style={{width: 50, height: 50}}></Image>
+              style={{ width: 50, height: 50 }}></Image>
           </Waves>
         </View>
         <View style={styles.loginForm}>
-          <TextField labelText="Email"
+          <TextField label="Email"
             placeholder="Digite seu email"
-            style={{ marginBottom: 30 }}
-            type="email-address"
-            onWrite={(email) => this.setState({email})} />
+            style={{ marginBottom: 5 }}
+            value={this.state.email}
+            onChangeText={email => this.setState({ email })}
+            onFocus={() => this.onFocusInput()} />
 
-          <TextField labelText="Senha"
+          <TextField label="Senha"
             placeholder="Digite sua senha"
-            password
-            style={{ marginBottom: 40 }}
-            onWrite={(password) => this.setState({password})} />
+            style={{ marginBottom: 20 }}
+            secureTextEntry
+            value={this.state.password}
+            onChangeText={password => this.setState({ password })}
+            onFocus={() => this.onFocusInput()} />
 
-          <Button background="#353F4B"
-                  color="#fff"
-                  textBold
-                  fullWidth
+          <Button mode="contained"
                   onPress={() => this.signIn()}
-                  style={{marginBottom: 4}}
-                  loading={this.state.loading}>Login</Button>
-
+                  loading={this.state.loading}
+                  disabled={this.state.loading}>Login</Button>
+        
           <Button style={styles.forgotPasswordButton}
                   fontSize={12}
-                  color="#353F4B">Esquecí a senha</Button>
+                  color="#353F4B"
+                  uppercase={false}
+                  onPress={() => console.log("ok")}>Esquecí a senha</Button>
         </View>
       </ScrollView>
     )
@@ -105,9 +118,9 @@ export default class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
+  scrollView: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   header: {
     backgroundColor: "#343D49",
@@ -125,11 +138,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primaryBold,
   },
   loginForm: {
-    flex: 1,
     paddingHorizontal: 30,
-    marginTop: 40
+    paddingVertical: 20,
   },
   forgotPasswordButton: {
-    alignSelf: "center"
+    alignSelf: "center",
+    marginTop: 5
   }
 })

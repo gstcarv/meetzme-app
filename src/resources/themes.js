@@ -10,6 +10,8 @@ export default {
       ...DefaultTheme.colors,
       primary: colors.primaryColor,
       accent: colors.primaryDark,
+      background: "#fff",
+      placeholder: "#ddd"
     },
     fonts: {
       regular: fonts.primary,
