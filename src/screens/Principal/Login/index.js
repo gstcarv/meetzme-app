@@ -110,6 +110,7 @@ export default class Login extends Component {
                   fontSize={12}
                   color="#353F4B"
                   uppercase={false}
+                  rounded
                   onPress={() => console.log("ok")}>Esquecí a senha</Button>
         </View>
       </ScrollView>

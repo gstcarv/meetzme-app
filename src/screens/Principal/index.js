@@ -32,17 +32,31 @@ class Principal extends Component {
         </View>
         <View style={{marginTop: 30}}>
           <Button
-                outline
-                rounded
-                width={250}
-                color={"#fff"}
+                mode="outlined"
                 style={{marginBottom: 10}}
-                onPress={() => navigate("Login")}>Login</Button>
-          <Button
+                onPress={() => navigate("Login")}
+                uppercase={false}
+                style={styles.loginButton}
                 rounded
+                color={"#fff"}
+                theme={{
+                  colors: {
+                    primary: "#fff"
+                  }
+                }}>Login</Button>
+          <Button
+                mode="contained"
                 width={250}
                 color={"#353F4B"}
-                onPress={() => navigate("Cadastro")}>Cadastre-se</Button>
+                onPress={() => navigate("Cadastro")}
+                uppercase={false}
+                rounded
+                theme={{
+                  colors: {
+                    primary: "#fff"
+                  }
+                }}
+                color={colors.primary}>Cadastre-se</Button>
         </View>
       </ImageBackground>
     )
@@ -62,6 +76,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primaryBold,
     fontSize: 25,
     letterSpacing: 15
+  },
+  loginButton: {
+    borderWidth: 1,
+    borderColor: "#fff",
+    marginBottom: 10
   }
 })
 

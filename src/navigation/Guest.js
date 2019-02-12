@@ -26,7 +26,7 @@ export default createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: "Login",
+    initialRouteName: "Principal",
     transitionConfig: () => fromRight(400)
   }
 )
