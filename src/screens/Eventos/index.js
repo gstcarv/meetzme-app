@@ -18,7 +18,7 @@ export default createMaterialTopTabNavigator(
     Pendentes
   },
   {
-    initialRouteName: 'Pendentes',
+    initialRouteName: 'Aceitos',
     tabBarOptions: {
       upperCaseLabel: false,
       activeTintColor: '#e91e63',

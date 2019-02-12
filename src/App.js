@@ -1,27 +1,15 @@
-import {
-  createAppContainer,
-  createSwitchNavigator,
-  createStackNavigator
-} from 'react-navigation'
+import React, { Component } from 'react'
+import NavigationStack from './navigation'
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 
-import Guest from './routes/Guest'
-import Logado from './routes/Logged'
+import PaperThemes from '@/resources/themes'
 
-import Loading from './screens/Loading'
-
-const LoadingScreen = createStackNavigator({
-  Loading
-}, { headerMode: 'none' })
-
-const Routes = createSwitchNavigator(
-  {
-    Guest,
-    Logado,
-    Loading: LoadingScreen
-  },
-  {
-    initialRouteName: 'Loading'
+export default class App extends Component {
+  render() {
+    return (
+      <PaperProvider theme={PaperThemes.primary}>
+        <NavigationStack />
+      </PaperProvider>
+    )
   }
-)
-
-export default createAppContainer(Routes)
+}

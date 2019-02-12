@@ -7,6 +7,8 @@ import {
   RefreshControl 
 } from 'react-native'
 
+import { Button } from 'react-native-paper'
+
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 import TimelineEvent from '@/components/Eventos/TimelineEvent'

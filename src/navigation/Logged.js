@@ -74,7 +74,7 @@ export default createStackNavigator(
     NovoEvento
   },
   {
-    initialRouteName: 'NovoEvento',
+    initialRouteName: 'Home',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }
