@@ -20,7 +20,7 @@ const Routes = createSwitchNavigator(
     Loading: LoadingScreen
   },
   {
-    initialRouteName: 'Guest'
+    initialRouteName: 'Logado'
   }
 )
 
