@@ -67,14 +67,18 @@ var BottomNavigator = createBottomTabNavigator(
 
 // Screens
 import NovoEvento from '@/screens/NovoEvento'
+import SelecionarLocalizacao from '@/screens/NovoEvento/SelecionarLocalizacao'
+import SelecionarConvidados from '@/screens/NovoEvento/SelecionarConvidados'
 
 export default createStackNavigator(
   {
     Home: BottomNavigator,
-    NovoEvento
+    NovoEvento,
+    SelecionarLocalizacao,
+    SelecionarConvidados
   },
   {
-    initialRouteName: 'NovoEvento',
+    initialRouteName: 'Home',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }

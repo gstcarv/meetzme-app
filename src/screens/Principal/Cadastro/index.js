@@ -26,7 +26,7 @@ import {
 } from '@/components/Forms'
 
 import defaultStyles from '@/resources/defaultStyles'
-import BackBar from '../../../components/BackBar';
+import BackBar from '@/components/BackBar';
 
 class Cadastro extends Component {
 

@@ -25,7 +25,7 @@ import UserImageSelector from '@/components/UserImageSelector'
 import defaultStyles from '@/resources/defaultStyles'
 
 import firebase from 'react-native-firebase'
-import BackBar from '../../../../components/BackBar';
+import BackBar from '@/components/BackBar';
 
 class Cadastro extends Component {
 
