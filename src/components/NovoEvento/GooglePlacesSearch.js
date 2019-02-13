@@ -25,6 +25,7 @@ export default class GooglePlacesSearch extends Component {
   }
 
   show(){
+    this.searchRef.clearText();
     Animated.spring(this.searchTranslateValue, {
       toValue: 0,
       duration: 1000,
@@ -60,12 +61,14 @@ export default class GooglePlacesSearch extends Component {
           textInputProps={{
             autoCorrect: false
           }}
-          renderRow={(item) => <SearchListRow item={item} key={item.id} />}
+          renderRow={(item) => <SearchListRow item={item} />}
           fetchDetails
           styles={styles}
           enablePoweredByContainer={false}
           listViewDisplayed={false}
-          enableEmptySections={false} />
+          enableEmptySections={false}
+          listUnderlayColor={"#fff"} 
+          ref={ref => this.searchRef = ref} />
       </Animated.View>
     )
   }

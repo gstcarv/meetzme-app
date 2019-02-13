@@ -7,6 +7,10 @@ import {
   AsyncStorage,
 } from 'react-native'
 
+import {
+  withNavigation
+} from 'react-navigation'
+
 import BackButton from '@/components/BackButton'
 
 import Snackbar from 'react-native-snackbar'
@@ -21,7 +25,7 @@ import DirectionInfoBox from '@/components/Maps/DirectionInfoBox';
 import UserMapMarker from '@/components/Maps/UserMapMarker';
 import DestinationMapMarker from '@/components/Maps/DestinationMapMarker';
 
-export default class SelecionarLocalizacao extends Component {
+class SelecionarLocalizacao extends Component {
 
   constructor() {
     super();
@@ -43,6 +47,17 @@ export default class SelecionarLocalizacao extends Component {
 
   async componentDidMount() {
     this.loading = true;
+
+    const { navigation } = this.props 
+
+    this.navigationFocusSub = navigation.addListener("didFocus", () => {
+      let eventProps = navigation.getParam('infoEvento')
+      if(eventProps.destination){
+        this.setState({
+          destination: eventProps.destination
+        })
+      }
+    })
 
     const userLastLocation = await AsyncStorage.getItem("USER_LAST_LOCATION");
     if (userLastLocation) {
@@ -77,6 +92,7 @@ export default class SelecionarLocalizacao extends Component {
 
   componentWillUnmount() {
     this.isUnmounted = true;
+    this.navigationFocusSub.remove()
   }
 
   onSelectLocation(data, { geometry }) {
@@ -121,6 +137,20 @@ export default class SelecionarLocalizacao extends Component {
 
   }
 
+  component
+
+  selecionarConvidados() {
+    if (this.state.destination) {
+      const { navigation } = this.props;
+      let info = navigation.getParam('infoEvento')
+      navigation.navigate('SelecionarConvidados', {
+        ...info,
+        destination: this.state.destination,
+        transport: this.state.transportMode
+      })
+    }
+  }
+
   render() {
 
     const userRegion = {
@@ -163,6 +193,8 @@ export default class SelecionarLocalizacao extends Component {
           showsBuildings={false}
           minZoomLevel={6}
           maxZoomLevel={16}
+          rotateEnabled={false}
+          moveOnMarkerPress={false}
           customMapStyle={require("@assets/mapstyle.json")}
         >
 
@@ -182,6 +214,7 @@ export default class SelecionarLocalizacao extends Component {
           directionResult={this.state.directionResult}
           onClose={() => this.onCloseDirectionBox()}
           canReturn={true}
+          onNext={() => this.selecionarConvidados()}
         />
 
         <BackButton color={colors.primaryColor} />
@@ -199,3 +232,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 })
+
+export default withNavigation(SelecionarLocalizacao)

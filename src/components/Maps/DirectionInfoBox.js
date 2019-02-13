@@ -55,8 +55,10 @@ export default class DirectionInfoBox extends Component {
   componentWillMount() {
     if (this.props.canReturn) {
       BackHandler.addEventListener('hardwareBackPress', () => {
-        this.props.onClose()
-        return true;
+        if(this.state.visible){
+          this.props.onClose()
+          return true;
+        }
       })
     }
   }
@@ -180,10 +182,11 @@ export default class DirectionInfoBox extends Component {
         </View>
 
         <Button color='#47C1CF'
-                outline
+                mode="outlined"
                 small
+                icon="keyboard-arrow-right"
                 style={styles.nextButton}
-                width={100}>Próximo</Button>
+                onPress={this.props.onNext}>Próximo</Button>
 
         {
           this.props.canReturn &&
@@ -274,6 +277,7 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     alignSelf: 'flex-end',
-    marginTop: 10
+    marginTop: 10,
+    borderColor: '#47C1CF'
   }
 })

@@ -9,14 +9,16 @@ import { fromBottom } from 'react-navigation-transitions';
 // Screens
 import CadastrarEvento from './CadastrarEvento'
 import SelecionarLocalizacao from './SelecionarLocalizacao'
+import SelecionarConvidados from './SelecionarConvidados'
 
 export default createStackNavigator(
   {
     CadastrarEvento,
-    SelecionarLocalizacao
+    SelecionarLocalizacao,
+    SelecionarConvidados
   },
   {
-    initialRouteName: 'CadastrarEvento',
+    initialRouteName: 'SelecionarConvidados',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }
