@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 83,
     justifyContent: 'space-around',
-    marginTop: 10
+    marginTop: 6
   },
   navigationLine: {
     backgroundColor: colors.primaryColor,

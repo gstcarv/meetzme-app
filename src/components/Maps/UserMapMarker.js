@@ -4,7 +4,8 @@ import {
   StyleSheet,
   View,
   ImageBackground,
-  AsyncStorage
+  AsyncStorage,
+  Image
 } from 'react-native'
 
 import { Marker } from 'react-native-maps'
@@ -25,7 +26,8 @@ export default class UserMapMarker extends Component {
       .then(user => {
         user = JSON.parse(user)
         this.setState({
-          profileImage: user.photoURL
+          profileImage: user.photoURL,
+          tracksViewChanges: true
         });
       })
   }
@@ -38,17 +40,19 @@ export default class UserMapMarker extends Component {
       <Marker coordinate={this.props.coordinate}
         title={this.props.title || ""}
         description={this.props.description || null}
-        anchor={{x: 0.5, y: 0.5}}>
+        anchor={{x: 0.5, y: 0.5}}
+        tracksViewChanges={this.state.tracksViewChanges}>
         <View>
           <View style={[styles.wave, styles.wave1]}>
             <View style={[styles.wave, styles.wave2]}>
               <View style={[styles.wave, styles.wave3]}>
-                <ImageBackground 
-                  source={{ uri: this.state.profileImage }}
+                <Image 
+                  source={{uri: this.state.profileImage}}
                   imageStyle={{ borderRadius: 100}}
-                  style={styles.image}>
-                  <View style={styles.locationIndicator}></View>  
-                </ImageBackground>
+                  style={styles.image}
+                  onLoad={() => this.setState({ tracksViewChanges: false })}>
+                </Image>
+                <View style={styles.locationIndicator}></View>  
               </View>
             </View>
           </View>
@@ -65,7 +69,8 @@ const styles = StyleSheet.create({
     borderColor: "#fff",
     width: 13,
     height: 13,
-    backgroundColor: "#80a6e8"
+    backgroundColor: "#80a6e8",
+    position: 'absolute'
   },
   wave: {
     borderRadius: 100,
@@ -91,8 +96,6 @@ const styles = StyleSheet.create({
   image: {
     width: 55,
     height: 55,
-    borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center'
+    borderRadius: 100
   }
 })

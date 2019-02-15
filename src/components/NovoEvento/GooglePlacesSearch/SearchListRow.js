@@ -12,7 +12,9 @@ export default class SearchListRow extends Component {
     const { terms } = this.props.item;
 
     return (
-      <TouchableRipple style={styles.localContainer}>
+      <TouchableRipple style={styles.localContainer}
+          useForeground={true}
+          rippleColor={"red"}>
         <View>
           <Text style={styles.localTitle}>{terms[0].value} </Text>
           <View style={styles.detailsContainer}>

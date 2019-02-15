@@ -5,6 +5,7 @@ import {
   View,
   StatusBar,
   AsyncStorage,
+  ActivityIndicator
 } from 'react-native'
 
 import {
@@ -46,34 +47,38 @@ class SelecionarLocalizacao extends Component {
   }
 
   async componentDidMount() {
-    this.loading = true;
 
-    const { navigation } = this.props 
+    const { navigation } = this.props
 
     this.navigationFocusSub = navigation.addListener("didFocus", () => {
       let eventProps = navigation.getParam('infoEvento')
-      if(eventProps.destination){
+      if (eventProps.destination) {
         this.setState({
           destination: eventProps.destination
         })
       }
     })
 
+    let loadingTimer = setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+    }, 500)
+
     const userLastLocation = await AsyncStorage.getItem("USER_LAST_LOCATION");
     if (userLastLocation) {
       this.setState({
         userLocation: JSON.parse(userLastLocation),
-        loading: false
       })
     }
 
-    this.positionSubscription = navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.getCurrentPosition(
       async pos => {
         if (!this.isUnmounted) {
           this.setState({
             userLocation: pos.coords,
-            loading: false
           })
+
           await AsyncStorage.setItem("USER_LAST_LOCATION", JSON.stringify(pos.coords));
         }
       },
@@ -175,52 +180,67 @@ class SelecionarLocalizacao extends Component {
       }
     }
 
-    return (
-      <View style={styles.container}>
+    if (this.state.loading == false) {
+      return (
+        <View style={styles.container}>
 
-        <StatusBar
-          animated
-          backgroundColor="rgba(255, 255, 255, 0)"
-          barStyle="dark-content" />
+          <StatusBar
+            animated
+            backgroundColor="rgba(255, 255, 255, 0)"
+            barStyle="dark-content" />
 
-        <MapView style={styles.mapview}
-          ref={ref => this.mapview = ref}
-          provider={PROVIDER_GOOGLE}
-          region={userRegion}
-          initialRegion={this.state.userLastLocation || null}
-          showsMyLocationButton={false}
-          showsCompass={false}
-          showsBuildings={false}
-          minZoomLevel={6}
-          maxZoomLevel={16}
-          rotateEnabled={false}
-          moveOnMarkerPress={false}
-          customMapStyle={require("@assets/mapstyle.json")}
-        >
+          <MapView style={styles.mapview}
+            ref={ref => this.mapview = ref}
+            provider={PROVIDER_GOOGLE}
+            region={userRegion}
+            initialRegion={this.state.userLastLocation || null}
+            showsMyLocationButton={false}
+            showsCompass={false}
+            showsBuildings={false}
+            minZoomLevel={6}
+            maxZoomLevel={16}
+            rotateEnabled={false}
+            moveOnMarkerPress={false}
+            customMapStyle={require("@assets/mapstyle.json")}
+          >
 
-          {this.state.userLocation &&
+            {this.state.userLocation &&
+              <UserMapMarker coordinate={userRegion}
+                title="Você" />}
+
             <UserMapMarker coordinate={userRegion}
-              title="Você" />}
+              title="Você" />
 
-          {getDirection()}
+            {getDirection()}
 
-        </MapView>
+          </MapView>
 
-        <GooglePlacesSearch onSelectLocation={this.onSelectLocation.bind(this)}
-          ref={ref => this.searchField = ref} />
+          <GooglePlacesSearch onSelectLocation={this.onSelectLocation.bind(this)}
+            ref={ref => this.searchField = ref} />
 
-        <DirectionInfoBox
-          ref={ref => this.DirectionInfoBox = ref}
-          directionResult={this.state.directionResult}
-          onClose={() => this.onCloseDirectionBox()}
-          canReturn={true}
-          onNext={() => this.selecionarConvidados()}
-        />
+          <DirectionInfoBox
+            ref={ref => this.DirectionInfoBox = ref}
+            directionResult={this.state.directionResult}
+            onClose={() => this.onCloseDirectionBox()}
+            canReturn={true}
+            onNext={() => this.selecionarConvidados()}
+          />
 
-        <BackButton color={colors.primaryColor} />
+          <BackButton color={colors.primaryColor} />
 
-      </View>
-    )
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.loadingContainer}>
+          <BackButton color={colors.primaryColor} />
+          <ActivityIndicator
+            size="large"
+            color={colors.primaryColor}
+          />
+        </View>
+      )
+    }
   }
 }
 
@@ -230,6 +250,11 @@ const styles = StyleSheet.create({
   },
   mapview: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 

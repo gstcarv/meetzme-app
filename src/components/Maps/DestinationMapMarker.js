@@ -38,7 +38,8 @@ export default class DestinationMapMarker extends Component {
       <Marker coordinate={this.props.coordinate}
         title={this.props.title || ""}
         description={this.props.description || null}
-        anchor={{x: 0.5, y: 0.5}}>
+        anchor={{x: 0.5, y: 0.5}}
+        tracksViewChanges={false}>
         <View>
           <View style={[styles.wave, styles.wave1]}>
             <View style={[styles.wave, styles.wave2]}>
