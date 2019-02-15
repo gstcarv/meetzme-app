@@ -59,7 +59,7 @@ class SelecionarLocalizacao extends Component {
       }
     })
 
-    let loadingTimer = setTimeout(() => {
+    setTimeout(() => {
       this.setState({
         loading: false
       })
@@ -121,10 +121,10 @@ class SelecionarLocalizacao extends Component {
 
     this.mapview.fitToCoordinates(result.coordinates, {
       edgePadding: {
-        left: 100,
-        right: 100,
-        top: 30,
-        bottom: 600
+        left: 60,
+        right: 60,
+        top: 125,
+        bottom: 850
       }
     })
 

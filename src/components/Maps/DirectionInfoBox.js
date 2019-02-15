@@ -226,10 +226,11 @@ const styles = StyleSheet.create({
   },
   topBoxLine: {
     width: '20%',
-    height: 3,
+    height: 6,
     backgroundColor: '#F1F1F1',
     alignSelf: 'center',
-    margin: 10,
+    margin: 7,
+    borderRadius: 10
   },
   // TRANSPORT CONTAINER
   selectTransport: {

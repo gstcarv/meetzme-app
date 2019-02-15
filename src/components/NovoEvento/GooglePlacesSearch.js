@@ -7,15 +7,18 @@ import SearchListRow from './GooglePlacesSearch/SearchListRow'
 
 import fonts from '@/resources/fonts'
 import strings from '@/resources/strings'
+import { Button } from 'react-native-paper';
+
+import RNGooglePlaces from 'react-native-google-places';
 
 export default class GooglePlacesSearch extends Component {
 
-  constructor(){
+  constructor() {
     super();
     this.searchTranslateValue = new Animated.Value(0)
   }
 
-  hide(){
+  hide() {
     Animated.timing(this.searchTranslateValue, {
       toValue: -130,
       duration: 1000,
@@ -24,7 +27,7 @@ export default class GooglePlacesSearch extends Component {
     }).start()
   }
 
-  show(){
+  show() {
     this.searchRef.clearText();
     Animated.spring(this.searchTranslateValue, {
       toValue: 0,
@@ -46,7 +49,7 @@ export default class GooglePlacesSearch extends Component {
           }
         ]
       }}>
-        <GooglePlacesAutocomplete
+        {/* <GooglePlacesAutocomplete
           placeholder="Insira o Endereço do Local"
           placeholderTextColor="#ccc"
           onPress={(data, details) => {
@@ -61,14 +64,29 @@ export default class GooglePlacesSearch extends Component {
           textInputProps={{
             autoCorrect: false
           }}
-          renderRow={(item) => <SearchListRow item={item} />}
+          // renderRow={(item) => <SearchListRow item={item} />}
           fetchDetails
           styles={styles}
           enablePoweredByContainer={false}
-          listViewDisplayed={false}
-          enableEmptySections={false}
+          // listViewDisplayed={false}
+          // enableEmptySections={false}
           listUnderlayColor={"#fff"} 
-          ref={ref => this.searchRef = ref} />
+          ref={ref => this.searchRef = ref} /> */}
+        <Button mode="contained" onPress={() => {
+          RNGooglePlaces.openAutocompleteModal({
+            type: 'establishment',
+            country: 'CA',
+            latitude: 53.544389,
+            longitude: -113.490927,
+            radius: 10
+          })
+            .then((place) => {
+              console.warn(place);
+              // place represents user's selection from the
+              // suggestions and it is a simplified Google Place object.
+            })
+            .catch(error => console.warn(error.message));  // error is a Javascript Error object
+        }}>HelloWorld</Button>
       </Animated.View>
     )
   }

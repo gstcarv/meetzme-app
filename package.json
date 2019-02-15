@@ -14,6 +14,7 @@
     "react-native-firebase": "^5.2.1",
     "react-native-geocoding": "^0.3.0",
     "react-native-gesture-handler": "^1.0.14",
+    "react-native-google-places": "bcgilliom/react-native-google-places",
     "react-native-google-places-autocomplete": "gstcarv/react-native-google-places-autocomplete",
     "react-native-image-crop-picker": "^0.22.0",
     "react-native-input-scroll-view": "^1.8.0",

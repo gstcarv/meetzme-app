@@ -135,6 +135,12 @@ android {
 }
 
 dependencies {
+    implementation(project(':react-native-google-places')){
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+        exclude group: 'com.google.android.gms', module: 'play-services-places'
+        exclude group: 'com.google.android.gms', module: 'play-services-location'
+    }
+
     implementation project(':react-native-maps')
     implementation project(':react-native-bottom-sheet-behavior')
     implementation project(':react-native-view-overflow')
@@ -148,7 +154,10 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+    implementation 'com.google.android.gms:play-services-vision:+'
     implementation "com.google.android.gms:play-services-base:16.0.1"
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation "com.google.firebase:firebase-core:16.0.6"
     implementation "com.google.firebase:firebase-auth:16.1.0"
     implementation "com.google.firebase:firebase-firestore:17.1.5"

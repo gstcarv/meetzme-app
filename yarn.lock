@@ -4927,14 +4927,17 @@ react-native-gesture-handler@^1.0.0, react-native-gesture-handler@^1.0.14:
     invariant "^2.2.2"
     prop-types "^15.5.10"
 
-react-native-google-places-autocomplete@^1.3.9:
+react-native-google-places-autocomplete@gstcarv/react-native-google-places-autocomplete:
   version "1.3.9"
-  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.3.9.tgz#34c2e8b51df40ecb55ef3ccf57caba4c89ff9b56"
-  integrity sha512-bMZRYLpkuhvWE+UYmONw5fsEBM9cyJcSBESHTCKT8ZIydi+HKEM4rKZ+qLvgeHMPD2wpWRNwMJFDhR+ja/datQ==
+  resolved "https://codeload.github.com/gstcarv/react-native-google-places-autocomplete/tar.gz/71fc7cc1ad195647b209b0389e23c8c00052cb1c"
   dependencies:
     lodash.debounce "^4.0.8"
     prop-types "^15.5.10"
     qs "^5.2.0"
+
+react-native-google-places@bcgilliom/react-native-google-places:
+  version "2.5.2"
+  resolved "https://codeload.github.com/bcgilliom/react-native-google-places/tar.gz/8ead774b6a6785580b1a7214f1a9b98b1ef635ef"
 
 react-native-image-crop-picker@^0.22.0:
   version "0.22.0"
