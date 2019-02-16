@@ -134,7 +134,8 @@ export default class DirectionInfoBox extends Component {
       if (distance > 0) {
         return distance.toFixed(1) + "KM"
       } else {
-        return (distance * 1000).toFixed(0) + "M"
+        let inMetersDistance = distance * 1000;
+        return inMetersDistance.toFixed(0) + "M"
       }
     }
 
@@ -184,11 +185,19 @@ export default class DirectionInfoBox extends Component {
         <View style={styles.infoContainer}>
           <View style={styles.textInfoContainer}>
             <Text style={styles.infoTextLabel}>Distância</Text>
-            <Text style={styles.infoText}>{computedDistance()}</Text>
+            <Text style={[styles.infoText, {
+              fontSize: distance > 1000 ? 30 : 40
+            }]}>
+              {computedDistance()}
+            </Text>
           </View>
           <View style={styles.textInfoContainer}>
             <Text style={styles.infoTextLabel}>Tempo estimado</Text>
-            <Text style={styles.infoText}>{computedDuration()}</Text>
+            <Text style={[styles.infoText, {
+              fontSize: distance > 1000 ? 30 : 40
+            }]}>
+              {computedDuration()}
+            </Text>
           </View>
         </View>
 

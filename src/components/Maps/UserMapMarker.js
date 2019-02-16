@@ -32,6 +32,12 @@ export default class UserMapMarker extends Component {
       })
   }
 
+  _onMarkerLoad(){
+    setTimeout(() => {
+      this.setState({ tracksViewChanges: false })
+    }, 500)
+  }
+
   render() {
 
     const { color } = this.props
@@ -50,7 +56,7 @@ export default class UserMapMarker extends Component {
                   source={{uri: this.state.profileImage}}
                   imageStyle={{ borderRadius: 100}}
                   style={styles.image}
-                  onLoad={() => this.setState({ tracksViewChanges: false })}>
+                  onLoad={this._onMarkerLoad.bind(this)}>
                 </Image>
                 <View style={styles.locationIndicator}></View>  
               </View>
