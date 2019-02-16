@@ -18,15 +18,17 @@ import Snackbar from 'react-native-snackbar'
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 
-import GooglePlacesSearch from '@/components/NovoEvento/GooglePlacesSearch'
-import MapDirections from '@/components/NovoEvento/MapDirections'
-
-import colors from '@/resources/colors'
+import AppMapView from '@/components/Maps/AppMapView'
+import MapDirections from '@/components/Maps/MapDirections'
 import DirectionInfoBox from '@/components/Maps/DirectionInfoBox';
-import FitFloatButton from '@/components/Maps/FitFloatButton';
-import CenterLocationFloatButton from '@/components/Maps/CenterLocationFloatButton';
 import UserMapMarker from '@/components/Maps/UserMapMarker';
 import DestinationMapMarker from '@/components/Maps/DestinationMapMarker';
+import FitFloatButton from '@/components/Maps/FitFloatButton';
+import CenterLocationFloatButton from '@/components/Maps/CenterLocationFloatButton';
+
+import GooglePlacesSearch from '@/components/NovoEvento/GooglePlacesSearch'
+
+import colors from '@/resources/colors'
 
 class SelecionarLocalizacao extends Component {
 
@@ -37,13 +39,13 @@ class SelecionarLocalizacao extends Component {
         latitude: 0,
         longitude: 0
       },
-      loading: true,
       destination: null,
-      transportMode: "walking",
       directionResult: {
         distance: 0,
         duration: 0
       },
+      transportMode: "walking",
+      loading: true,
       centerLocationHidden: true
     }
   }
@@ -60,38 +62,6 @@ class SelecionarLocalizacao extends Component {
       })
     }, 500)
 
-    const userLastLocation = await AsyncStorage.getItem("USER_LAST_LOCATION");
-    if (userLastLocation) {
-      this.setState({
-        userLocation: JSON.parse(userLastLocation),
-      })
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      async pos => {
-        if (!this.isUnmounted) {
-          this.setState({
-            userLocation: pos.coords,
-          })
-
-          await AsyncStorage.setItem("USER_LAST_LOCATION", JSON.stringify(pos.coords));
-        }
-      },
-      async err => {
-        if (!this.isUnmounted) {
-          Snackbar.show({
-            title: 'Ocorreu um erro ao determinar sua localização atual',
-            duration: Snackbar.LENGTH_LONG,
-            backgroundColor: '#b71b25'
-          })
-        }
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
-    )
-  }
-
-  componentWillUnmount() {
-    this.isUnmounted = true;
   }
 
   onSelectLocation(data, { geometry }) {
@@ -113,12 +83,12 @@ class SelecionarLocalizacao extends Component {
       }
     })
 
-    this.mapview.fitToCoordinates(result.coordinates, {
+    this.mapview.map.fitToCoordinates(result.coordinates, {
       edgePadding: {
-        left: 60,
-        right: 60,
-        top: 125,
-        bottom: 850
+        left: 35,
+        right: 35,
+        top: 50,
+        bottom: 450
       }
     })
 
@@ -156,7 +126,7 @@ class SelecionarLocalizacao extends Component {
   }
 
   _onPressCenterLocation() {
-    this.mapview.animateCamera({
+    this.mapview.map.animateCamera({
       center: this.state.userLocation,
       pitch: 30,
       zoom: 15,
@@ -175,14 +145,6 @@ class SelecionarLocalizacao extends Component {
   }
 
   render() {
-
-    const userRegion = {
-      latitude: this.state.userLocation.latitude,
-      longitude: this.state.userLocation.longitude,
-      latitudeDelta: 0.0143,
-      longitudeDelta: 0.0134,
-    }
-
     const getDirection = () => {
       if (this.state.destination) {
         return (
@@ -209,31 +171,21 @@ class SelecionarLocalizacao extends Component {
             backgroundColor="rgba(255, 255, 255, 0)"
             barStyle="dark-content" />
 
-          <MapView style={styles.mapview}
+          <AppMapView
             ref={ref => this.mapview = ref}
-            provider={PROVIDER_GOOGLE}
-            region={userRegion}
-            initialRegion={this.state.userLastLocation || null}
-            showsMyLocationButton={false}
-            showsCompass={false}
-            showsBuildings={false}
-            maxZoomLevel={16.7}
-            rotateEnabled={false}
-            moveOnMarkerPress={false}
-            customMapStyle={require("@assets/mapstyle.json")}
             onRegionChange={this._onRegionChange.bind(this)}
-          >
+            onPositionLoaded={(userLocation) => this.setState({ userLocation })}>
 
-            {this.state.userLocation &&
-              <UserMapMarker coordinate={userRegion}
-                title="Você" />}
-
-            <UserMapMarker coordinate={userRegion}
-              title="Você" />
+            {
+              this.state.userLocation &&
+              <UserMapMarker coordinate={this.state.userLocation}
+                title="Você"
+              />
+            }
 
             {getDirection()}
 
-          </MapView>
+          </AppMapView>
 
           <GooglePlacesSearch onSelectLocation={this.onSelectLocation.bind(this)}
             ref={ref => this.searchField = ref} />
