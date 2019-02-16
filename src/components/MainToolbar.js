@@ -8,6 +8,10 @@ import {
   AsyncStorage,
 } from 'react-native'
 
+import {
+  IconButton
+} from 'react-native-paper'
+
 import TouchableScale from 'react-native-touchable-scale'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -48,11 +52,11 @@ export default class MainToolbar extends Component {
             </TouchableScale>
             <Text style={styles.toolbarTitle}>{this.props.children || "Toolbar Title"}</Text>
           </View>
-          <TouchableScale>
-            <View>
-              <Icon size={20} color="#fff" name="bell"></Icon>
-            </View>
-          </TouchableScale>
+          <IconButton 
+            icon="notifications"
+            color="#fff"
+            onPress={() => {}}
+          />
         </View>
       </View>
     )
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 15,
+    paddingLeft: 15,
     elevation: 4
   },
   toolbarTitle: {

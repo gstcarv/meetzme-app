@@ -9,9 +9,6 @@ import {
   Text
 } from "react-native";
 
-import TouchableRipple from 'react-native-material-ripple'
-import TouchableScale from 'react-native-touchable-scale'
-
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 

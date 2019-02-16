@@ -50,7 +50,7 @@ export default class ContatoRow extends Component {
               <Text style={styles.rowSubtitle}>{username}</Text>
             </View>
             <IconButton
-              icon="more-vert"
+              icon={this.props.icon || "more-vert"}
               style={styles.moreButton}
               onPress={() => console.warn('click')}
             />

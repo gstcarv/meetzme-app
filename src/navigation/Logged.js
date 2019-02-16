@@ -57,7 +57,7 @@ var BottomNavigator = createBottomTabNavigator(
   },
   {
     tabBarComponent: TabBarComponent,
-    initialRouteName: "Contatos",
+    initialRouteName: "Procurar",
     tabBarOptions: {
       inactiveTintColor: "#D6D6D6",
       activeTintColor: colors.primaryColor
