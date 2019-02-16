@@ -55,7 +55,7 @@ export default class DirectionInfoBox extends Component {
   componentWillMount() {
     if (this.props.canReturn) {
       BackHandler.addEventListener('hardwareBackPress', () => {
-        if(this.state.visible){
+        if (this.state.visible) {
           this.props.onClose()
           return true;
         }
@@ -69,7 +69,7 @@ export default class DirectionInfoBox extends Component {
     }
   }
 
-  minimize(){
+  minimize() {
     Animated.spring(this.boxTranslate, {
       toValue: minimizedValue,
       duration: 500,
@@ -79,6 +79,15 @@ export default class DirectionInfoBox extends Component {
     this.setState({
       visible: false
     })
+  }
+
+  enableLoading() {
+    Animated.spring(this.boxTranslate, {
+      toValue: 150,
+      duration: 1000,
+      bounciness: 15,
+      useNativeDriver: true
+    }).start()
   }
 
   show() {
@@ -107,11 +116,13 @@ export default class DirectionInfoBox extends Component {
   }
 
   selectTransport(transport) {
-    this.setState({ transport })
 
-    if (this.props.onSelectTransport)
-      this.props.onSelectTransport(transport);
-
+    if (this.state.transport != transport) {
+      this.setState({ transport })
+      if (this.props.onSelectTransport){
+        this.props.onSelectTransport(transport);
+      }
+    }
   }
 
   render() {
@@ -120,7 +131,7 @@ export default class DirectionInfoBox extends Component {
     const { distance, duration } = this.props.directionResult;
 
     let computedDistance = () => {
-      if(distance > 0){
+      if (distance > 0) {
         return distance.toFixed(1) + "KM"
       } else {
         return (distance * 1000).toFixed(0) + "M"
@@ -128,7 +139,7 @@ export default class DirectionInfoBox extends Component {
     }
 
     let computedDuration = () => {
-      if(duration <= 60){
+      if (duration <= 60) {
         return duration.toFixed(0) + "MIN"
       } else {
         let hours = duration / 60;
@@ -138,7 +149,7 @@ export default class DirectionInfoBox extends Component {
 
     return (
       <Animated.View
-        { ...this.panResponder.panHandlers }
+        {...this.panResponder.panHandlers}
         style={[styles.container, {
           transform: [
             { translateY: this.boxTranslate }
@@ -182,11 +193,11 @@ export default class DirectionInfoBox extends Component {
         </View>
 
         <Button color='#47C1CF'
-                mode="outlined"
-                small
-                icon="keyboard-arrow-right"
-                style={styles.nextButton}
-                onPress={this.props.onNext}>Próximo</Button>
+          mode="outlined"
+          small
+          icon="keyboard-arrow-right"
+          style={styles.nextButton}
+          onPress={this.props.onNext}>Próximo</Button>
 
         {
           this.props.canReturn &&
@@ -198,7 +209,7 @@ export default class DirectionInfoBox extends Component {
             </View>
           </TouchableNativeFeedback>
         }
-      
+
       </Animated.View>
     )
   }

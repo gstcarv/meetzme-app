@@ -54,8 +54,6 @@ class SelecionarLocalizacao extends Component {
 
     this.centerLocationHidden = true
 
-    const { navigation } = this.props
-
     setTimeout(() => {
       this.setState({
         loading: false
@@ -143,7 +141,10 @@ class SelecionarLocalizacao extends Component {
   }
 
   _onRegionChange() {
-    if (this.centerLocationHidden == true && this.state.destination == null) {
+    if (this.centerLocationHidden == true 
+        && this.state.destination == null
+        && this.state.userLocation.latitude != 0) 
+    {
       this.CenterLocationFloatButton.show()
       this.centerLocationHidden = false
     }
@@ -160,6 +161,12 @@ class SelecionarLocalizacao extends Component {
     })
   }
 
+  _onSelectTransport(transportMode){
+    this.setState({ transportMode })
+    this.DirectionInfoBox.enableLoading()
+    this.FitFloatButton.hide()
+  }
+
   render() {
     const getDirection = () => {
       if (this.state.destination) {
@@ -169,6 +176,8 @@ class SelecionarLocalizacao extends Component {
               destination={this.state.destination}
               onReady={this.onDirectionReady.bind(this)}
               onError={this.onDirectionError.bind(this)}
+              mode={this.state.transportMode}
+              ref={ref => this.directionLine = ref}
             />
             <DestinationMapMarker
               coordinate={this.state.destination}
@@ -212,6 +221,7 @@ class SelecionarLocalizacao extends Component {
             onClose={() => this.onCloseDirectionBox()}
             canReturn={true}
             onNext={() => this.selecionarConvidados()}
+            onSelectTransport={this._onSelectTransport.bind(this)}
           />
 
           <CenterLocationFloatButton

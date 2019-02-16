@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { AsyncStorage, StyleSheet } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
+import Snackbar from 'react-native-snackbar'
 
 export default class AppMapView extends Component {
 
@@ -21,6 +22,7 @@ export default class AppMapView extends Component {
       this.setState({
         userLocation: JSON.parse(userLastLocation),
       })
+      if(this.props.onPositionLoaded) this.props.onPositionLoaded(this.state.userLocation)
     }
 
     navigator.geolocation.getCurrentPosition(

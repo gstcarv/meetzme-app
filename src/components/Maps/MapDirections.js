@@ -7,6 +7,7 @@ import string from '@/resources/strings'
 import colors from '@/resources/colors'
 
 export default class MapDirections extends Component {
+
   render() {
 
     const {
@@ -26,6 +27,7 @@ export default class MapDirections extends Component {
         language="pt"
         strokeWidth={7}
         strokeColor={colors.primaryColor}
+        {...this.props}
       />
     )
   }
