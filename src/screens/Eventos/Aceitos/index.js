@@ -12,7 +12,7 @@ import { Button } from 'react-native-paper'
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 import TimelineEvent from '@/components/Eventos/TimelineEvent'
-import EventsSearchField from '@/components/Eventos/EventsSearchField'
+import SearchField from '@/components/SearchField'
 
 import fonts from '@/resources/fonts'
 
@@ -25,7 +25,7 @@ export default class Aceitos extends Component {
     return (
       <ScrollView style={styles.container}
       overScrollMode="always">
-        <EventsSearchField />
+        <SearchField placeholder="Digite o nome do Evento"/>
         <TimelineEvent date={Date.now()}
                       title="Titulo do Evento"
                       local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>

@@ -4,13 +4,14 @@ import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 import fonts from '@/resources/fonts'
 
-export default class EventsSearchField extends Component {
+export default class SearchField extends Component {
   render() {
     return (
       <View style={[styles.fieldContainer, this.props.style || {}]}>
         <SLIcon name="magnifier" size={20} color="#ccc"></SLIcon>
-        <TextInput placeholder="Digite o Nome do Evento"
-                  style={styles.textInput}></TextInput>
+        <TextInput placeholder={this.props.placeholder}
+            style={styles.textInput}
+        />
       </View>
     )
   }

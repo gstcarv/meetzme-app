@@ -10,7 +10,7 @@ import {
 
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
-import EventsSearchField from '@/components/Eventos/EventsSearchField'
+import SearchField from '@/components/SearchField'
 import PendingEventCard from '@/components/Eventos/PendingEventCard'
 import PendingEventBottomSheet from '@/components/Eventos/PendingEventBottomSheet'
 
@@ -22,7 +22,7 @@ import {
 
 export default class Pendentes extends Component {
 
-  constructor(){
+  constructor() {
     super()
     this.state = {
       convites: [
@@ -55,30 +55,29 @@ export default class Pendentes extends Component {
     }
   }
 
-  openEventSheet(id){
+  openEventSheet(id) {
     this.refs.eventBottomSheet.open(id);
   }
-  
+
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
-          <EventsSearchField />
-
+          <SearchField placeholder="Digite o nome do Evento" />
 
           <View style={styles.eventosContainer}>
-                      
-          <FlatList 
-            data={this.state.convites}
-            renderItem={({item}) => (
-              <PendingEventCard 
-                title={item.title}
-                date={item.date}
-                onPress={() => this.openEventSheet(item.id)} />
-            )}
-            keyExtractor={(convite) => convite.id}
-            numColumns={2}
-          />
+
+            <FlatList
+              data={this.state.convites}
+              renderItem={({ item }) => (
+                <PendingEventCard
+                  title={item.title}
+                  date={item.date}
+                  onPress={() => this.openEventSheet(item.id)} />
+              )}
+              keyExtractor={(convite) => convite.id}
+              numColumns={2}
+            />
           </View>
 
           <Line spaceVertical={15} />

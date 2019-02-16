@@ -57,7 +57,7 @@ var BottomNavigator = createBottomTabNavigator(
   },
   {
     tabBarComponent: TabBarComponent,
-    initialRouteName: "Eventos",
+    initialRouteName: "Contatos",
     tabBarOptions: {
       inactiveTintColor: "#D6D6D6",
       activeTintColor: colors.primaryColor
@@ -78,7 +78,7 @@ export default createStackNavigator(
     SelecionarConvidados
   },
   {
-    initialRouteName: 'SelecionarLocalizacao',
+    initialRouteName: 'Home',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }

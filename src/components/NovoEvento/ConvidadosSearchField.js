@@ -4,7 +4,7 @@ import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 import fonts from '@/resources/fonts'
 
-export default class EventsSearchField extends Component {
+export default class ConvidadosSearchField extends Component {
   render() {
     return (
       <View style={[styles.fieldContainer, this.props.style || {}]}>
