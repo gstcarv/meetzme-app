@@ -23,6 +23,8 @@ import MapDirections from '@/components/NovoEvento/MapDirections'
 
 import colors from '@/resources/colors'
 import DirectionInfoBox from '@/components/Maps/DirectionInfoBox';
+import FitFloatButton from '@/components/Maps/FitFloatButton';
+import CenterLocationFloatButton from '@/components/Maps/CenterLocationFloatButton';
 import UserMapMarker from '@/components/Maps/UserMapMarker';
 import DestinationMapMarker from '@/components/Maps/DestinationMapMarker';
 
@@ -42,22 +44,15 @@ class SelecionarLocalizacao extends Component {
         distance: 0,
         duration: 0
       },
-      lastLocation: null
+      centerLocationHidden: true
     }
   }
 
   async componentDidMount() {
 
-    const { navigation } = this.props
+    this.centerLocationHidden = true
 
-    this.navigationFocusSub = navigation.addListener("didFocus", () => {
-      let eventProps = navigation.getParam('infoEvento')
-      if (eventProps.destination) {
-        this.setState({
-          destination: eventProps.destination
-        })
-      }
-    })
+    const { navigation } = this.props
 
     setTimeout(() => {
       this.setState({
@@ -97,7 +92,6 @@ class SelecionarLocalizacao extends Component {
 
   componentWillUnmount() {
     this.isUnmounted = true;
-    this.navigationFocusSub.remove()
   }
 
   onSelectLocation(data, { geometry }) {
@@ -132,6 +126,14 @@ class SelecionarLocalizacao extends Component {
     this.searchField.hide();
   }
 
+  onDirectionError() {
+    Snackbar.show({
+      title: 'Não foi possível traçar a rota',
+      duration: Snackbar.LENGTH_LONG,
+      backgroundColor: '#b71b25'
+    })
+  }
+
   onCloseDirectionBox() {
     this.setState({
       destination: null
@@ -139,10 +141,7 @@ class SelecionarLocalizacao extends Component {
 
     this.DirectionInfoBox.hide();
     this.searchField.show();
-
   }
-
-  component
 
   selecionarConvidados() {
     if (this.state.destination) {
@@ -153,6 +152,25 @@ class SelecionarLocalizacao extends Component {
         destination: this.state.destination,
         transport: this.state.transportMode
       })
+    }
+  }
+
+  _onPressCenterLocation() {
+    this.mapview.animateCamera({
+      center: this.state.userLocation,
+      pitch: 30,
+      zoom: 15,
+    })
+    this.CenterLocationFloatButton.hide()
+    setTimeout(() => {
+      this.centerLocationHidden = true
+    }, 1000)
+  }
+
+  _onRegionChange() {
+    if (this.centerLocationHidden == true) {
+      this.CenterLocationFloatButton.show()
+      this.centerLocationHidden = false
     }
   }
 
@@ -171,7 +189,9 @@ class SelecionarLocalizacao extends Component {
           <View>
             <MapDirections origin={this.state.userLocation}
               destination={this.state.destination}
-              onReady={this.onDirectionReady.bind(this)} />
+              onReady={this.onDirectionReady.bind(this)}
+              onError={this.onDirectionError.bind(this)}
+            />
             <DestinationMapMarker
               coordinate={this.state.destination}
             />
@@ -197,11 +217,11 @@ class SelecionarLocalizacao extends Component {
             showsMyLocationButton={false}
             showsCompass={false}
             showsBuildings={false}
-            minZoomLevel={6}
-            maxZoomLevel={16}
+            maxZoomLevel={16.7}
             rotateEnabled={false}
             moveOnMarkerPress={false}
             customMapStyle={require("@assets/mapstyle.json")}
+            onRegionChange={this._onRegionChange.bind(this)}
           >
 
             {this.state.userLocation &&
@@ -224,6 +244,11 @@ class SelecionarLocalizacao extends Component {
             onClose={() => this.onCloseDirectionBox()}
             canReturn={true}
             onNext={() => this.selecionarConvidados()}
+          />
+
+          <CenterLocationFloatButton
+            onPress={this._onPressCenterLocation.bind(this)}
+            ref={ref => this.CenterLocationFloatButton = ref}
           />
 
           <BackButton color={colors.primaryColor} />

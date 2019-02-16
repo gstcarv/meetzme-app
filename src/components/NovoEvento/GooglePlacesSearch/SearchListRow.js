@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { Text, StyleSheet, View, Keyboard } from 'react-native'
 import {
   TouchableRipple
 } from 'react-native-paper'
@@ -12,9 +12,7 @@ export default class SearchListRow extends Component {
     const { terms } = this.props.item;
 
     return (
-      <TouchableRipple style={styles.localContainer}
-          useForeground={true}
-          rippleColor={"red"}>
+      <View style={styles.localContainer}>
         <View>
           <Text style={styles.localTitle}>{terms[0].value} </Text>
           <View style={styles.detailsContainer}>
@@ -33,16 +31,17 @@ export default class SearchListRow extends Component {
             }
           </View>
         </View>
-      </TouchableRipple>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
   localContainer: {
-    height: 50,
+    height: 70,
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    padding: 12
   },
   detailsContainer: {
     flexDirection: 'row'

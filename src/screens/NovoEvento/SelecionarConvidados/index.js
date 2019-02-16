@@ -5,7 +5,8 @@ import {
   StatusBar,
   ScrollView,
   FlatList,
-  Animated
+  Animated,
+  Easing
 } from 'react-native'
 
 import {
@@ -87,7 +88,8 @@ export default class SelecionarConvidados extends Component {
       Animated.timing(this.fabButtonTranslate, {
         toValue: 100,
         duration: 300,
-        useNativeDriver: true
+        useNativeDriver: true,
+        Easing: Easing.ease,
       }).start()
       this.setState({
         fabVisible: false
