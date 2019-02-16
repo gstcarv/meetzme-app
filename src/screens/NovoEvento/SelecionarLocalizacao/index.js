@@ -74,12 +74,13 @@ class SelecionarLocalizacao extends Component {
   }
 
   onDirectionReady(result) {
-    const { distance, duration } = result
+    const { distance, duration, coordinates } = result
 
     this.setState({
       directionResult: {
         distance,
-        duration
+        duration,
+        coordinates
       }
     })
 
@@ -88,12 +89,15 @@ class SelecionarLocalizacao extends Component {
         left: 35,
         right: 35,
         top: 50,
-        bottom: 450
+        bottom: 550
       }
     })
 
+    this.FitFloatButton.show();
     this.DirectionInfoBox.show();
     this.searchField.hide();
+    this.CenterLocationFloatButton.hide()
+    this.centerLocationHidden = true
   }
 
   onDirectionError() {
@@ -110,6 +114,7 @@ class SelecionarLocalizacao extends Component {
     })
 
     this.DirectionInfoBox.hide();
+    this.FitFloatButton.hide();
     this.searchField.show();
   }
 
@@ -138,10 +143,21 @@ class SelecionarLocalizacao extends Component {
   }
 
   _onRegionChange() {
-    if (this.centerLocationHidden == true) {
+    if (this.centerLocationHidden == true && this.state.destination == null) {
       this.CenterLocationFloatButton.show()
       this.centerLocationHidden = false
     }
+  }
+
+  _onFitButtonPress(){
+    this.mapview.map.fitToCoordinates(this.state.directionResult.coordinates, {
+      edgePadding: {
+        left: 35,
+        right: 35,
+        top: 50,
+        bottom: 550
+      }
+    })
   }
 
   render() {
@@ -201,6 +217,11 @@ class SelecionarLocalizacao extends Component {
           <CenterLocationFloatButton
             onPress={this._onPressCenterLocation.bind(this)}
             ref={ref => this.CenterLocationFloatButton = ref}
+          />
+
+          <FitFloatButton 
+            onPress={this._onFitButtonPress.bind(this)}
+            ref={ref => this.FitFloatButton = ref}
           />
 
           <BackButton color={colors.primaryColor} />

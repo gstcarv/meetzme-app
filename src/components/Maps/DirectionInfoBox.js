@@ -279,6 +279,7 @@ const styles = StyleSheet.create({
   nextButton: {
     alignSelf: 'flex-end',
     marginTop: 10,
-    borderColor: '#47C1CF'
+    borderColor: '#47C1CF',
+    borderWidth: 1
   }
 })
