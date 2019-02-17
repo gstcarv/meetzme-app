@@ -9,40 +9,48 @@ import {
   Text
 } from "react-native";
 
+import { TouchableRipple } from 'react-native-paper'
+
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 
 export default class TabBarComponent extends React.Component {
 
+  index = 0
+
   constructor() {
     super();
     this.state = {
-      atualRouteIndex: 0
+      atualRouteIndex: 0,
     }
 
-    this.lineOffset = new Animated.Value(0)
+    this.lineOffset = new Animated.Value(20)
+    this.routeButtonsPositions = []
   }
 
 
-  moveLine(){
-    this.refs["tabButton-" + this.state.atualRouteIndex]
-    .measure((fx, fy, width, height, px, py) => {
-      Animated.spring(this.lineOffset, {
-        toValue: px + 20,
-        duration: 350,
-        easing: Easing.easing,
-        useNativeDriver: true,
-        bounciness: 10
-      }).start()
-    })
-  }
+  moveLine() {
+    const { atualRouteIndex } = this.state
 
-  componentDidMount(){
-    this.moveLine()
+    let posX = this.routeButtonsPositions[atualRouteIndex].x;
+    Animated.spring(this.lineOffset, {
+      toValue: posX + 20,
+      duration: 350,
+      easing: Easing.easing,
+      useNativeDriver: true,
+      bounciness: 10
+    }).start()
   }
 
   componentDidUpdate() {
     this.moveLine()
+  }
+
+  _onButtonLayout(e, index) {
+    let posX = e.nativeEvent.layout.x
+    this.routeButtonsPositions.push({
+      x: posX
+    })
   }
 
   render() {
@@ -58,8 +66,6 @@ export default class TabBarComponent extends React.Component {
 
     const { routes, index: activeRouteIndex } = navigation.state;
 
-    const mainButtonIndex = 2;
-
     return (
       <View style={styles.container}>
         {
@@ -67,31 +73,32 @@ export default class TabBarComponent extends React.Component {
           routes.map((route, routeIndex) => {
             const isRouteActive = routeIndex === activeRouteIndex;
             const tintColor = isRouteActive ? activeTintColor : inactiveTintColor;
-
+            const isMainButton = routeIndex == 2
 
             return (
-              <TouchableHighlight
+              <TouchableRipple
                 key={routeIndex}
-                ref={"tabButton-" + routeIndex}
+                onLayout={(e) => this._onButtonLayout(e, routeIndex)}
                 onPress={(e) => {
-                  if(routeIndex != mainButtonIndex){
+                  if (!isMainButton) {
                     this.setState({ atualRouteIndex: routeIndex })
                     onTabPress({ route });
                   }
                 }}
-                underlayColor="transparent" >
+                useForeground={true}
+                borderless={!isMainButton}>
                 <View style={styles.tabButton}
                 >
                   {renderIcon({ route, focused: isRouteActive, tintColor })}
 
                   {
-                    routeIndex != mainButtonIndex
-                    ? <Text style={[styles.labelText, { color: tintColor }]}>{ getLabelText({ route }) }</Text>
-                    : null
+                    !isMainButton
+                      ? <Text style={[styles.labelText, { color: tintColor }]}>{getLabelText({ route })}</Text>
+                      : null
                   }
 
                 </View>
-              </TouchableHighlight>
+              </TouchableRipple>
             );
           }
           )
