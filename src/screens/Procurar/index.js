@@ -75,25 +75,29 @@ export default class Procurar extends Component {
           keyboardShouldPersistTaps="always"
           keyboardDismissMode='on-drag'
           onScroll={() => Keyboard.dismiss()}>
-          <FlatList
-            data={this.state.contatos}
-            keyExtractor={item => item.id.toString()}
-            keyboardShouldPersistTaps="always"
-            keyboardDismissMode='on-drag'
-            renderItem={
-              ({ item, index }) => (
-                <PersonRow
-                  data={item}
-                  rowIndex={index}
-                  icon="person-add"
-                />
-              )
-            }
-          />
+
+          <View style={styles.personsContainer}>
+            <Text style={styles.text}>Pessoas</Text>
+            <FlatList
+              data={this.state.contatos}
+              keyExtractor={item => item.id.toString()}
+              keyboardShouldPersistTaps="always"
+              keyboardDismissMode='on-drag'
+              renderItem={
+                ({ item, index }) => (
+                  <PersonRow
+                    data={item}
+                    rowIndex={index}
+                    icon="person-add"
+                  />
+                )
+              }
+            />
+          </View>
 
           <Line spaceVertical={20} />
 
-          <Text style={{ 
+          <Text style={{
             marginBottom: 20,
             alignSelf: 'center',
             color: "#ccc"
@@ -117,5 +121,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  personsContainer: {
+    backgroundColor: '#fff',
+    margin: 10,
+    padding: 10,
+    elevation: 7,
+    borderRadius: 3
+  },
+  text: {
+    color: "#cacaca",
+    marginBottom: 5
   }
 })

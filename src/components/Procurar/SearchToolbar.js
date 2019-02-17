@@ -33,7 +33,7 @@ export default class SearchToolbar extends Component {
       ),
       Animated.timing(this.textInputWidth, {
         toValue: this.fullWidth,
-        duration: 500
+        duration: 200
       }
       )],
       {
@@ -51,7 +51,7 @@ export default class SearchToolbar extends Component {
       ),
       Animated.spring(this.textInputWidth, {
         toValue: this.fullWidth - 20,
-        duration: 500
+        duration: 200
       }
       )],
       {
