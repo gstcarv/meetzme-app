@@ -5,7 +5,8 @@ import {
   View,
   TextInput,
   Animated,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 } from 'react-native'
 
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
@@ -17,31 +18,55 @@ export default class SearchToolbar extends Component {
 
   constructor() {
     super()
-    this.paddingValue = new Animated.Value(10)
+    this.fullWidth = Dimensions.get('window').width;
+    this.textInputHeight = new Animated.Value(80)
+    this.textInputWidth = new Animated.Value(this.fullWidth)
   }
 
   _onFocus() {
-    Animated.spring(this.paddingValue, {
-      toValue: 20,
-      duration: 500,
-      bounciness: 23
-    }).start()
+    Animated.parallel([
+      Animated.timing(this.textInputHeight, {
+        toValue: 100,
+        duration: 500
+
+      }
+      ),
+      Animated.timing(this.textInputWidth, {
+        toValue: this.fullWidth,
+        duration: 500
+      }
+      )],
+      {
+        useNativeDriver: true
+      }
+    ).start();
   }
 
   _onBlur() {
-    Animated.spring(this.paddingValue, {
-      toValue: 10,
-      duration: 500,
-      bounciness: 23
-    }).start()
+    Animated.parallel([
+      Animated.spring(this.textInputHeight, {
+        toValue: 45,
+        duration: 500
+      }
+      ),
+      Animated.spring(this.textInputWidth, {
+        toValue: this.fullWidth - 20,
+        duration: 500
+      }
+      )],
+      {
+        useNativeDriver: true
+      }
+    ).start();
   }
 
   render() {
     return (
-      <Animated.View style={[styles.container, {
-        padding: this.paddingValue
-      }]}>
-        <View style={styles.textInputContainer}>
+      <View style={styles.container}>
+        <Animated.View style={[styles.textInputContainer, {
+          height: this.textInputHeight,
+          width: this.textInputWidth
+        }]}>
           <View>
             <SLIcon name="magnifier" size={24} color={"#fff"} />
           </View>
@@ -60,13 +85,13 @@ export default class SearchToolbar extends Component {
           </View>
           {
             this.props.loading == true &&
-              <ActivityIndicator
-                style={styles.loading}
-                color="#fff"
-              />
+            <ActivityIndicator
+              style={styles.loading}
+              color="#fff"
+            />
           }
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </View>
     )
   }
 }
@@ -74,8 +99,10 @@ export default class SearchToolbar extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.primaryDark,
-    padding: 10,
-    elevation: 4
+    elevation: 4,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textInputContainer: {
     flexDirection: 'row',

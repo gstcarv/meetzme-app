@@ -86,6 +86,7 @@ export default class TabBarComponent extends React.Component {
                   }
                 }}
                 useForeground={true}
+                rippleColor={"#ddd"}
                 borderless={!isMainButton}>
                 <View style={styles.tabButton}
                 >
