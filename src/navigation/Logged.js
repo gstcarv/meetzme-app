@@ -57,7 +57,7 @@ var BottomNavigator = createBottomTabNavigator(
   },
   {
     tabBarComponent: TabBarComponent,
-    initialRouteName: "Procurar",
+    initialRouteName: "Dashboard",
     tabBarOptions: {
       inactiveTintColor: "#D6D6D6",
       activeTintColor: colors.primaryColor
@@ -67,12 +67,14 @@ var BottomNavigator = createBottomTabNavigator(
 
 // Screens
 import NovoEvento from '@/screens/NovoEvento'
+import Notificacoes from '@/screens/Notificacoes'
 import SelecionarLocalizacao from '@/screens/NovoEvento/SelecionarLocalizacao'
 import SelecionarConvidados from '@/screens/NovoEvento/SelecionarConvidados'
 
 export default createStackNavigator(
   {
     Home: BottomNavigator,
+    Notificacoes,
     NovoEvento,
     SelecionarLocalizacao,
     SelecionarConvidados

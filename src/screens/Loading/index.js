@@ -17,15 +17,10 @@ import firebase from 'react-native-firebase'
 class Principal extends Component {
 
   componentDidMount() {
-
     const { navigate } = this.props.navigation;
-
-    navigate('Logado');
 
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
       const userData = await AsyncStorage.getItem("USER_DATA");
-      // console.log("Storage", userData);
-      // console.log("AUTH", auth)
       if (auth) {
         const user = auth._user;
         if (!userData) {
@@ -38,8 +33,9 @@ class Principal extends Component {
             uid
           }))
         }
+        navigate('Logged');
       } else {
-        navigate('Logado');
+        navigate('Principal');
       }
     })
   }
@@ -49,21 +45,18 @@ class Principal extends Component {
   }
 
   render() {
-
-    const { navigate } = this.props.navigation;
-
     return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor={colors.primaryDark}
-          animated />
-        <View style={{ alignItems: 'center' }}>
-          <Image source={require("@assets/images/app-logo.png")}
-            style={{ width: 130, height: 130 }}></Image>
+        <View style={styles.container}>
+          <StatusBar backgroundColor={colors.primaryDark}
+            animated />
+          <View style={{ alignItems: 'center' }}>
+            <Image source={require("@assets/images/logo_gray.png")}
+              style={{ width: 130, height: 130 }}></Image>
+          </View>
+          <View>
+            <ActivityIndicator size="large" color="white" style={styles.loader}/>
+          </View>
         </View>
-        <View>
-          <ActivityIndicator size="large" color="white" />
-        </View>
-      </View>
     )
   }
 }
@@ -72,8 +65,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     backgroundColor: colors.primaryDark
+  },
+  loader: {
+    marginTop: 30
   }
 })
 

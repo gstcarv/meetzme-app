@@ -23,7 +23,7 @@ class AuthStateProvider extends Component {
             uid
           }))
         }
-        navigate('Logado');
+        // navigate('Logado');
       } else {
         console.log("non user");
       }

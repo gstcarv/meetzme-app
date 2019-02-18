@@ -4,9 +4,12 @@ import {
   createStackNavigator
 } from 'react-navigation'
 
-import Guest from './Guest'
-import Logado from './Logged'
+import {
+  fromLeft
+} from 'react-navigation-transitions'
 
+import Guest from './Guest'
+import Logged from './Logged'
 import Loading from '@/screens/Loading'
 
 const LoadingScreen = createStackNavigator({
@@ -16,11 +19,12 @@ const LoadingScreen = createStackNavigator({
 const Routes = createSwitchNavigator(
   {
     Guest,
-    Logado,
+    Logged: Logged,
     Loading: LoadingScreen
   },
   {
-    initialRouteName: 'Logado'
+    initialRouteName: 'Loading',
+    headerMode: 'none',
   }
 )
 

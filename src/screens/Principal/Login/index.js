@@ -13,6 +13,12 @@ import {
 import Waves from '@/components/Waves'
 
 import {
+  withNavigation,
+  NavigationActions,
+  StackActions
+} from 'react-navigation'
+
+import {
   TextField,
   Line,
   Button
@@ -25,7 +31,7 @@ import firebase from 'react-native-firebase'
 import colors from "@/resources/colors"
 import fonts from "@/resources/fonts"
 
-export default class Login extends Component {
+class Login extends Component {
 
   constructor() {
     super();
@@ -38,6 +44,7 @@ export default class Login extends Component {
   }
 
   async signIn() {
+
     const email = this.state.email || "gueti2010@gmail.com"
     const password = this.state.password || "pai152123"
 
@@ -45,11 +52,10 @@ export default class Login extends Component {
       loading: true
     })
 
-    /*
-
     try {
-      const user = await firebase.auth()
+      await firebase.auth()
         .signInWithEmailAndPassword(email, password)
+      this.props.navigation.navigate("Logged");
     } catch (err) {
       Snackbar.show({
         title: 'Login ou Senha incorretos',
@@ -57,26 +63,23 @@ export default class Login extends Component {
         backgroundColor: '#b71b25'
       })
     }
-    
+
     this.setState({
       loading: false
     })
-    
-    */
+
+
   }
 
-  onFocusInput(){
-    this.loginScrollView.scrollToEnd({
-      // animated: true
-    })
-    console.warn('scroll')
+  onFocusInput() {
+    // console.warn('scroll')
   }
 
   render() {
     return (
       <ScrollView style={styles.scrollView}
         keyboardShouldPersistTaps='always'
-        ref={ ref => this.loginScrollView = ref }>
+        ref={ref => this.loginScrollView = ref}>
         <StatusBar backgroundColor={colors.primaryDark} />
         <View style={styles.header}>
           <BackButton path="Principal" />
@@ -102,16 +105,16 @@ export default class Login extends Component {
             onFocus={() => this.onFocusInput()} />
 
           <Button mode="contained"
-                  onPress={() => this.signIn()}
-                  loading={this.state.loading}
-                  disabled={this.state.loading}>Login</Button>
-        
+            onPress={() => this.signIn()}
+            loading={this.state.loading}
+            disabled={this.state.loading}>Login</Button>
+
           <Button style={styles.forgotPasswordButton}
-                  fontSize={12}
-                  color="#353F4B"
-                  uppercase={false}
-                  rounded
-                  onPress={() => console.log("ok")}>Esquecí a senha</Button>
+            fontSize={12}
+            color="#353F4B"
+            uppercase={false}
+            rounded
+            onPress={() => console.log("ok")}>Esquecí a senha</Button>
         </View>
       </ScrollView>
     )
@@ -147,3 +150,5 @@ const styles = StyleSheet.create({
     marginTop: 5
   }
 })
+
+export default withNavigation(Login)

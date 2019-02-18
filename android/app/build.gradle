@@ -135,6 +135,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-reanimated')
     implementation(project(':react-native-google-places')){
         exclude group: 'com.google.android.gms', module: 'play-services-base'
         exclude group: 'com.google.android.gms', module: 'play-services-places'

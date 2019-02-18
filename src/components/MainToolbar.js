@@ -12,14 +12,16 @@ import {
   IconButton
 } from 'react-native-paper'
 
-import TouchableScale from 'react-native-touchable-scale'
+import {
+  withNavigation
+} from 'react-navigation'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import TouchableScale from 'react-native-touchable-scale'
 
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 
-export default class MainToolbar extends Component {
+class MainToolbar extends Component {
 
   constructor(){
     super();
@@ -55,7 +57,9 @@ export default class MainToolbar extends Component {
           <IconButton 
             icon="notifications"
             color="#fff"
-            onPress={() => {}}
+            onPress={() => {
+              this.props.navigation.navigate('Notificacoes')
+            }}
           />
         </View>
       </View>
@@ -95,3 +99,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 })
+
+export default withNavigation(MainToolbar)
