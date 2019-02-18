@@ -14,6 +14,8 @@ import { TouchableRipple } from 'react-native-paper'
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 
+import state from '@/state'
+
 export default class TabBarComponent extends React.Component {
 
   index = 0
@@ -26,6 +28,7 @@ export default class TabBarComponent extends React.Component {
 
     this.lineOffset = new Animated.Value(20)
     this.routeButtonsPositions = []
+
   }
 
 
@@ -73,7 +76,7 @@ export default class TabBarComponent extends React.Component {
           routes.map((route, routeIndex) => {
             const isRouteActive = routeIndex === activeRouteIndex;
             const tintColor = isRouteActive ? activeTintColor : inactiveTintColor;
-            const isMainButton = routeIndex == 2
+            const isMainButton = routeIndex == 2;
 
             return (
               <TouchableRipple
@@ -82,6 +85,7 @@ export default class TabBarComponent extends React.Component {
                 onPress={(e) => {
                   if (!isMainButton) {
                     this.setState({ atualRouteIndex: routeIndex })
+                    state.toolbarTitle = getLabelText({route})
                     onTabPress({ route });
                   }
                 }}

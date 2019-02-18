@@ -7,7 +7,8 @@ import {
   Easing,
   TouchableNativeFeedback,
   BackHandler,
-  PanResponder
+  PanResponder,
+  YellowBox
 } from 'react-native'
 
 import { Button } from "@/components/Forms"
@@ -161,23 +162,23 @@ export default class DirectionInfoBox extends Component {
           <Text style={styles.transportText}>Selecione o meio de transporte</Text>
           <View style={styles.transportContainer}>
             <TouchableTransportButton
-              onPress={() => this.selectTransport('DRIVING')}
-              active={transport == "DRIVING"}
+              onPress={() => this.selectTransport('driving')}
+              active={transport == "driving"}
               iconName="car" />
 
             <TouchableTransportButton
-              onPress={() => this.selectTransport('TRANSIT')}
-              active={transport == "TRANSIT"}
+              onPress={() => this.selectTransport('transit')}
+              active={transport == "transit"}
               iconName="bus" />
 
             <TouchableTransportButton
-              onPress={() => this.selectTransport('BICYCLING')}
-              active={transport == "BICYCLING"}
+              onPress={() => this.selectTransport('bicycling')}
+              active={transport == "bicycling"}
               iconName="bicycle" />
 
             <TouchableTransportButton
-              onPress={() => this.selectTransport('WALKING')}
-              active={transport == "WALKING"}
+              onPress={() => this.selectTransport('walking')}
+              active={transport == "walking"}
               iconName="walking" />
           </View>
         </View>

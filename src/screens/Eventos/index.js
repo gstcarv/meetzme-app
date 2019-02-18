@@ -29,10 +29,12 @@ export default createMaterialTopTabNavigator(
         fontSize: 16
       },
       indicatorStyle: {
-        backgroundColor: colors.primaryColor
+        backgroundColor: colors.primaryColor,
+        height: 1
       },
       style: {
         backgroundColor: '#fff',
+        elevation: 2
       },
     }
   }

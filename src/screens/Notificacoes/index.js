@@ -8,10 +8,12 @@ import {
 } from 'react-navigation'
 
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
+import MIcon from 'react-native-vector-icons/MaterialIcons'
 
 // Screens
 import NotificacoesEventos from './NotificacoesEventos'
 import NotificacoesSolicitacoes from './NotificacoesSolicitacoes'
+import NotificacoesLembretes from './NotificacoesLembretes'
 
 export default createMaterialTopTabNavigator(
   {
@@ -24,7 +26,13 @@ export default createMaterialTopTabNavigator(
     NotificacoesSolicitacoes: {
       screen: NotificacoesSolicitacoes,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <FAIcon name="users" size={24} color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <FAIcon name="user-circle" size={26} color={tintColor} />
+      }
+    },
+    NotificacoesLembretes: {
+      screen: NotificacoesLembretes,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <FAIcon name="calendar-day" size={24} color={tintColor} />
       }
     }
   },
@@ -32,16 +40,19 @@ export default createMaterialTopTabNavigator(
     initialRouteName: 'NotificacoesEventos',
     tabBarOptions: {
       upperCaseLabel: false,
-      inactiveTintColor: "#aaa",
+      inactiveTintColor: colors.primaryColor,
       activeTintColor: colors.primaryColor,
       pressColor: colors.primaryColor,
       showLabel: false,
       showIcon: true,
       indicatorStyle: {
-        backgroundColor: colors.primaryColor
+        backgroundColor: colors.primaryColor,
+        height: 1   
       },
       style: {
         backgroundColor: '#fff',
+        paddingVertical: 5,
+        elevation: 2
       },
     }
   }

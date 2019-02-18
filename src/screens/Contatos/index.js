@@ -7,6 +7,8 @@ import {
   FlatList
 } from 'react-native'
 
+import EventBus from 'eventing-bus';
+
 import SearchField from '@/components/SearchField'
 import ContatoRow from '@/components/Contatos/ContatoRow'
 
@@ -54,6 +56,7 @@ export default class Contatos extends Component {
         },
       ]
     }
+    this.scrollValue = 0
   }
 
   render() {
@@ -74,13 +77,14 @@ export default class Contatos extends Component {
 
     return (
       <View>
-        <ScrollView>
+        <ScrollView> 
           <SearchField placeholder="Digite o nome do Contato"
             style={{ margin: 15 }} />
 
           <FlatList
             data={this.state.contatos}
             keyExtractor={item => item.id.toString()}
+            
             renderItem={
               ({ item, index }) => (
                 <ContatoRow 

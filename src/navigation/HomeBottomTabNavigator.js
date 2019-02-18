@@ -7,6 +7,7 @@ import {
 
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
+import MIcon from 'react-native-vector-icons/MaterialIcons'
 
 import colors from '@/resources/colors'
 
@@ -14,7 +15,7 @@ import colors from '@/resources/colors'
 import Dashboard from '@/screens/Dashboard'
 import Eventos from '@/screens/Eventos'
 import Contatos from '@/screens/Contatos'
-import Procurar from '@/screens/Procurar'
+import Notificacoes from '@/screens/Notificacoes'
 
 // Components
 import TabBarMainButton from '@/components/Navigator/TabBarMainButton'
@@ -45,14 +46,15 @@ var BottomNavigator = createBottomTabNavigator(
     Contatos: {
       screen: Contatos,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <FAIcon name="address-book" size={24} color={tintColor} />
+        tabBarIcon: ({ tintColor }) => <FAIcon name="users" size={24} color={tintColor} />
       }
     },
-    Procurar: {
-      screen: Procurar,
+    Notificacoes: {
+      screen: Notificacoes,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <SLIcon name="magnifier" size={24} color={tintColor} />
-      }
+        title: "Notificações",
+        tabBarIcon: ({ tintColor }) => <MIcon name="notifications" size={27} color={tintColor} />
+      },
     }
   },
   {

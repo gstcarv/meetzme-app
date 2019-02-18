@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "eventing-bus": "^1.3.3",
     "hex-rgb": "^4.0.0",
     "react": "16.6.3",
     "react-native": "0.58.0",

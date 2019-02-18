@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { 
+import {
   Text,
-  StyleSheet, 
+  StyleSheet,
   View,
   StatusBar,
   Image,
   AsyncStorage,
+  Animated
 } from 'react-native'
 
 import {
@@ -21,53 +22,62 @@ import TouchableScale from 'react-native-touchable-scale'
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 
+import EventBus from 'eventing-bus'
+
+import state from '@/state'
+
 class MainToolbar extends Component {
 
-  constructor(){
+  constructor() {
     super();
     this.state = {
-      profileImage: null
+      profileImage: null,
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
+
     const userData = AsyncStorage.getItem('USER_DATA')
-    .then(user => {
-      user = JSON.parse(user)
-      this.setState({
-        profileImage: user.photoURL
-      });
-    })
+      .then(user => {
+        user = JSON.parse(user)
+        this.setState({
+          profileImage: user.photoURL
+        });
+      })
   }
+
 
   render() {
     return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor={colors.primaryDark} 
-                   animated />
-        <View style={styles.toolbarContainer}>
+      <View style={[styles.container]}>
+        <StatusBar backgroundColor={colors.primaryDark}
+          animated />
+        <Animated.View style={styles.toolbarContainer}>
           <View style={styles.titleContainer}>
             <TouchableScale style={styles.userImageContainer}
-                      rippleSpeed={.6}>
+              rippleSpeed={.6}>
               <Image style={styles.userImage}
-                    source={{ uri: this.state.profileImage }}></Image>
+                source={{ uri: this.state.profileImage }}></Image>
             </TouchableScale>
-            <Text style={styles.toolbarTitle}>{this.props.children || "MeetzMe"}</Text>
+            <Text style={styles.toolbarTitle}>{state.toolbarTitle}</Text>
           </View>
-          <IconButton 
+          <IconButton
             icon="notifications"
             color="#fff"
             onPress={() => {
               this.props.navigation.navigate('Notificacoes')
             }}
           />
-        </View>
+        </Animated.View>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    overflow: 'hidden'
+  },
   toolbarContainer: {
     height: 60,
     backgroundColor: colors.primaryDark,
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingLeft: 15,
-    elevation: 4
+    elevation: 4,
   },
   toolbarTitle: {
     color: '#fff',
