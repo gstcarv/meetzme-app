@@ -161,23 +161,23 @@ export default class DirectionInfoBox extends Component {
           <Text style={styles.transportText}>Selecione o meio de transporte</Text>
           <View style={styles.transportContainer}>
             <TouchableTransportButton
-              onPress={() => this.selectTransport('driving')}
-              active={transport == "driving"}
+              onPress={() => this.selectTransport('DRIVING')}
+              active={transport == "DRIVING"}
               iconName="car" />
 
             <TouchableTransportButton
-              onPress={() => this.selectTransport('transit')}
-              active={transport == "transit"}
+              onPress={() => this.selectTransport('TRANSIT')}
+              active={transport == "TRANSIT"}
               iconName="bus" />
 
             <TouchableTransportButton
-              onPress={() => this.selectTransport('bicycling')}
-              active={transport == "bicycling"}
+              onPress={() => this.selectTransport('BICYCLING')}
+              active={transport == "BICYCLING"}
               iconName="bicycle" />
 
             <TouchableTransportButton
-              onPress={() => this.selectTransport('walking')}
-              active={transport == "walking"}
+              onPress={() => this.selectTransport('WALKING')}
+              active={transport == "WALKING"}
               iconName="walking" />
           </View>
         </View>

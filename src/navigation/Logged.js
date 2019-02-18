@@ -58,6 +58,7 @@ var BottomNavigator = createBottomTabNavigator(
   {
     tabBarComponent: TabBarComponent,
     initialRouteName: "Dashboard",
+    lazy: false,
     tabBarOptions: {
       inactiveTintColor: "#D6D6D6",
       activeTintColor: colors.primaryColor

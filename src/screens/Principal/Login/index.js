@@ -55,6 +55,9 @@ class Login extends Component {
     try {
       await firebase.auth()
         .signInWithEmailAndPassword(email, password)
+      this.setState({
+        loading: false
+      })
       this.props.navigation.navigate("Logged");
     } catch (err) {
       Snackbar.show({
@@ -63,12 +66,6 @@ class Login extends Component {
         backgroundColor: '#b71b25'
       })
     }
-
-    this.setState({
-      loading: false
-    })
-
-
   }
 
   onFocusInput() {

@@ -44,7 +44,7 @@ class SelecionarLocalizacao extends Component {
         distance: 0,
         duration: 0
       },
-      transportMode: "walking",
+      transportMode: "DRIVING",
       loading: true,
       centerLocationHidden: true
     }
