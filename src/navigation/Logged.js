@@ -11,14 +11,14 @@ import HomeBottomTabNavigator from './HomeBottomTabNavigator'
 
 // Screens
 import NovoEvento from '@/screens/NovoEvento'
-import Notificacoes from '@/screens/Notificacoes'
 import SelecionarLocalizacao from '@/screens/NovoEvento/SelecionarLocalizacao'
 import SelecionarConvidados from '@/screens/NovoEvento/SelecionarConvidados'
+import Procurar from '@/screens/Procurar'
 
 export default createStackNavigator(
   {
     Home: HomeBottomTabNavigator,
-    Notificacoes,
+    Procurar,
     NovoEvento,
     SelecionarLocalizacao,
     SelecionarConvidados

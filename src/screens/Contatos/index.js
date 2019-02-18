@@ -7,12 +7,20 @@ import {
   FlatList
 } from 'react-native'
 
+import {
+  FAB
+} from 'react-native-paper'
+
+import {
+  withNavigation
+} from 'react-navigation'
+
 import EventBus from 'eventing-bus';
 
 import SearchField from '@/components/SearchField'
 import ContatoRow from '@/components/Contatos/ContatoRow'
 
-export default class Contatos extends Component {
+class Contatos extends Component {
 
   constructor() {
     super()
@@ -64,8 +72,8 @@ export default class Contatos extends Component {
     const isFirstFromChar = (string, index) => {
       const { contatos } = this.state;
       let lastContact = contatos[index - 1]
-      if(lastContact){
-        if(lastContact.name.charAt(0).toUpperCase() != string.charAt(0).toUpperCase()){
+      if (lastContact) {
+        if (lastContact.name.charAt(0).toUpperCase() != string.charAt(0).toUpperCase()) {
           return true
         } else {
           return false
@@ -76,32 +84,42 @@ export default class Contatos extends Component {
     }
 
     return (
-      <View>
-        <ScrollView> 
+      <View style={{ flex: 1 }}>
+        <ScrollView>
           <SearchField placeholder="Digite o nome do Contato"
             style={{ margin: 15 }} />
 
           <FlatList
             data={this.state.contatos}
             keyExtractor={item => item.id.toString()}
-            
+
             renderItem={
               ({ item, index }) => (
-                <ContatoRow 
-                  data={item} 
-                  rowIndex={index} 
+                <ContatoRow
+                  data={item}
+                  rowIndex={index}
                   isFirstFromChar={isFirstFromChar(item.name, index)}
                 />
               )
             }
           />
-
         </ScrollView>
+        <FAB
+          icon="search"
+          style={styles.fabProcurar}
+          onPress={() => this.props.navigation.push('Procurar')}
+        />
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-
+  fabProcurar: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20
+  }
 })
+
+export default withNavigation(Contatos)
