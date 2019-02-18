@@ -42,7 +42,7 @@ class MainToolbar extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <StatusBar backgroundColor={colors.primaryDark} 
                    animated />
         <View style={styles.toolbarContainer}>
@@ -52,7 +52,7 @@ class MainToolbar extends Component {
               <Image style={styles.userImage}
                     source={{ uri: this.state.profileImage }}></Image>
             </TouchableScale>
-            <Text style={styles.toolbarTitle}>{this.props.children || "Toolbar Title"}</Text>
+            <Text style={styles.toolbarTitle}>{this.props.children || "MeetzMe"}</Text>
           </View>
           <IconButton 
             icon="notifications"
@@ -70,7 +70,7 @@ class MainToolbar extends Component {
 const styles = StyleSheet.create({
   toolbarContainer: {
     height: 60,
-    backgroundColor: colors.primaryColor,
+    backgroundColor: colors.primaryDark,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
@@ -84,13 +84,13 @@ const styles = StyleSheet.create({
     marginLeft: 15
   },
   userImage: {
-    width: 30,
-    height: 30,
+    width: 37,
+    height: 37,
   },
   userImageContainer: {
     borderRadius: 100,
-    borderWidth: 2,
-    borderColor: '#68727D',
+    borderWidth: 3,
+    borderColor: colors.primaryColor,
     overflow: 'hidden'
   },
   titleContainer: {

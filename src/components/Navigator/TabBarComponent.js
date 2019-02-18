@@ -151,9 +151,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontSize: 10,
-    fontFamily: fonts.primary,
+    fontFamily: fonts.primaryMedium,
   }
 });
-
-// export default TabBar;
 

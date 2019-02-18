@@ -7,7 +7,6 @@ import {
   FlatList
 } from 'react-native'
 
-import MainToolbar from '@/components/MainToolbar'
 import SearchField from '@/components/SearchField'
 import ContatoRow from '@/components/Contatos/ContatoRow'
 
@@ -75,8 +74,7 @@ export default class Contatos extends Component {
 
     return (
       <View>
-        <MainToolbar>Contatos</MainToolbar>
-        <ScrollView style={styles.svContainer}>
+        <ScrollView>
           <SearchField placeholder="Digite o nome do Contato"
             style={{ margin: 15 }} />
 
@@ -101,7 +99,5 @@ export default class Contatos extends Component {
 }
 
 const styles = StyleSheet.create({
-  svContainer: {
-    marginBottom: 58
-  }
+
 })

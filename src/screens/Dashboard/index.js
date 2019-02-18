@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, View, Button } from 'react-native'
 import { withNavigation } from 'react-navigation'
 
-import MainToolbar from '@/components/MainToolbar'
 import firebase from 'react-native-firebase'
 
 class Dashboard extends Component {
@@ -15,7 +14,6 @@ class Dashboard extends Component {
   render() {
     return (
       <View>
-        <MainToolbar>Dashboard</MainToolbar>
         <View style={{padding: 20}}>
           <Button title="SignOut"
             onPress={() => this.signout()}></Button>
