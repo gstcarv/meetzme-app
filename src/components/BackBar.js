@@ -18,11 +18,11 @@ class BackBar extends Component {
     return (
       <Appbar theme={{
         colors: {
-          primary: "#fff",
+          primary: this.props.color || "#fff",
         }
       }}
         style={{
-          elevation: 3
+          elevation: this.props.noElevation ? 0 : 3
         }}>
         <Appbar.BackAction
           onPress={this._goBack.bind(this)}

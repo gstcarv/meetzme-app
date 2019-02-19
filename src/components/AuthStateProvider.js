@@ -9,8 +9,6 @@ class AuthStateProvider extends Component {
     const { navigate } = this.props.navigation;
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
       const userData = await AsyncStorage.getItem("USER_DATA");
-      //console.log("Storage", userData);
-      // console.log("AUTH", auth)
       if(auth){
         const user  = auth._user;
         if(!userData){
@@ -23,9 +21,7 @@ class AuthStateProvider extends Component {
             uid
           }))
         }
-        // navigate('Logado');
       } else {
-        console.log("non user");
       }
     })
   }

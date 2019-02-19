@@ -15,95 +15,135 @@ import {
 import { Line } from '@/components/Forms'
 
 import SearchToolbar from '@/components/Procurar/SearchToolbar'
-import colors from '@/resources/colors'
-
 import PersonRow from '@/components/Contatos/ContatoRow'
+import BackBar from '@/components/BackBar'
+
+import colors from '@/resources/colors'
+import fonts from '@/resources/fonts'
+
+
+import firebase from 'react-native-firebase'
 
 export default class Procurar extends Component {
 
   constructor() {
     super()
     this.state = {
-      contatos: [
-        {
-          id: 4,
-          name: "Ana Júlia",
-          username: "@aj_brb",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 6,
-          name: "Alan F.",
-          username: "@alan_ff_gamer",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 2,
-          name: "Bia",
-          username: "@bia_kun",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 5,
-          name: "Bruno Willian",
-          username: "@brn_willian",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 1,
-          name: "Gustavo",
-          username: "@gustavo",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 3,
-          name: "Tiago",
-          username: "@tg_silva",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-      ]
+      usuarios: [],
+      loading: false,
+      isEmptyText: true
+    }
+  }
+
+  async search(text) {
+    const ref = firebase.firestore();
+
+    if (text != "") {
+      try {
+        this.setState({
+          loading: true,
+          isEmptyText: false
+        })
+
+        let searchUsers = await ref
+          .collection('users')
+          .orderBy('name')
+          .startAt(text).endAt(text + '\uf8ff')
+          .limit(20)
+          .get();
+
+        let usuarios = [];
+
+        searchUsers.forEach(doc => {
+          const { name, phone, photoURL, username } = doc.data()
+          usuarios.push({
+            id: doc.id,
+            name,
+            username,
+            phone,
+            photoURL
+          })
+        })
+
+        this.setState({
+          usuarios,
+          loading: false
+        })
+
+      } catch (err) {
+        console.log(err)
+      }
+    } else {
+      this.setState({ isEmptyText: true })
     }
   }
 
   render() {
+
+    const usersLenght = this.state.usuarios.length;
+
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={colors.primaryDark}
           animated />
-        <SearchToolbar />
-        <ScrollView style={styles.svContainer}
-          keyboardShouldPersistTaps="always"
-          keyboardDismissMode='on-drag'
-          onScroll={() => Keyboard.dismiss()}>
+        <BackBar color={colors.primaryDark} noElevation/>
+        <SearchToolbar
+          onChangeText={this.search.bind(this)}
+          loading={this.state.loading}
 
-          <View style={styles.personsContainer}>
-            <Text style={styles.text}>Pessoas</Text>
-            <FlatList
-              data={this.state.contatos}
-              keyExtractor={item => item.id.toString()}
-              keyboardShouldPersistTaps="always"
-              keyboardDismissMode='on-drag'
-              renderItem={
-                ({ item, index }) => (
-                  <PersonRow
-                    data={item}
-                    rowIndex={index}
-                    icon="person-add"
-                  />
-                )
-              }
-            />
+        />
+
+        {
+
+          this.state.isEmptyText == false &&
+          usersLenght > 0 &&
+          <ScrollView style={styles.svContainer}
+            keyboardShouldPersistTaps="always"
+            keyboardDismissMode='on-drag'
+            onScroll={() => Keyboard.dismiss()}>
+
+            <View style={styles.personsContainer}>
+              <Text style={styles.text}>Pessoas</Text>
+              <FlatList
+                data={this.state.usuarios}
+                keyExtractor={item => item.id.toString()}
+                keyboardShouldPersistTaps="always"
+                keyboardDismissMode='on-drag'
+                renderItem={
+                  ({ item, index }) => (
+                    <PersonRow
+                      data={item}
+                      rowIndex={index}
+                      icon="person-add"
+                    />
+                  )
+                }
+              />
+            </View>
+
+            <Line spaceVertical={20} />
+
+          </ScrollView>
+        }
+
+        {
+          this.state.isEmptyText &&
+          <View style={styles.textContainer}>
+            <Text style={styles.textTitle}>Encontre Pessoas</Text>
+            <Text style={styles.textDescription}>Adicione mais pessoas aos seus contatos para compartilhar sua diversão com os amigos!</Text>
           </View>
+        }
 
-          <Line spaceVertical={20} />
+        {
+          this.state.isEmptyText == false &&
+          this.state.loading == false &&
+          usersLenght == 0 &&
+          <View style={styles.textContainer}>
+            <Text style={styles.textTitle}>Não encontrado</Text>
+            <Text style={styles.textDescription}>Tente procurar por palavras chave mais relevantes.</Text>
+          </View>
+        }
 
-          <Text style={{
-            marginBottom: 20,
-            alignSelf: 'center',
-            color: "#ccc"
-          }}>{this.state.contatos.length} Resultados</Text>
-
-        </ScrollView>
       </View>
     )
   }
@@ -125,9 +165,24 @@ const styles = StyleSheet.create({
   personsContainer: {
     backgroundColor: '#fff',
     margin: 10,
-    padding: 10,
-    elevation: 7,
+    padding: 15,
+    elevation: 2,
     borderRadius: 3
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20
+  },
+  textTitle: {
+    fontFamily: fonts.primaryBold,
+    color: colors.primaryColor,
+    fontSize: 40
+  },
+  textDescription: {
+    color: "#aaa",
+    fontSize: 17,
+    marginTop: 15
   },
   text: {
     color: "#cacaca",

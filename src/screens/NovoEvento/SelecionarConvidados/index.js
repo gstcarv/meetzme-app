@@ -153,7 +153,7 @@ export default class SelecionarConvidados extends Component {
         <Animated.View style={styles.fabContainer}>
           <FAB
             icon="keyboard-arrow-right"
-            onPress={() => console.log('Pressed')}
+            onPress={() => console.warn('Pressed')}
             style={{
               transform: [
                 {

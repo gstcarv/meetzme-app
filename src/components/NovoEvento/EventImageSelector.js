@@ -51,7 +51,6 @@ export default class UserImageSelector extends Component {
     let imageElement;
 
     if (this.state.image) {
-      console.log(this.state.image)
       imageElement = (
         <Image style={{
           width: '100%',

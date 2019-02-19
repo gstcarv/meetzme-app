@@ -44,8 +44,6 @@ class Cadastro extends Component {
       loading: true
     })
 
-    return ;
-
     const { username, image } = this.state;
     const userInfo = this.props.navigation.getParam('userInfo');
     let newUser = {
@@ -90,9 +88,7 @@ class Cadastro extends Component {
               }
             ).then(() => this.props.navigation.navigate('Login'));
           } catch (error) {
-            // console.log(error)
           }
-
         })
         .catch(err => {
           Alert.alert("Erro", "Ocorreu um erro, tente novamente mais tarde");

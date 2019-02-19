@@ -69,7 +69,6 @@ class Login extends Component {
   }
 
   onFocusInput() {
-    // console.warn('scroll')
   }
 
   render() {
@@ -111,7 +110,7 @@ class Login extends Component {
             color="#353F4B"
             uppercase={false}
             rounded
-            onPress={() => console.log("ok")}>Esquecí a senha</Button>
+            onPress={() => console.warn("ok")}>Esquecí a senha</Button>
         </View>
       </ScrollView>
     )

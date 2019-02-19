@@ -105,7 +105,7 @@ class Contatos extends Component {
           />
         </ScrollView>
         <FAB
-          icon="search"
+          icon="person-add"
           style={styles.fabProcurar}
           onPress={() => this.props.navigation.push('Procurar')}
         />

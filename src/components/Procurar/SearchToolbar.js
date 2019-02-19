@@ -18,55 +18,12 @@ export default class SearchToolbar extends Component {
 
   constructor() {
     super()
-    this.fullWidth = Dimensions.get('window').width;
-    this.textInputHeight = new Animated.Value(80)
-    this.textInputWidth = new Animated.Value(this.fullWidth)
-  }
-
-  _onFocus() {
-    Animated.parallel([
-      Animated.timing(this.textInputHeight, {
-        toValue: 100,
-        duration: 500
-
-      }
-      ),
-      Animated.timing(this.textInputWidth, {
-        toValue: this.fullWidth,
-        duration: 200
-      }
-      )],
-      {
-        useNativeDriver: true
-      }
-    ).start();
-  }
-
-  _onBlur() {
-    Animated.parallel([
-      Animated.spring(this.textInputHeight, {
-        toValue: 45,
-        duration: 500
-      }
-      ),
-      Animated.spring(this.textInputWidth, {
-        toValue: this.fullWidth - 20,
-        duration: 200
-      }
-      )],
-      {
-        useNativeDriver: true
-      }
-    ).start();
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Animated.View style={[styles.textInputContainer, {
-          height: this.textInputHeight,
-          width: this.textInputWidth
-        }]}>
+        <View style={[styles.textInputContainer]}>
           <View>
             <SLIcon name="magnifier" size={24} color={"#fff"} />
           </View>
@@ -75,8 +32,6 @@ export default class SearchToolbar extends Component {
               placeholder="Digite o nome do Contato"
               placeholderTextColor="#fff"
               style={styles.textInput}
-              onFocus={this._onFocus.bind(this)}
-              onBlur={this._onBlur.bind(this)}
               onChangeText={this.props.onChangeText}
               autoCorrect={false}
               returnKeyType="search"
@@ -90,7 +45,7 @@ export default class SearchToolbar extends Component {
               color="#fff"
             />
           }
-        </Animated.View>
+        </View>
       </View>
     )
   }
@@ -99,17 +54,19 @@ export default class SearchToolbar extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.primaryDark,
-    elevation: 4,
     height: 60,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    overflow: 'hidden'
   },
   textInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     paddingHorizontal: 15,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width: '97%',
+    borderRadius: 3
   },
   textInput: {
     fontFamily: fonts.primary,

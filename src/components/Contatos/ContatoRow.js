@@ -23,7 +23,7 @@ export default class ContatoRow extends Component {
 
   render() {
 
-    const { name, username, profileImage } = this.props.data;
+    const { name, username, photoURL } = this.props.data;
 
     return (
       <View>
@@ -41,7 +41,7 @@ export default class ContatoRow extends Component {
           }}>
           <View style={styles.contactContainer}>
             <Surface style={styles.avatarSurface}>
-              <Image source={profileImage}
+              <Image source={{uri: photoURL}}
                 style={styles.profileImage}
               />
             </Surface>
