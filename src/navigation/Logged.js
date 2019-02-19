@@ -14,12 +14,14 @@ import NovoEvento from '@/screens/NovoEvento'
 import SelecionarLocalizacao from '@/screens/NovoEvento/SelecionarLocalizacao'
 import SelecionarConvidados from '@/screens/NovoEvento/SelecionarConvidados'
 import Procurar from '@/screens/Procurar'
+import Perfil from '@/screens/Perfil'
 
 export default createStackNavigator(
   {
     Home: HomeBottomTabNavigator,
     Procurar,
     NovoEvento,
+    Perfil,
     SelecionarLocalizacao,
     SelecionarConvidados
   },

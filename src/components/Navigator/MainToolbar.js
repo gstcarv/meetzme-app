@@ -17,6 +17,8 @@ import {
   withNavigation
 } from 'react-navigation'
 
+import Transition from 'react-navigation-fluid-transitions'
+
 import TouchableScale from 'react-native-touchable-scale'
 
 import colors from '@/resources/colors'
@@ -32,32 +34,38 @@ class MainToolbar extends Component {
     super();
     this.state = {
       profileImage: null,
+      userData: null
     }
   }
 
   componentDidMount() {
-
     const userData = AsyncStorage.getItem('USER_DATA')
-      .then(user => {
-        user = JSON.parse(user)
-        this.setState({
-          profileImage: user.photoURL
-        });
-      })
+    .then(user => {
+      user = JSON.parse(user)
+      this.setState({
+        profileImage: user.photoURL,
+        userData: user
+      });
+    })
   }
 
 
   render() {
+
+    const { userData } = this.state
+
     return (
       <View style={[styles.container]}>
         <StatusBar backgroundColor={colors.primaryDark}
           animated />
-        <Animated.View style={styles.toolbarContainer}>
+        <View style={styles.toolbarContainer}>
           <View style={styles.titleContainer}>
             <TouchableScale style={styles.userImageContainer}
-              rippleSpeed={.6}>
+              rippleSpeed={.6}
+              onPress={() => { this.props.navigation.navigate('Perfil', { userData }) }}>
               <Image style={styles.userImage}
-                source={{ uri: this.state.profileImage }}></Image>
+                source={{ uri: this.state.profileImage }}
+              />
             </TouchableScale>
             <Text style={styles.toolbarTitle}>{state.toolbarTitle}</Text>
           </View>
@@ -68,7 +76,7 @@ class MainToolbar extends Component {
               this.props.navigation.navigate('Notificacoes')
             }}
           />
-        </Animated.View>
+        </View>
       </View>
     )
   }
