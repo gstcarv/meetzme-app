@@ -18,6 +18,8 @@ import {
 import fonts from '@/resources/fonts'
 import colors from '@/resources/colors'
 
+import store from '@/store'
+
 export default class UserProfileBottomSheet extends Component {
 
   constructor() {
@@ -56,8 +58,9 @@ export default class UserProfileBottomSheet extends Component {
   open(userData) {
     this.setState({
       userData,
-      isContact: userData.isContact || false
+      isContact: store.loggedUserContacts.includes(userData.id)
     })
+    
     this.EventSheet.open()
   }
 

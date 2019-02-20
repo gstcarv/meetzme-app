@@ -73,6 +73,8 @@ export default class Procurar extends Component {
           loading: false
         })
 
+        console.log(store.loggedUserContacts)
+
       } catch (err) {
         console.log(err)
       }
@@ -85,41 +87,43 @@ export default class Procurar extends Component {
     this.UserProfileBottomSheet.open(data)
   }
 
-  async addContact(data) {
+  async addContact(user) {
     let loggedId = store.loggedUserInfo.uid
 
     try {
       await this.firestoreRef
         .collection('users')
         .doc(loggedId)
-        .collection('contatos')
+        .collection('contacts')
         .add({
-          uid: data.id,
+          uid: user.id,
           addedAt: new Date(Date.now())
         })
+      store.loggedUserContacts.push(user.id)
     } catch (e) {
       console.warn(e)
     }
   }
 
-  async removeContact(data) {
+  async removeContact(user) {
     let loggedId = store.loggedUserInfo.uid
 
     try {
-      let contactToDelete = await this.firestoreRef
-        .collection('users')
-        .doc(loggedId)
-        .collection('contacts')
-        .get();
 
-      console.warn(contactToDelete)
+      let contactToDelete =
+        await this.firestoreRef
+          .collection('users')
+          .doc(loggedId)
+          .collection('contacts')
+          .where("uid", "==", user.id)
+          .get();
 
-      contactToDelete.foreach(async doc => {
-        console.warn(doc.id)
-        await this.firestoreRef.collection('users')
-          .doc(loggedId).collection('contatos')
-        .doc(doc.id).delete()
-      })
+      contactToDelete.forEach(async doc => {
+        let userID = doc.data().uid
+        store.loggedUserContacts =
+          store.loggedUserContacts.filter(contactID => contactID != userID)
+        await doc.ref.delete()
+      });
 
     } catch (e) {
       // console.warn(e)
@@ -134,7 +138,11 @@ export default class Procurar extends Component {
       <View style={styles.container}>
         <StatusBar backgroundColor={colors.primaryDark}
           animated />
-        <BackBar color={colors.primaryDark} noElevation />
+        <BackBar
+          color={colors.primaryDark}
+          noElevation
+          title="Procurar"
+        />
         <SearchToolbar
           onChangeText={this.search.bind(this)}
           loading={this.state.loading}

@@ -1,4 +1,5 @@
 export default {
   toolbarTitle: "Dashboard",
-  loggedUserInfo: null
+  loggedUserInfo: {},
+  loggedUserContacts: []
 }

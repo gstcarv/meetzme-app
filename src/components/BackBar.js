@@ -5,9 +5,9 @@ import defaultStyles from '@/resources/defaultStyles'
 
 class BackBar extends Component {
 
-  _goBack(){
+  _goBack() {
     const { navigate, goBack } = this.props.navigation
-    if(this.props.path){
+    if (this.props.path) {
       navigate(this.props.path)
     } else {
       goBack()
@@ -28,6 +28,13 @@ class BackBar extends Component {
           onPress={this._goBack.bind(this)}
           color={defaultStyles.titleWhite.color}
         />
+ 
+        {
+          <Appbar.Content
+            title={this.props.title}
+          />
+        }
+
       </Appbar>
     )
   }

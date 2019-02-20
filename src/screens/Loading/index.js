@@ -12,7 +12,7 @@ import { withNavigation } from 'react-navigation'
 
 import colors from "@/resources/colors"
 
-import firebase from 'react-native-firebase'
+import firebase, { firestore } from 'react-native-firebase'
 
 import store from '@/store'
 
@@ -39,6 +39,20 @@ class Principal extends Component {
         } else {
           store.loggedUserInfo = JSON.parse(userData)
         }
+
+        let userContacts = await firebase.firestore()
+          .collection('users')
+          .doc(user.uid)
+          .collection('contacts')
+          .get();
+
+        userContacts.forEach(contact => {
+          let uid = contact.data().uid;
+          if(!store.loggedUserContacts.includes(uid)){
+            store.loggedUserContacts.push(uid)
+          }
+        })
+
         navigate('Logged');
       } else {
         navigate('Principal');
