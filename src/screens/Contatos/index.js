@@ -29,14 +29,13 @@ class Contatos extends Component {
   constructor() {
     super()
     this.state = {
-      contacts: []
+      contacts: [],
+      searchContacts: []
     }
     this.scrollValue = 0
   }
 
   componentDidMount() {
-    var contactArr = []
-
     store.loggedUserContacts.forEach(async id => {
       let contact = await firebase.firestore()
         .collection('users')
@@ -58,6 +57,25 @@ class Contatos extends Component {
           addContact
         ]
       })
+
+      this.setState({ searchContacts: this.state.contacts })
+
+    })
+  }
+
+  search(text) {
+    const { contacts } = this.state;
+    let searchContacts = contacts.filter(contact => {
+
+      let name = contact.name.toLowerCase(),
+          username = contact.username.toLowerCase(),
+          searchText = text.toLowerCase()
+
+      return name.includes(searchText) 
+        || username.includes(searchText)
+    })
+    this.setState({
+      searchContacts
     })
   }
 
@@ -81,11 +99,14 @@ class Contatos extends Component {
 
       <View style={{ flex: 1 }}>
         <ScrollView>
-          <SearchField placeholder="Digite o nome do Contato"
-            style={{ margin: 15 }} />
+          <SearchField
+            placeholder="Digite o nome ou @ do contato"
+            style={{ margin: 15 }}
+            onChangeText={this.search.bind(this)}
+          />
 
           <FlatList
-            data={this.state.contacts}
+            data={this.state.searchContacts}
             keyExtractor={item => item.id}
 
             renderItem={

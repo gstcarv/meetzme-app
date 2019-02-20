@@ -11,6 +11,7 @@ export default class SearchField extends Component {
         <SLIcon name="magnifier" size={20} color="#ccc"></SLIcon>
         <TextInput placeholder={this.props.placeholder}
             style={styles.textInput}
+            onChangeText={this.props.onChangeText}
         />
       </View>
     )
