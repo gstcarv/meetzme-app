@@ -20,58 +20,52 @@ import EventBus from 'eventing-bus';
 import SearchField from '@/components/SearchField'
 import ContatoRow from '@/components/Contatos/ContatoRow'
 
+import firebase from 'react-native-firebase'
+
+import store from '@/store'
+
 class Contatos extends Component {
 
   constructor() {
     super()
     this.state = {
-      contatos: [
-        {
-          id: 4,
-          name: "Ana Júlia",
-          username: "@aj_brb",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 6,
-          name: "Alan F.",
-          username: "@alan_ff_gamer",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 2,
-          name: "Bia",
-          username: "@bia_kun",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 5,
-          name: "Bruno Willian",
-          username: "@brn_willian",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 1,
-          name: "Gustavo",
-          username: "@gustavo",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 3,
-          name: "Tiago",
-          username: "@tg_silva",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-      ]
+      contacts: []
     }
     this.scrollValue = 0
+  }
+
+  componentDidMount() {
+    var contactArr = []
+
+    store.loggedUserContacts.forEach(async id => {
+      let contact = await firebase.firestore()
+        .collection('users')
+        .doc(id)
+        .get();
+
+      const { name, phone, photoURL, username } = contact.data()
+      let addContact = {
+        id: contact.id,
+        name,
+        username: "@" + username,
+        phone,
+        photoURL
+      }
+
+      this.setState({
+        contacts: [
+          ...this.state.contacts,
+          addContact
+        ]
+      })
+    })
   }
 
   render() {
 
     const isFirstFromChar = (string, index) => {
-      const { contatos } = this.state;
-      let lastContact = contatos[index - 1]
+      const { contacts } = this.state;
+      let lastContact = contacts[index - 1]
       if (lastContact) {
         if (lastContact.name.charAt(0).toUpperCase() != string.charAt(0).toUpperCase()) {
           return true
@@ -84,21 +78,22 @@ class Contatos extends Component {
     }
 
     return (
+
       <View style={{ flex: 1 }}>
         <ScrollView>
           <SearchField placeholder="Digite o nome do Contato"
             style={{ margin: 15 }} />
 
           <FlatList
-            data={this.state.contatos}
-            keyExtractor={item => item.id.toString()}
+            data={this.state.contacts}
+            keyExtractor={item => item.id}
 
             renderItem={
               ({ item, index }) => (
                 <ContatoRow
                   data={item}
                   rowIndex={index}
-                  isFirstFromChar={isFirstFromChar(item.name, index)}
+                  isFirstFromChar={isFirstFromChar(item, index)}
                 />
               )
             }

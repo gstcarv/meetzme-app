@@ -73,11 +73,7 @@ export default class Procurar extends Component {
           loading: false
         })
 
-        console.log(store.loggedUserContacts)
-
-      } catch (err) {
-        console.log(err)
-      }
+      } catch (err) {}
     } else {
       this.setState({ isEmptyText: true })
     }
@@ -100,9 +96,7 @@ export default class Procurar extends Component {
           addedAt: new Date(Date.now())
         })
       store.loggedUserContacts.push(user.id)
-    } catch (e) {
-      console.warn(e)
-    }
+    } catch (e) { }
   }
 
   async removeContact(user) {

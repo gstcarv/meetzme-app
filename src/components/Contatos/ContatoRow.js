@@ -31,7 +31,7 @@ export default class ContatoRow extends Component {
           this.props.isFirstFromChar == true &&
             <View style={styles.alphabeticListIndicator}>
               <Text style={styles.charStyle}>
-                {name.charAt(0).toUpperCase()}
+                { name && name.charAt(0).toUpperCase()}
               </Text>
             </View>
         }
