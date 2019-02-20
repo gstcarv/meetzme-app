@@ -5,24 +5,28 @@ import {
   StatusBar,
   ScrollView,
   FlatList,
-  Keyboard
+  Keyboard,
+  AsyncStorage,
 } from 'react-native'
 
 import {
-  Text
+  Text, Snackbar
 } from 'react-native-paper'
 
 import { Line } from '@/components/Forms'
 
 import SearchToolbar from '@/components/Procurar/SearchToolbar'
-import PersonRow from '@/components/Contatos/ContatoRow'
+import ContatoRow from '@/components/Contatos/ContatoRow'
 import BackBar from '@/components/BackBar'
+
+import UserProfileBottomSheet from '@/components/Contatos/UserProfileBottomSheet'
 
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 
-
 import firebase from 'react-native-firebase'
+
+import store from '@/store'
 
 export default class Procurar extends Component {
 
@@ -32,12 +36,11 @@ export default class Procurar extends Component {
       usuarios: [],
       loading: false,
       isEmptyText: true
-    }
+    },
+      this.firestoreRef = firebase.firestore();
   }
 
   async search(text) {
-    const ref = firebase.firestore();
-
     if (text != "") {
       try {
         this.setState({
@@ -45,10 +48,10 @@ export default class Procurar extends Component {
           isEmptyText: false
         })
 
-        let searchUsers = await ref
+        let searchUsers = await this.firestoreRef
           .collection('users')
-          .orderBy('name')
-          .startAt(text).endAt(text + '\uf8ff')
+          .orderBy("name")
+          .startAt(text).endAt(text + "\uf8ff")
           .limit(20)
           .get();
 
@@ -59,7 +62,7 @@ export default class Procurar extends Component {
           usuarios.push({
             id: doc.id,
             name,
-            username,
+            username: "@" + username,
             phone,
             photoURL
           })
@@ -78,6 +81,51 @@ export default class Procurar extends Component {
     }
   }
 
+  _onUserPress(data) {
+    this.UserProfileBottomSheet.open(data)
+  }
+
+  async addContact(data) {
+    let loggedId = store.loggedUserInfo.uid
+
+    try {
+      await this.firestoreRef
+        .collection('users')
+        .doc(loggedId)
+        .collection('contatos')
+        .add({
+          uid: data.id,
+          addedAt: new Date(Date.now())
+        })
+    } catch (e) {
+      console.warn(e)
+    }
+  }
+
+  async removeContact(data) {
+    let loggedId = store.loggedUserInfo.uid
+
+    try {
+      let contactToDelete = await this.firestoreRef
+        .collection('users')
+        .doc(loggedId)
+        .collection('contacts')
+        .get();
+
+      console.warn(contactToDelete)
+
+      contactToDelete.foreach(async doc => {
+        console.warn(doc.id)
+        await this.firestoreRef.collection('users')
+          .doc(loggedId).collection('contatos')
+        .doc(doc.id).delete()
+      })
+
+    } catch (e) {
+      // console.warn(e)
+    }
+  }
+
   render() {
 
     const usersLenght = this.state.usuarios.length;
@@ -86,7 +134,7 @@ export default class Procurar extends Component {
       <View style={styles.container}>
         <StatusBar backgroundColor={colors.primaryDark}
           animated />
-        <BackBar color={colors.primaryDark} noElevation/>
+        <BackBar color={colors.primaryDark} noElevation />
         <SearchToolbar
           onChangeText={this.search.bind(this)}
           loading={this.state.loading}
@@ -111,10 +159,11 @@ export default class Procurar extends Component {
                 keyboardDismissMode='on-drag'
                 renderItem={
                   ({ item, index }) => (
-                    <PersonRow
+                    <ContatoRow
                       data={item}
                       rowIndex={index}
-                      icon="person-add"
+                      noIcon
+                      onPress={this._onUserPress.bind(this)}
                     />
                   )
                 }
@@ -143,6 +192,12 @@ export default class Procurar extends Component {
             <Text style={styles.textDescription}>Tente procurar por palavras chave mais relevantes.</Text>
           </View>
         }
+
+        <UserProfileBottomSheet
+          ref={ref => this.UserProfileBottomSheet = ref}
+          onAddButtonPress={(data) => this.addContact(data)}
+          onRemoveButtonPress={(data) => this.removeContact(data)}
+        />
 
       </View>
     )

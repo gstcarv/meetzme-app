@@ -14,6 +14,8 @@ import colors from "@/resources/colors"
 
 import firebase from 'react-native-firebase'
 
+import store from '@/store'
+
 class Principal extends Component {
 
   componentDidMount() {
@@ -25,13 +27,17 @@ class Principal extends Component {
         const user = auth._user;
         if (!userData) {
           const { displayName, email, phoneNumber, photoURL, uid } = user;
-          AsyncStorage.setItem("USER_DATA", JSON.stringify({
+          let userInfo = {
             displayName,
             email,
             phoneNumber,
             photoURL,
             uid
-          }))
+          }
+          AsyncStorage.setItem("USER_DATA", JSON.stringify(userInfo))
+          store.loggedUserInfo = userInfo
+        } else {
+          store.loggedUserInfo = JSON.parse(userData)
         }
         navigate('Logged');
       } else {

@@ -30,6 +30,8 @@ import {
 import colors from '@/resources/colors'
 import TouchableScale from 'react-native-touchable-scale';
 
+import store from '@/store'
+
 class Perfil extends Component {
 
   constructor() {
@@ -61,7 +63,7 @@ class Perfil extends Component {
               style={styles.imageContainer}>
               <View>
                 <Image
-                  source={require('@assets/images/event-test-image.jpg')}
+                  source={{uri: store.loggedUserInfo.photoURL}}
                   style={styles.image}
                 />
               </View>

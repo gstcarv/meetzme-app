@@ -34,6 +34,7 @@ export default class SearchToolbar extends Component {
               style={styles.textInput}
               onChangeText={this.props.onChangeText}
               autoCorrect={false}
+              autoComplete="off"
               returnKeyType="search"
               autoFocus
             />

@@ -26,27 +26,19 @@ import fonts from '@/resources/fonts'
 
 import EventBus from 'eventing-bus'
 
-import state from '@/state'
+import store from '@/store'
 
 class MainToolbar extends Component {
 
   constructor() {
     super();
     this.state = {
-      profileImage: null,
-      userData: null
+      userData: store.loggedUserInfo
     }
   }
 
   componentDidMount() {
-    const userData = AsyncStorage.getItem('USER_DATA')
-    .then(user => {
-      user = JSON.parse(user)
-      this.setState({
-        profileImage: user.photoURL,
-        userData: user
-      });
-    })
+    
   }
 
 
@@ -64,10 +56,10 @@ class MainToolbar extends Component {
               rippleSpeed={.6}
               onPress={() => { this.props.navigation.navigate('Perfil', { userData }) }}>
               <Image style={styles.userImage}
-                source={{ uri: this.state.profileImage }}
+                source={{ uri: userData.photoURL }}
               />
             </TouchableScale>
-            <Text style={styles.toolbarTitle}>{state.toolbarTitle}</Text>
+            <Text style={styles.toolbarTitle}>{store.toolbarTitle}</Text>
           </View>
           <IconButton
             icon="notifications"

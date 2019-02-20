@@ -49,11 +49,16 @@ export default class ContatoRow extends Component {
               <Text style={styles.rowTitle}>{name}</Text>
               <Text style={styles.rowSubtitle}>{username}</Text>
             </View>
-            <IconButton
-              icon={this.props.icon || "more-vert"}
-              style={styles.moreButton}
-              onPress={() => console.warn('click')}
-            />
+            {
+              !this.props.noIcon &&
+              <IconButton
+                icon={this.props.icon || "more-vert"}
+                style={styles.moreButton}
+                onPress={() => {
+                  if (this.props.onEndButtonPress) this.props.onEndButtonPress(this.props.data)
+                }}
+              />
+            }
           </View>
         </TouchableRipple>
       </View>
