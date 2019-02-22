@@ -44,6 +44,7 @@ class SelecionarLocalizacao extends Component {
         distance: 0,
         duration: 0
       },
+      locationName: null,
       transportMode: "DRIVING",
       loading: true,
       centerLocationHidden: true
@@ -64,6 +65,7 @@ class SelecionarLocalizacao extends Component {
 
   onSelectLocation(data, { geometry }) {
     this.setState({
+      locationName: data.description,
       destination: {
         latitude: geometry.location.lat,
         longitude: geometry.location.lng
@@ -121,9 +123,12 @@ class SelecionarLocalizacao extends Component {
       const { navigation } = this.props;
       let info = navigation.getParam('infoEvento')
       navigation.navigate('SelecionarConvidados', {
-        ...info,
-        destination: this.state.destination,
-        transport: this.state.transportMode
+        infoEvento: {
+          ...info,
+          locationName: this.state.locationName,
+          destination: this.state.destination,
+          transport: this.state.transportMode
+        }
       })
     }
   }
@@ -141,16 +146,15 @@ class SelecionarLocalizacao extends Component {
   }
 
   _onRegionChange() {
-    if (this.centerLocationHidden == true 
-        && this.state.destination == null
-        && this.state.userLocation.latitude != 0) 
-    {
+    if (this.centerLocationHidden == true
+      && this.state.destination == null
+      && this.state.userLocation.latitude != 0) {
       this.CenterLocationFloatButton.show()
       this.centerLocationHidden = false
     }
   }
 
-  _onFitButtonPress(){
+  _onFitButtonPress() {
     this.mapview.map.fitToCoordinates(this.state.directionResult.coordinates, {
       edgePadding: {
         left: 35,
@@ -161,7 +165,7 @@ class SelecionarLocalizacao extends Component {
     })
   }
 
-  _onSelectTransport(transportMode){
+  _onSelectTransport(transportMode) {
     this.setState({ transportMode })
     this.DirectionInfoBox.enableLoading()
     this.FitFloatButton.hide()
@@ -229,7 +233,7 @@ class SelecionarLocalizacao extends Component {
             ref={ref => this.CenterLocationFloatButton = ref}
           />
 
-          <FitFloatButton 
+          <FitFloatButton
             onPress={this._onFitButtonPress.bind(this)}
             ref={ref => this.FitFloatButton = ref}
           />

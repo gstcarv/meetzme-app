@@ -20,13 +20,13 @@ export default createStackNavigator(
   {
     Home: HomeBottomTabNavigator,
     Procurar,
-    NovoEvento,
     Perfil,
+    NovoEvento,
     SelecionarLocalizacao,
     SelecionarConvidados
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'NovoEvento',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }

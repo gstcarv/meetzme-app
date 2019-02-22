@@ -65,7 +65,7 @@ class MainToolbar extends Component {
             icon="notifications"
             color="#fff"
             onPress={() => {
-              this.props.navigation.navigate('Notificacoes')
+              
             }}
           />
         </View>

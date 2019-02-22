@@ -14,12 +14,18 @@ import {
   FAB
 } from 'react-native-paper'
 
+import { withNavigation } from 'react-navigation'
+
+import firebase from 'react-native-firebase'
+
 import BackBar from '@/components/BackBar'
 import ConvidadosSearchField from '@/components/NovoEvento/ConvidadosSearchField'
 import ConvidadosListRow from '@/components/NovoEvento/ConvidadosListRow'
 import defaultStyles from '@/resources/defaultStyles'
 
-export default class SelecionarConvidados extends Component {
+import store from '@/store'
+
+class SelecionarConvidados extends Component {
 
   constructor() {
     super()
@@ -115,8 +121,55 @@ export default class SelecionarConvidados extends Component {
     this.toggleFAB(newConvidados)
   }
 
-  render() {
+  async createEvent() {
+    const { navigation } = this.props
+    const eventsRef = firebase.firestore().collection('events')
     
+    const {
+      title,
+      description,
+      eventDateTime,
+      destination,
+      image,
+      transport,
+      locationName
+    } = navigation.getParam('infoEvento')
+
+    const newEventRef = eventsRef.doc(),
+          eventImageRef = firebase.storage().ref('events').child(newEventRef.id)
+
+    var fileUpload = await eventImageRef.putFile(image.path, {
+      contentType: image.mime
+    })
+
+    let imageURL = fileUpload.downloadURL;
+
+    const adminID = store.loggedUserInfo.uid
+    newEventRef.set({
+      adminID,
+      title,
+      description,
+      datetime: eventDateTime,
+      locationName,
+      destination,
+      participants: [adminID],
+      invitedUsers: this.state.convidados,
+      imageURL
+    }).then(async newEvent => {
+      await firebase.firestore()
+        .collection('users')
+        .doc(adminID)
+        .collection('acceptedEvents')
+        .doc(newEventRef.id)
+        .set({
+          acceptedAt: Date.now(),
+          transportMode: transport
+        })
+    })
+  }
+
+  render() {
+
     return (
 
       <View>
@@ -153,7 +206,7 @@ export default class SelecionarConvidados extends Component {
         <Animated.View style={styles.fabContainer}>
           <FAB
             icon="keyboard-arrow-right"
-            onPress={() => console.warn('Pressed')}
+            onPress={this.createEvent.bind(this)}
             style={{
               transform: [
                 {
@@ -176,3 +229,5 @@ const styles = StyleSheet.create({
     right: 15
   }
 })
+
+export default withNavigation(SelecionarConvidados)

@@ -41,7 +41,7 @@ export default class UserImageSelector extends Component {
         compressImageQuality: .6
       }).then(image => {
         this.setState({ image })
-        // _reactComponent.props.onSelectImage(image)
+        _reactComponent.props.onSelectImage(image)
       });
     }
   }

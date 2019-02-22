@@ -10,12 +10,12 @@ import {
 
 // Screens
 import Aceitos from './Aceitos'
-import Pendentes from './Pendentes'
+import Convites from './Pendentes'
 
 export default createMaterialTopTabNavigator(
   {
     Aceitos,
-    Pendentes
+    Convites
   },
   {
     initialRouteName: 'Aceitos',

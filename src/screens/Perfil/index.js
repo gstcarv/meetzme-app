@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   headerContainer: {
-    height: 290,
+    height: 270,
     backgroundColor: 'transparent'
   },
   headerFill: {
