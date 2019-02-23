@@ -26,7 +26,7 @@ export default createStackNavigator(
     SelecionarConvidados
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'SelecionarConvidados',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }

@@ -9,6 +9,7 @@ import PaperThemes from '@/resources/themes'
 // Store
 import ContactsStore from '@/store/ContactsStore'
 import LoggedUserStore from '@/store/LoggedUserStore'
+import EventsStore from '@/store/EventsStore'
 
 export default class App extends Component {
   render() {
@@ -16,7 +17,8 @@ export default class App extends Component {
       <PaperProvider theme={PaperThemes.primary}>
         <MobxProvider 
           ContactsStore={ContactsStore}
-          LoggedUserStore={LoggedUserStore}>
+          LoggedUserStore={LoggedUserStore}
+          EventsStore={EventsStore}>
          <NavigationStack />
         </MobxProvider>
       </PaperProvider>

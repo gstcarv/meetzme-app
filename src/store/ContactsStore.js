@@ -102,15 +102,21 @@ class ContactsStore {
     this.searchText = text
   }
 
+  @action
+  clearSearch(){
+    this.searchText = ""
+  }
+
   @computed
   get searchContacts() {
     // Procura na Array de Contatos o Items Correpondentes
     return this.contacts.filter(contact => {
       let name = contact.name.toLowerCase(),
-        username = contact.username.toLowerCase()
+        username = contact.username.toLowerCase(),
+        searchText = this.searchText.toLowerCase()
 
-      return name.includes(this.searchText)
-        || username.includes(this.searchText)
+      return name.includes(searchText)
+        || username.includes(searchText)
     })
   }
 

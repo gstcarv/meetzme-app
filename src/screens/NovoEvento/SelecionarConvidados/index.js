@@ -26,13 +26,19 @@ import ConvidadosSearchField from '@/components/NovoEvento/ConvidadosSearchField
 import ConvidadosListRow from '@/components/NovoEvento/ConvidadosListRow'
 import defaultStyles from '@/resources/defaultStyles'
 
+import { 
+  inject, 
+  observer 
+} from 'mobx-react/native'
+import { toJS } from 'mobx'
+
+@inject('ContactsStore')
+@observer
 class SelecionarConvidados extends Component {
 
-  constructor() {
+  constructor(props) {
     super()
     this.state = {
-      allContatos: store.contactsData,
-      searchContacts: store.contactsData,
       convidados: [],
       fabVisible: false,
       loading: false
@@ -41,18 +47,13 @@ class SelecionarConvidados extends Component {
     this.fabButtonTranslate = new Animated.Value(100)
 
   }
-  
-  search(text) {
-    let contacts = store.contactsData
-    let searchContacts = contacts.filter(contact => {
-      let name = contact.name.toLowerCase(),
-          username = contact.username.toLowerCase(),
-          searchText = text.toLowerCase()
 
-      return name.includes(searchText) 
-        || username.includes(searchText)
-    })
-    this.setState({ searchContacts })
+  componentDidMount(){
+    this.props.ContactsStore.clearSearch()
+  }
+
+  componentWillUnmount(){
+    this.props.ContactsStore.clearSearch()
   }
 
   toggleFAB(convidados) {
@@ -169,13 +170,13 @@ class SelecionarConvidados extends Component {
 
   render() {
 
-    let numContatos = this.state.allContatos.length;
 
-    console.log("RENDER => ", store.contactsData)
-    console.log("STATE IN RENDER => ", this.state.allContatos)
-    
+    const { ContactsStore } = this.props;
+
+    let numContatos = ContactsStore.contacts.length;
+
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#F5F5F5"
           barStyle="dark-content"
           animated />
@@ -193,15 +194,15 @@ class SelecionarConvidados extends Component {
               {numContatos > 0 ? numContatos : "Nenhum"} contato{numContatos >= 2 ? 's' : ''}
             </Text>
 
-            <ConvidadosSearchField 
+            <ConvidadosSearchField
               style={{ marginTop: 25 }}
-              onChangeText={this.search.bind(this)}
+              onChangeText={text => ContactsStore.search(text)}
             />
             <Text style={{ color: "#ccc" }}>Selecione os Convidados</Text>
           </View>
 
           <FlatList
-            data={this.state.searchContacts}
+            data={ContactsStore.searchContacts}
             keyExtractor={item => item.id}
             renderItem={
               ({ item, index }) =>
