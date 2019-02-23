@@ -26,10 +26,7 @@ import fonts from '@/resources/fonts'
 
 import firebase from 'react-native-firebase'
 
-import store from '@/store'
-
 import { inject, observer } from 'mobx-react/native'
-import { toJS } from 'mobx'
 
 @inject('ContactsStore')
 @observer

@@ -30,8 +30,6 @@ import {
 import colors from '@/resources/colors'
 import TouchableScale from 'react-native-touchable-scale';
 
-import store from '@/store'
-
 import { inject, observer } from 'mobx-react/native'
 
 @inject('LoggedUserStore')

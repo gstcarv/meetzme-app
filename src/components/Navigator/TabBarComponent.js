@@ -14,7 +14,7 @@ import { TouchableRipple } from 'react-native-paper'
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 
-import store from '@/store'
+import ToolbarTitle from '@/store/ToolbarTitle'
 
 export default class TabBarComponent extends React.Component {
 
@@ -85,7 +85,7 @@ export default class TabBarComponent extends React.Component {
                 onPress={(e) => {
                   if (!isMainButton) {
                     this.setState({ atualRouteIndex: routeIndex })
-                    store.toolbarTitle = getLabelText({route})
+                    ToolbarTitle.set(getLabelText({route}))
                     onTabPress({ route });
                   }
                 }}

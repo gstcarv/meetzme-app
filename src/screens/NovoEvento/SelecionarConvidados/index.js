@@ -26,8 +26,6 @@ import ConvidadosSearchField from '@/components/NovoEvento/ConvidadosSearchField
 import ConvidadosListRow from '@/components/NovoEvento/ConvidadosListRow'
 import defaultStyles from '@/resources/defaultStyles'
 
-import store from '@/store'
-
 class SelecionarConvidados extends Component {
 
   constructor() {

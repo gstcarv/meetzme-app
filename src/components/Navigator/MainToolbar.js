@@ -28,7 +28,7 @@ import EventBus from 'eventing-bus'
 
 import { inject, observer } from 'mobx-react/native'
 
-import store from '@/store'
+import ToolbarTitle from '@/store/ToolbarTitle'
 
 @inject('LoggedUserStore')
 @observer
@@ -58,7 +58,7 @@ class MainToolbar extends Component {
                 source={{ uri: userData.photoURL }}
               />
             </TouchableScale>
-            <Text style={styles.toolbarTitle}>{store.toolbarTitle}</Text>
+            <Text style={styles.toolbarTitle}>{ToolbarTitle.get()}</Text>
           </View>
           <IconButton
             icon="notifications"
