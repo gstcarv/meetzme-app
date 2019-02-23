@@ -11,7 +11,11 @@ export default class ConvidadosSearchField extends Component {
         <SLIcon name="magnifier" size={20} color="#ccc"/>
         <TextInput placeholder="Digite o Nome ou Usuário do Contato"
                   placeholderTextColor="#ccc"
-                  style={styles.textInput} />
+                  style={styles.textInput}
+                  onChangeText={this.props.onChangeText}
+                  autoCorrect={false}
+                  autoComplete="off"
+                  returnKeyType="search" />
       </View>
     )
   }

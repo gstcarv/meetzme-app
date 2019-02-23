@@ -46,14 +46,30 @@ class Principal extends Component {
           .collection('contacts')
           .get();
 
-        userContacts.forEach(contact => {
+        userContacts.forEach(async contact => {
           let uid = contact.data().uid;
-          if(!store.loggedUserContacts.includes(uid)){
+          if (!store.loggedUserContacts.includes(uid)) {
             store.loggedUserContacts.push(uid)
+
+            let contact = await firebase.firestore()
+              .collection('users')
+              .doc(uid)
+              .get();
+
+            const { name, phone, photoURL, username } = contact.data()
+            let contactData = {
+              id: contact.id,
+              name,
+              username: "@" + username,
+              phone,
+              photoURL
+            }
+            store.contactsData.push(contactData)
           }
         })
 
         navigate('Logged');
+
       } else {
         navigate('Principal');
       }
@@ -66,17 +82,17 @@ class Principal extends Component {
 
   render() {
     return (
-        <View style={styles.container}>
-          <StatusBar backgroundColor={colors.primaryDark}
-            animated />
-          <View style={{ alignItems: 'center' }}>
-            <Image source={require("@assets/images/logo_gray.png")}
-              style={{ width: 130, height: 130 }}></Image>
-          </View>
-          <View>
-            <ActivityIndicator size="large" color="white" style={styles.loader}/>
-          </View>
+      <View style={styles.container}>
+        <StatusBar backgroundColor={colors.primaryDark}
+          animated />
+        <View style={{ alignItems: 'center' }}>
+          <Image source={require("@assets/images/logo_gray.png")}
+            style={{ width: 130, height: 130 }}></Image>
         </View>
+        <View>
+          <ActivityIndicator size="large" color="white" style={styles.loader} />
+        </View>
+      </View>
     )
   }
 }

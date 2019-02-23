@@ -30,43 +30,30 @@ class Contatos extends Component {
     super()
     this.state = {
       contacts: [],
-      searchContacts: []
+      searchContacts: [],
+      searchText: ''
     }
     this.scrollValue = 0
   }
 
   componentDidMount() {
-    store.loggedUserContacts.forEach(async id => {
-      let contact = await firebase.firestore()
-        .collection('users')
-        .doc(id)
-        .get();
-
-      const { name, phone, photoURL, username } = contact.data()
-      let addContact = {
-        id: contact.id,
-        name,
-        username: "@" + username,
-        phone,
-        photoURL
+    this.focusSub = this.props.navigation.addListener('didFocus', (payload) => {
+      if(this.state.searchContacts != store.contactsData){
+        this.setState({
+          searchContacts: store.contactsData
+        })
+        this.search(this.state.searchText)
       }
-
-      this.setState({
-        contacts: [
-          ...this.state.contacts,
-          addContact
-        ]
-      })
-
-      this.setState({ searchContacts: this.state.contacts })
-
     })
   }
 
-  search(text) {
-    const { contacts } = this.state;
-    let searchContacts = contacts.filter(contact => {
+  componentWillMount(){
+    this.focusSub = null
+  }
 
+  search(text) {
+    let contacts = store.contactsData
+    let searchContacts = contacts.filter(contact => {
       let name = contact.name.toLowerCase(),
           username = contact.username.toLowerCase(),
           searchText = text.toLowerCase()
@@ -74,8 +61,9 @@ class Contatos extends Component {
       return name.includes(searchText) 
         || username.includes(searchText)
     })
-    this.setState({
-      searchContacts
+    this.setState({ 
+      searchContacts,
+      searchText: text
     })
   }
 
@@ -85,7 +73,7 @@ class Contatos extends Component {
       const { contacts } = this.state;
       let lastContact = contacts[index - 1]
       if (lastContact) {
-        if (lastContact.name.charAt(0).toUpperCase() != string.charAt(0).toUpperCase()) {
+        if (lastContact.name.toString().charAt(0).toUpperCase() != string.toString().charAt(0).toUpperCase()) {
           return true
         } else {
           return false
@@ -96,7 +84,6 @@ class Contatos extends Component {
     }
 
     return (
-
       <View style={{ flex: 1 }}>
         <ScrollView>
           <SearchField

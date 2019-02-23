@@ -6,7 +6,7 @@ import {
   ScrollView,
   FlatList,
   Animated,
-  Easing
+  Easing,
 } from 'react-native'
 
 import {
@@ -14,10 +14,13 @@ import {
   FAB
 } from 'react-native-paper'
 
+import Snackbar from 'react-native-snackbar'
+
 import { withNavigation } from 'react-navigation'
 
 import firebase from 'react-native-firebase'
 
+import LoadingModal from '@/components/NovoEvento/LoadingModal'
 import BackBar from '@/components/BackBar'
 import ConvidadosSearchField from '@/components/NovoEvento/ConvidadosSearchField'
 import ConvidadosListRow from '@/components/NovoEvento/ConvidadosListRow'
@@ -30,50 +33,35 @@ class SelecionarConvidados extends Component {
   constructor() {
     super()
     this.state = {
-      contatos: [
-        {
-          id: 1,
-          name: "Gustavo",
-          username: "@gustavo",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 2,
-          name: "Bia",
-          username: "@bia_kun",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 3,
-          name: "Tiago",
-          username: "@tg_silva",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 4,
-          name: "Ana Júlia",
-          username: "@aj_brb",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 5,
-          name: "Bruno Willian",
-          username: "@brn_willian",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        },
-        {
-          id: 6,
-          name: "Alan F.",
-          username: "@alan_ff_gamer",
-          profileImage: require('@assets/images/event-test-image.jpg')
-        }
-      ],
+      allContatos: store.contactsData,
+      searchContacts: store.contactsData,
       convidados: [],
-      fabVisible: false
+      fabVisible: false,
+      loading: false
     }
 
     this.fabButtonTranslate = new Animated.Value(100)
 
+  }
+
+  async componentDidMount(){
+    let a = await store.contactsData;
+    this.setState({
+      allContatos: a
+    })
+  }
+  
+  search(text) {
+    let contacts = store.contactsData
+    let searchContacts = contacts.filter(contact => {
+      let name = contact.name.toLowerCase(),
+          username = contact.username.toLowerCase(),
+          searchText = text.toLowerCase()
+
+      return name.includes(searchText) 
+        || username.includes(searchText)
+    })
+    this.setState({ searchContacts })
   }
 
   toggleFAB(convidados) {
@@ -124,38 +112,47 @@ class SelecionarConvidados extends Component {
   async createEvent() {
     const { navigation } = this.props
     const eventsRef = firebase.firestore().collection('events')
-    
-    const {
-      title,
-      description,
-      eventDateTime,
-      destination,
-      image,
-      transport,
-      locationName
-    } = navigation.getParam('infoEvento')
 
-    const newEventRef = eventsRef.doc(),
-          eventImageRef = firebase.storage().ref('events').child(newEventRef.id)
+    if (this.state.convidados.length == 0) {
+      return
+    }
 
-    var fileUpload = await eventImageRef.putFile(image.path, {
-      contentType: image.mime
-    })
+    this.setState({ loading: true })
 
-    let imageURL = fileUpload.downloadURL;
+    try {
+      const {
+        title,
+        description,
+        eventDateTime,
+        destination,
+        image,
+        transport,
+        locationName
+      } = navigation.getParam('infoEvento')
 
-    const adminID = store.loggedUserInfo.uid
-    newEventRef.set({
-      adminID,
-      title,
-      description,
-      datetime: eventDateTime,
-      locationName,
-      destination,
-      participants: [adminID],
-      invitedUsers: this.state.convidados,
-      imageURL
-    }).then(async newEvent => {
+      const adminID = store.loggedUserInfo.uid
+
+      const newEventRef = eventsRef.doc(),
+        eventImageRef = firebase.storage().ref('events').child(newEventRef.id)
+
+      var fileUpload = await eventImageRef.putFile(image.path, {
+        contentType: image.mime
+      })
+
+      let imageURL = fileUpload.downloadURL;
+
+      await newEventRef.set({
+        adminID,
+        title,
+        description,
+        datetime: eventDateTime,
+        locationName,
+        destination,
+        participants: [adminID],
+        invitedUsers: this.state.convidados,
+        imageURL
+      })
+
       await firebase.firestore()
         .collection('users')
         .doc(adminID)
@@ -165,36 +162,56 @@ class SelecionarConvidados extends Component {
           acceptedAt: Date.now(),
           transportMode: transport
         })
-    })
+
+      this.setState({ loading: false })
+      navigation.navigate('Home')
+    }
+    catch (e) {
+      Snackbar.show({
+        title: 'Ocorreu um erro, tente novamente mais tarde',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#b71b25'
+      })
+      this.setState({ loading: false })
+    }
   }
 
   render() {
 
-    return (
+    let numContatos = this.state.allContatos.length;
 
-      <View>
+    console.log("RENDER => ", store.contactsData)
+    console.log("STATE IN RENDER => ", this.state.allContatos)
+    
+    return (
+      <View style={{flex: 1}}>
         <StatusBar backgroundColor="#F5F5F5"
           barStyle="dark-content"
           animated />
 
         <BackBar />
 
-        <ScrollView style={{ marginBottom: 55 }}>
+        <ScrollView style={{ paddingBottom: 55 }}>
           <View style={{
             paddingHorizontal: 20,
             marginTop: 20,
             marginBottom: 20
           }}>
             <Text style={defaultStyles.titleWhite}>Convidados</Text>
-            <Text style={defaultStyles.subtitleWhite}>29 Contatos</Text>
+            <Text style={defaultStyles.subtitleWhite}>
+              {numContatos > 0 ? numContatos : "Nenhum"} contato{numContatos >= 2 ? 's' : ''}
+            </Text>
 
-            <ConvidadosSearchField style={{ marginTop: 25 }} />
+            <ConvidadosSearchField 
+              style={{ marginTop: 25 }}
+              onChangeText={this.search.bind(this)}
+            />
             <Text style={{ color: "#ccc" }}>Selecione os Convidados</Text>
           </View>
 
           <FlatList
-            data={this.state.contatos}
-            keyExtractor={item => item.id.toString()}
+            data={this.state.searchContacts}
+            keyExtractor={item => item.id}
             renderItem={
               ({ item, index }) =>
                 <ConvidadosListRow data={item} rowIndex={index} onToggleSelect={this._onToggleUserSelect.bind(this)} />
@@ -217,6 +234,8 @@ class SelecionarConvidados extends Component {
           />
         </Animated.View>
 
+        <LoadingModal visible={this.state.loading} />
+
       </View>
     )
   }
@@ -225,7 +244,7 @@ class SelecionarConvidados extends Component {
 const styles = StyleSheet.create({
   fabContainer: {
     position: 'absolute',
-    bottom: 70,
+    bottom: 15,
     right: 15
   }
 })

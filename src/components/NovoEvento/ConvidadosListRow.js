@@ -31,7 +31,7 @@ export default class ConvidadosListRow extends Component {
   
   render() {
 
-    const { name, username, profileImage } = this.props.data;
+    const { name, username, photoURL } = this.props.data;
     const { isActive } = this.state;
 
     return (
@@ -43,7 +43,7 @@ export default class ConvidadosListRow extends Component {
              status={isActive ? 'checked' : 'unchecked'}
           />
           <Surface style={styles.avatarSurface}>
-            <Image source={profileImage}
+            <Image source={{ uri: photoURL }}
               style={[styles.profileImage, {
                 borderColor: this.state.isActive ? "#80A6E8" : "white"
               }]}

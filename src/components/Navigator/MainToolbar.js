@@ -48,8 +48,11 @@ class MainToolbar extends Component {
 
     return (
       <View style={[styles.container]}>
-        <StatusBar backgroundColor={colors.primaryDark}
-          animated />
+        <StatusBar 
+          backgroundColor={colors.primaryDark}
+          animated
+          barStyle="light-content"
+        />
         <View style={styles.toolbarContainer}>
           <View style={styles.titleContainer}>
             <TouchableScale style={styles.userImageContainer}
