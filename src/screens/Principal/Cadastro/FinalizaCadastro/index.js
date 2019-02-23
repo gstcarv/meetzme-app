@@ -84,6 +84,7 @@ class Cadastro extends Component {
             return res.user.updateProfile(
               {
                 displayName: newUser.name,
+                phoneNumber: newUser.phone,
                 photoURL: downloadURL
               }
             ).then(() => this.props.navigation.navigate('Login'));

@@ -6,6 +6,8 @@ import {
   configure
 } from 'mobx'
 
+import LoggedUserStore from './LoggedUserStore'
+
 import firebase from 'react-native-firebase'
 const firestoreRef = firebase.firestore()
 
@@ -15,11 +17,12 @@ class ContactsStore {
   @observable searchText = ""
 
   @action
-  async fetchContacts(userID) {
+  async fetchContacts() {
+
     // Procura todos os Contatos do Usuário Logado
     let userContacts = await firestoreRef
       .collection('users')
-      .doc(userID)
+      .doc(LoggedUserStore.info.uid)
       .collection('contacts')
       .get();
 
@@ -53,7 +56,7 @@ class ContactsStore {
       // Adiciona Contato ao USuário Logado
       await firestoreRef
         .collection('users')
-        .doc(loggedUserID)
+        .doc(LoggedUserStore.info.uid)
         .collection('contacts')
         .add({
           uid: contactData.id,
@@ -73,7 +76,7 @@ class ContactsStore {
       let deleteContact =
         await firestoreRef
           .collection('users')
-          .doc(loggedUserID)
+          .doc(LoggedUserStore.info.uid)
           .collection('contacts')
           .where("uid", "==", contactToRemove.id)
           .get();

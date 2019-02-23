@@ -26,25 +26,21 @@ import fonts from '@/resources/fonts'
 
 import EventBus from 'eventing-bus'
 
+import { inject, observer } from 'mobx-react/native'
+
 import store from '@/store'
 
+@inject('LoggedUserStore')
+@observer
 class MainToolbar extends Component {
 
   constructor() {
     super();
-    this.state = {
-      userData: store.loggedUserInfo
-    }
   }
-
-  componentDidMount() {
-    
-  }
-
 
   render() {
 
-    const { userData } = this.state
+    const { info: userData } = this.props.LoggedUserStore
 
     return (
       <View style={[styles.container]}>
@@ -57,7 +53,7 @@ class MainToolbar extends Component {
           <View style={styles.titleContainer}>
             <TouchableScale style={styles.userImageContainer}
               rippleSpeed={.6}
-              onPress={() => { this.props.navigation.navigate('Perfil', { userData }) }}>
+              onPress={() => { this.props.navigation.navigate('Perfil') }}>
               <Image style={styles.userImage}
                 source={{ uri: userData.photoURL }}
               />

@@ -32,23 +32,15 @@ import TouchableScale from 'react-native-touchable-scale';
 
 import store from '@/store'
 
+import { inject, observer } from 'mobx-react/native'
+
+@inject('LoggedUserStore')
+@observer
 class Perfil extends Component {
 
-  constructor() {
-    super();
-    this.state = {
-      infoUser: null
-    }
-  }
-
-  componentWillMount() {
-    this.setState({
-      infoUser: this.props.navigation.getParam('userData')
-    })
-  }
   render() {
 
-    const { infoUser } = this.state
+    const { info: infoUser } = this.props.LoggedUserStore
 
     return (
       <View style={{ flex: 1 }}>
@@ -63,7 +55,7 @@ class Perfil extends Component {
               style={styles.imageContainer}>
               <View>
                 <Image
-                  source={{uri: store.loggedUserInfo.photoURL}}
+                  source={{uri: infoUser.photoURL}}
                   style={styles.image}
                 />
               </View>

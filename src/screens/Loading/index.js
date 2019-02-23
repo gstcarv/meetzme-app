@@ -14,9 +14,9 @@ import colors from "@/resources/colors"
 
 import firebase, { firestore } from 'react-native-firebase'
 
-import store from '@/store'
-
 import { inject, observer } from 'mobx-react/native'
+
+import LoggedUserStore from '@/store/LoggedUserStore'
 
 @inject('ContactsStore')
 @observer
@@ -40,9 +40,9 @@ class Principal extends Component {
             uid
           }
           AsyncStorage.setItem("USER_DATA", JSON.stringify(userInfo))
-          store.loggedUserInfo = userInfo
+          LoggedUserStore.setUser(userInfo)
         } else {
-          store.loggedUserInfo = JSON.parse(userData)
+          LoggedUserStore.setUser(JSON.parse(userData))
         }
 
         await ContactsStore.fetchContacts(user.uid);

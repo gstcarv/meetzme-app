@@ -22,8 +22,6 @@ import ContatoRow from '@/components/Contatos/ContatoRow'
 
 import firebase from 'react-native-firebase'
 
-import store from '@/store'
-
 import { inject, observer } from 'mobx-react/native'
 import { toJS } from 'mobx'
 
