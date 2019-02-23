@@ -16,10 +16,15 @@ import firebase, { firestore } from 'react-native-firebase'
 
 import store from '@/store'
 
+import { inject, observer } from 'mobx-react/native'
+
+@inject('ContactsStore')
+@observer
 class Principal extends Component {
 
   componentDidMount() {
     const { navigate } = this.props.navigation;
+    const { ContactsStore } = this.props;
 
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
       const userData = await AsyncStorage.getItem("USER_DATA");
@@ -40,33 +45,7 @@ class Principal extends Component {
           store.loggedUserInfo = JSON.parse(userData)
         }
 
-        let userContacts = await firebase.firestore()
-          .collection('users')
-          .doc(user.uid)
-          .collection('contacts')
-          .get();
-
-        userContacts.forEach(async contact => {
-          let uid = contact.data().uid;
-          if (!store.loggedUserContacts.includes(uid)) {
-            store.loggedUserContacts.push(uid)
-
-            let contact = await firebase.firestore()
-              .collection('users')
-              .doc(uid)
-              .get();
-
-            const { name, phone, photoURL, username } = contact.data()
-            let contactData = {
-              id: contact.id,
-              name,
-              username: "@" + username,
-              phone,
-              photoURL
-            }
-            store.contactsData.push(contactData)
-          }
-        })
+        await ContactsStore.fetchContacts(user.uid);
 
         navigate('Logged');
 

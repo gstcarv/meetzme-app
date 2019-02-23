@@ -43,13 +43,6 @@ class SelecionarConvidados extends Component {
     this.fabButtonTranslate = new Animated.Value(100)
 
   }
-
-  async componentDidMount(){
-    let a = await store.contactsData;
-    this.setState({
-      allContatos: a
-    })
-  }
   
   search(text) {
     let contacts = store.contactsData

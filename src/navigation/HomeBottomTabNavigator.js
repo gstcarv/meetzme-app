@@ -20,7 +20,7 @@ import Notificacoes from '@/screens/Notificacoes'
 // Components
 import TabBarMainButton from '@/components/Navigator/TabBarMainButton'
 import TabBarComponent from '@/components/Navigator/TabBarComponent'
-import MainToolbar from '@/components/Navigator/MainToolbar';
+import MainToolbar from '@/components/Navigator/MainToolbar'
 
 
 var BottomNavigator = createBottomTabNavigator(

@@ -24,10 +24,15 @@ import firebase from 'react-native-firebase'
 
 import store from '@/store'
 
+import { inject, observer } from 'mobx-react/native'
+import { toJS } from 'mobx'
+
+@inject('ContactsStore')
+@observer
 class Contatos extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       contacts: [],
       searchContacts: [],
@@ -36,38 +41,13 @@ class Contatos extends Component {
     this.scrollValue = 0
   }
 
-  componentDidMount() {
-    this.focusSub = this.props.navigation.addListener('didFocus', (payload) => {
-      if(this.state.searchContacts != store.contactsData){
-        this.setState({
-          searchContacts: store.contactsData
-        })
-        this.search(this.state.searchText)
-      }
-    })
-  }
-
-  componentWillMount(){
+  componentWillMount() {
     this.focusSub = null
   }
 
-  search(text) {
-    let contacts = store.contactsData
-    let searchContacts = contacts.filter(contact => {
-      let name = contact.name.toLowerCase(),
-          username = contact.username.toLowerCase(),
-          searchText = text.toLowerCase()
-
-      return name.includes(searchText) 
-        || username.includes(searchText)
-    })
-    this.setState({ 
-      searchContacts,
-      searchText: text
-    })
-  }
-
   render() {
+
+    const { ContactsStore } = this.props;
 
     const isFirstFromChar = (string, index) => {
       const { contacts } = this.state;
@@ -89,11 +69,11 @@ class Contatos extends Component {
           <SearchField
             placeholder="Digite o nome ou @ do contato"
             style={{ margin: 15 }}
-            onChangeText={this.search.bind(this)}
+            onChangeText={text => ContactsStore.search(text)}
           />
 
           <FlatList
-            data={this.state.searchContacts}
+            data={toJS(ContactsStore.searchContacts)}
             keyExtractor={item => item.id}
 
             renderItem={

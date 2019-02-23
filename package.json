@@ -7,8 +7,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.3.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "eventing-bus": "^1.3.3",
     "hex-rgb": "^4.0.0",
+    "mobx": "^5.9.0",
+    "mobx-react": "^5.4.3",
     "react": "16.6.3",
     "react-native": "0.58.0",
     "react-native-bottom-sheet-behavior": "^1.0.0",
