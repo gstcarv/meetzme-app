@@ -28,6 +28,11 @@ import firebase from 'react-native-firebase'
 
 import store from '@/store'
 
+import { inject, observer } from 'mobx-react/native'
+import { toJS } from 'mobx'
+
+@inject('ContactsStore')
+@observer
 export default class Procurar extends Component {
 
   constructor() {
@@ -85,43 +90,13 @@ export default class Procurar extends Component {
 
   async addContact(user) {
     let loggedId = store.loggedUserInfo.uid
+    await this.props.ContactsStore.addContact(user, loggedId)
 
-    try {
-      await this.firestoreRef
-        .collection('users')
-        .doc(loggedId)
-        .collection('contacts')
-        .add({
-          uid: user.id,
-          addedAt: new Date(Date.now())
-        })
-      store.loggedUserContacts.push(user.id)
-    } catch (e) { }
   }
 
   async removeContact(user) {
     let loggedId = store.loggedUserInfo.uid
-
-    try {
-
-      let contactToDelete =
-        await this.firestoreRef
-          .collection('users')
-          .doc(loggedId)
-          .collection('contacts')
-          .where("uid", "==", user.id)
-          .get();
-
-      contactToDelete.forEach(async doc => {
-        let userID = doc.data().uid
-        store.loggedUserContacts =
-          store.loggedUserContacts.filter(contactID => contactID != userID)
-        await doc.ref.delete()
-      });
-
-    } catch (e) {
-      // console.warn(e)
-    }
+    await this.props.ContactsStore.removeContact(user, loggedId) 
   }
 
   render() {
