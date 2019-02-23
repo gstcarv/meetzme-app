@@ -30,9 +30,9 @@ import {
   inject, 
   observer 
 } from 'mobx-react/native'
-import { toJS } from 'mobx'
 
 @inject('ContactsStore')
+@inject('EventsStore')
 @observer
 class SelecionarConvidados extends Component {
 
@@ -103,7 +103,6 @@ class SelecionarConvidados extends Component {
 
   async createEvent() {
     const { navigation } = this.props
-    const eventsRef = firebase.firestore().collection('events')
 
     if (this.state.convidados.length == 0) {
       return
@@ -112,53 +111,17 @@ class SelecionarConvidados extends Component {
     this.setState({ loading: true })
 
     try {
-      const {
-        title,
-        description,
-        eventDateTime,
-        destination,
-        image,
-        transport,
-        locationName
-      } = navigation.getParam('infoEvento')
 
-      const adminID = store.loggedUserInfo.uid
-
-      const newEventRef = eventsRef.doc(),
-        eventImageRef = firebase.storage().ref('events').child(newEventRef.id)
-
-      var fileUpload = await eventImageRef.putFile(image.path, {
-        contentType: image.mime
+      await this.props.EventsStore.createEvent({
+        ...navigation.getParam('infoEvento'),
+        invitedUsers: this.state.convidados
       })
-
-      let imageURL = fileUpload.downloadURL;
-
-      await newEventRef.set({
-        adminID,
-        title,
-        description,
-        datetime: eventDateTime,
-        locationName,
-        destination,
-        participants: [adminID],
-        invitedUsers: this.state.convidados,
-        imageURL
-      })
-
-      await firebase.firestore()
-        .collection('users')
-        .doc(adminID)
-        .collection('acceptedEvents')
-        .doc(newEventRef.id)
-        .set({
-          acceptedAt: Date.now(),
-          transportMode: transport
-        })
 
       this.setState({ loading: false })
-      navigation.navigate('Home')
+      navigation.navigate('Eventos')
     }
     catch (e) {
+      console.log(e)
       Snackbar.show({
         title: 'Ocorreu um erro, tente novamente mais tarde',
         duration: Snackbar.LENGTH_LONG,

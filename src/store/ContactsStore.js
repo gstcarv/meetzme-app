@@ -51,7 +51,7 @@ class ContactsStore {
   }
 
   @action
-  async addContact(contactData, loggedUserID) {
+  async addContact(contactData) {
     try {
       // Adiciona Contato ao USuário Logado
       await firestoreRef
@@ -70,7 +70,7 @@ class ContactsStore {
   }
 
   @action
-  async removeContact(contactToRemove, loggedUserID) {
+  async removeContact(contactToRemove) {
     try {
       // Procura Contato para Deletar
       let deleteContact =

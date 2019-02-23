@@ -26,7 +26,7 @@ export default createStackNavigator(
     SelecionarConvidados
   },
   {
-    initialRouteName: 'SelecionarConvidados',
+    initialRouteName: 'NovoEvento',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }

@@ -45,7 +45,7 @@ class Principal extends Component {
           LoggedUserStore.setUser(JSON.parse(userData))
         }
 
-        await ContactsStore.fetchContacts(user.uid);
+        await ContactsStore.fetchContacts();
 
         navigate('Logged');
 

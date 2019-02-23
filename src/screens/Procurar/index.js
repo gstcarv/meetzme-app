@@ -86,14 +86,11 @@ export default class Procurar extends Component {
   }
 
   async addContact(user) {
-    let loggedId = store.loggedUserInfo.uid
-    await this.props.ContactsStore.addContact(user, loggedId)
-
+    await this.props.ContactsStore.addContact(user)
   }
 
   async removeContact(user) {
-    let loggedId = store.loggedUserInfo.uid
-    await this.props.ContactsStore.removeContact(user, loggedId) 
+    await this.props.ContactsStore.removeContact(user) 
   }
 
   render() {
