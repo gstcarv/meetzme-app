@@ -85,7 +85,7 @@ export default class TabBarComponent extends React.Component {
                 onPress={(e) => {
                   if (!isMainButton) {
                     this.setState({ atualRouteIndex: routeIndex })
-                    ToolbarTitle.set(getLabelText({route}))
+                    ToolbarTitle.set(getLabelText({ route }))
                     onTabPress({ route });
                   }
                 }}

@@ -13,12 +13,12 @@ export default class TimelineEvent extends Component {
   render() {
 
     const {
-      date,
       title,
-      local
-    } = this.props;
+      locationName,
+      datetime
+    } = this.props.eventData;
 
-    const eventDateTime = new Date(date);
+    const eventDateTime = new Date(datetime);
     let eventDate = eventDateTime.toLocaleDateString(),
       eventTime = eventDateTime.toLocaleTimeString();
 
@@ -46,7 +46,7 @@ export default class TimelineEvent extends Component {
             <FAIcon name="map-marker-alt" size={15} color="#ccc"
                 style={{marginRight: 5}}></FAIcon>
             <Text style={styles.localText}>
-              { local }
+              { locationName }
             </Text>
           </View>
 

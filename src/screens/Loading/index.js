@@ -19,12 +19,13 @@ import { inject, observer } from 'mobx-react/native'
 import LoggedUserStore from '@/store/LoggedUserStore'
 
 @inject('ContactsStore')
+@inject('EventsStore')
 @observer
 class Principal extends Component {
 
   componentDidMount() {
     const { navigate } = this.props.navigation;
-    const { ContactsStore } = this.props;
+    const { ContactsStore, EventsStore } = this.props;
 
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
       const userData = await AsyncStorage.getItem("USER_DATA");
@@ -46,6 +47,7 @@ class Principal extends Component {
         }
 
         await ContactsStore.fetchContacts();
+        await EventsStore.fetchEvents();
 
         navigate('Logged');
 

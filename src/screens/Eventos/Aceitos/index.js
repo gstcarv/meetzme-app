@@ -4,12 +4,9 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  RefreshControl 
+  RefreshControl,
+  FlatList
 } from 'react-native'
-
-import { Button } from 'react-native-paper'
-
-import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
 import TimelineEvent from '@/components/Eventos/TimelineEvent'
 import SearchField from '@/components/SearchField'
@@ -20,43 +17,46 @@ import {
   Line
 } from '@/components/Forms'
 
+
+import { 
+  inject, 
+  observer 
+} from 'mobx-react/native'
+
+import { toJS } from 'mobx'
+
+@inject('EventsStore')
+@observer
 export default class Aceitos extends Component {
   render() {
+
+    console.log(toJS(this.props.EventsStore.events))
+
     return (
       <ScrollView style={styles.container}
-      overScrollMode="always">
-        <SearchField placeholder="Digite o nome do Evento"/>
-        <TimelineEvent date={Date.now()}
-                      title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
-        <TimelineEvent date={Date.now()}
-                      title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"
-                      admin />
-        <TimelineEvent date={Date.now()}
-                      title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
-        <TimelineEvent date={Date.now()}
-                      title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
-        <TimelineEvent date={Date.now()}
-                      title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
-        <TimelineEvent date={Date.now()}
-                      title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
-        <TimelineEvent date={Date.now()}
-                      title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
-        <TimelineEvent date={Date.now()}
-                      title="Titulo do Evento"
-                      local="Rua Lucélia Nº 278 - Jardim Nova Europa - Hortolândia"/>
-          {/* <View style={styles.emptyContainer}>
+        overScrollMode="always">
+
+        <SearchField placeholder="Digite o nome do Evento" />
+
+        <FlatList
+          data={toJS(this.props.EventsStore.events)}
+          keyExtractor={item => item.id}
+
+          renderItem={
+            ({ item, index }) => (
+              <TimelineEvent
+                eventData={item}
+                rowIndex={index}
+              />
+            )
+          }
+        />
+        {/* <View style={styles.emptyContainer}>
             <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
             <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
           </View> */}
-          <Line spaceVertical={15}/> 
-      </ScrollView>
+        {/* <Line spaceVertical={15} /> */}
+      </ScrollView >
     )
   }
 }
