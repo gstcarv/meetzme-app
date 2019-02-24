@@ -14,8 +14,14 @@ class EventsStore {
   @observable eventsID = []
 
   constructor(){
+
+    let userID = LoggedUserStore.info.uid;
+
     // Pega os Eventos Pendentes em Tempo Real
-    firebase.firestore().collection('events')
+    firebase.firestore()
+    .collection('events')
+    .where(`participants.${userID}`, '==', false)
+    // .orderBy()
     .onSnapshot(snap => {
       snap.docChanges.forEach(changedDoc => {
         // Adiciona no Store de Eventos Pendentes
@@ -38,7 +44,7 @@ class EventsStore {
     // Procura os Eventos do Usuário Logado
     let acceptedEvents = await firebase.firestore()
       .collection('events')
-      .where("participants", "array-contains", userID)
+      .where(`participants.${userID}`, "==", true)
       .get();
 
     // Adiciona no Store
@@ -79,6 +85,12 @@ class EventsStore {
 
     let imageURL = fileUpload.downloadURL;
 
+    let participants = {}
+    participants[adminID] = true
+    invitedUsers.forEach(uid => {
+      participants[uid] = null
+    })
+
     let newEventData = {
       adminID,
       title,
@@ -86,8 +98,7 @@ class EventsStore {
       datetime: eventDateTime,
       locationName,
       destination,
-      participants: [adminID],
-      invitedUsers,
+      participants: participants,
       imageURL,
       createdAt: Date.now()
     }
