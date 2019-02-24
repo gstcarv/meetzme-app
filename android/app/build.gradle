@@ -97,6 +97,14 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+    packagingOptions {
+        pickFirst 'lib/x86_64/libjsc.so'
+        pickFirst 'lib/armeabi/libjsc.so'
+        pickFirst 'lib/x86/libjsc.so'
+        pickFirst 'lib/armeabi-v7a/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libjsc.so'
+    }
+
     defaultConfig {
         applicationId "com.meetzme"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -163,6 +171,12 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:16.1.0"
     implementation "com.google.firebase:firebase-firestore:17.1.5"
     implementation "com.google.firebase:firebase-storage:16.0.5"
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.webkit:android-jsc:r236355'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
