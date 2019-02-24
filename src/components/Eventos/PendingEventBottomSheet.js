@@ -11,6 +11,8 @@ import Snackbar from 'react-native-snackbar'
 
 import BottomSheet from "react-native-raw-bottom-sheet";
 
+import EventsStore from '@/store/EventsStore'
+
 import {
   Button
 } from '@/components/Forms'
@@ -20,7 +22,16 @@ import colors from '@/resources/colors'
 
 export default class PendingEventBottomSheet extends Component {
 
+  constructor(){
+    super()
+    this.state = {
+      eventData: {}
+    }
+  }
+
   open(eventID) {
+    let eventData = EventsStore.pendingEvents.find(({ id }) => id == eventID)
+    this.setState({ eventData })
     this.EventSheet.open()
   }
 
@@ -43,6 +54,9 @@ export default class PendingEventBottomSheet extends Component {
   }
 
   render() {
+
+    const { title, description, imageURL } = this.state.eventData
+
     return (
       <BottomSheet
         ref={ref => {
@@ -61,7 +75,7 @@ export default class PendingEventBottomSheet extends Component {
         <View style={styles.topSheetLine} />
 
         <View style={styles.sheetHeadContainer}>
-          <Image source={require('@assets/images/event-test-image.jpg')}
+          <Image source={{uri: imageURL}}
             style={styles.eventImage} />
           <View style={styles.inviteNumberContainer}>
             <Text style={styles.inviteTitle}>Convites</Text>
@@ -78,13 +92,8 @@ export default class PendingEventBottomSheet extends Component {
         </View>
 
         <View style={styles.eventInfo}>
-          <Text style={styles.eventTitle}>Nome do Evento</Text>
-          <Text style={styles.eventDescription}>Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Nulla dolor libero, fermentum in viverra et, 
-            tempus sit amet quam. Curabitur sit amet accumsan
-            neque. Morbi imperdiet eget arcu a dictum. Sed quis 
-            ultricies justo, a euismod felis
-          </Text>
+          <Text style={styles.eventTitle}>{title}</Text>
+          <Text style={styles.eventDescription}>{description}</Text>
         </View>
         
         <View style={styles.buttonContainer}>
@@ -159,6 +168,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignSelf: 'flex-end',
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
     flexDirection: 'row',
     marginTop: 15
   }

@@ -8,8 +8,27 @@ import firebase from 'react-native-firebase'
 import LoggedUserStore from './LoggedUserStore'
 
 class EventsStore {
-  @observable events = []
+
+  @observable acceptedEvents = []
+  @observable pendingEvents = []
   @observable eventsID = []
+
+  constructor(){
+    // Pega os Eventos Pendentes em Tempo Real
+    firebase.firestore().collection('events')
+    .onSnapshot(snap => {
+      snap.docChanges.forEach(changedDoc => {
+        // Adiciona no Store de Eventos Pendentes
+        if(changedDoc.type == "added"){
+          const { doc } = changedDoc;
+          this.pendingEvents.push({
+            id: doc.id,
+            ...doc.data()
+          })
+        }
+      })
+    })
+  }
 
   @action
   async fetchEvents() {
@@ -26,7 +45,7 @@ class EventsStore {
     acceptedEvents.forEach(event => {
       if(!this.eventsID.includes(event.id)){
         this.eventsID.push(event.id)
-        this.events.push({
+        this.acceptedEvents.push({
           id: event.id,
           ...event.data()
         })
@@ -69,14 +88,15 @@ class EventsStore {
       destination,
       participants: [adminID],
       invitedUsers,
-      imageURL
+      imageURL,
+      createdAt: Date.now()
     }
 
     // Adiciona evento no banco
     await newEventRef.set(newEventData)
 
     // Adiciona Evento no Store
-    this.events.push({
+    this.acceptedEvents.push({
       id: newEventRef.id,
       ...newEventData
     })

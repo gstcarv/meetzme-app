@@ -20,40 +20,16 @@ import {
   Line
 } from '@/components/Forms'
 
-export default class Pendentes extends Component {
+import { 
+  inject, 
+  observer 
+} from 'mobx-react/native'
 
-  constructor() {
-    super()
-    this.state = {
-      convites: [
-        {
-          id: "1",
-          title: "Aniversário Jorge",
-          date: Date.now()
-        },
-        {
-          id: "2",
-          title: "Praia",
-          date: Date.now()
-        },
-        {
-          id: "3",
-          title: "Casa do seu Jorge",
-          date: Date.now()
-        },
-        {
-          id: "4",
-          title: "Shopping",
-          date: Date.now()
-        },
-        {
-          id: "5",
-          title: "Centro da Cidade",
-          date: Date.now()
-        }
-      ]
-    }
-  }
+import { toJS } from 'mobx'
+
+@inject('EventsStore')
+@observer
+export default class Pendentes extends Component {
 
   openEventSheet(id) {
     this.refs.eventBottomSheet.open(id);
@@ -68,11 +44,10 @@ export default class Pendentes extends Component {
           <View style={styles.eventosContainer}>
 
             <FlatList
-              data={this.state.convites}
+              data={toJS(this.props.EventsStore.pendingEvents)}
               renderItem={({ item }) => (
                 <PendingEventCard
-                  title={item.title}
-                  date={item.date}
+                  eventData={item}
                   onPress={() => this.openEventSheet(item.id)} />
               )}
               keyExtractor={(convite) => convite.id}

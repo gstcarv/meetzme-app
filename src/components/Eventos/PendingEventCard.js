@@ -10,11 +10,11 @@ export default class PendingEventCard extends Component {
   render() {
 
     const {
-      date,
+      datetime,
       title
-    } = this.props;
+    } = this.props.eventData;
 
-    const eventDateTime = new Date(date);
+    const eventDateTime = new Date(datetime);
     let eventDate = eventDateTime.toLocaleDateString();
 
     return (

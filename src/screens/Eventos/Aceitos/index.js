@@ -39,7 +39,7 @@ export default class Aceitos extends Component {
         <SearchField placeholder="Digite o nome do Evento" />
 
         <FlatList
-          data={toJS(this.props.EventsStore.events)}
+          data={toJS(this.props.EventsStore.acceptedEvents)}
           keyExtractor={item => item.id}
 
           renderItem={
