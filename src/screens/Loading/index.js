@@ -25,7 +25,12 @@ class Principal extends Component {
 
   componentDidMount() {
     const { navigate } = this.props.navigation;
-    const { ContactsStore, EventsStore } = this.props;
+    const { 
+      ContactsStore, 
+      EventsStore, 
+    } = this.props;
+
+    let isWatchingEvents = false;
 
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
       const userData = await AsyncStorage.getItem("USER_DATA");
@@ -40,7 +45,6 @@ class Principal extends Component {
             photoURL,
             uid
           }
-          AsyncStorage.setItem("USER_DATA", JSON.stringify(userInfo))
           LoggedUserStore.setUser(userInfo)
         } else {
           LoggedUserStore.setUser(JSON.parse(userData))
@@ -48,6 +52,11 @@ class Principal extends Component {
 
         await ContactsStore.fetchContacts();
         await EventsStore.fetchEvents();
+
+        if(!isWatchingEvents){
+          EventsStore.watchEvents();
+          isWatchingEvents = true
+        }
 
         navigate('Logged');
 

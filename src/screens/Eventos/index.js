@@ -10,15 +10,25 @@ import {
 
 // Screens
 import Aceitos from './Aceitos'
-import Convites from './Pendentes'
+import Pendentes from './Pendentes'
 
 export default createMaterialTopTabNavigator(
   {
-    Aceitos,
-    Convites
+    EventosAceitos: {
+      screen: Aceitos,
+      navigationOptions: {
+        title: 'Aceitos'
+      }
+    },
+    EventosPendentes: {
+      screen: Pendentes,
+      navigationOptions: {
+        title: 'Convites'
+      }
+    },
   },
   {
-    initialRouteName: 'Aceitos',
+    initialRouteName: 'EventosPendentes',
     tabBarOptions: {
       upperCaseLabel: false,
       activeTintColor: '#e91e63',

@@ -15,15 +15,20 @@ import SelecionarLocalizacao from '@/screens/NovoEvento/SelecionarLocalizacao'
 import SelecionarConvidados from '@/screens/NovoEvento/SelecionarConvidados'
 import Procurar from '@/screens/Procurar'
 import Perfil from '@/screens/Perfil'
+import LocalizacaoEventoPendente from '@/screens/LocalizacaoEventoPendente'
 
 export default createStackNavigator(
   {
+    // Principal
     Home: HomeBottomTabNavigator,
     Procurar,
     Perfil,
+    // Criar Novo Evento
     NovoEvento,
     SelecionarLocalizacao,
-    SelecionarConvidados
+    SelecionarConvidados,
+    // Aceitar Evento
+    LocalizacaoEventoPendente
   },
   {
     initialRouteName: 'Home',

@@ -16,15 +16,13 @@ import BackButton from '@/components/BackButton'
 
 import Snackbar from 'react-native-snackbar'
 
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
-
 import AppMapView from '@/components/Maps/AppMapView'
 import MapDirections from '@/components/Maps/MapDirections'
-import DirectionInfoBox from '@/components/Maps/DirectionInfoBox';
-import UserMapMarker from '@/components/Maps/UserMapMarker';
-import DestinationMapMarker from '@/components/Maps/DestinationMapMarker';
-import FitFloatButton from '@/components/Maps/FitFloatButton';
-import CenterLocationFloatButton from '@/components/Maps/CenterLocationFloatButton';
+import DirectionInfoBox from '@/components/Maps/DirectionInfoBox'
+import UserMapMarker from '@/components/Maps/UserMapMarker'
+import DestinationMapMarker from '@/components/Maps/DestinationMapMarker'
+import FitFloatButton from '@/components/Maps/FitFloatButton'
+import CenterLocationFloatButton from '@/components/Maps/CenterLocationFloatButton'
 
 import GooglePlacesSearch from '@/components/NovoEvento/GooglePlacesSearch'
 
@@ -35,6 +33,7 @@ class SelecionarLocalizacao extends Component {
   constructor() {
     super();
     this.state = {
+      loading: true,
       userLocation: {
         latitude: 0,
         longitude: 0
@@ -46,7 +45,6 @@ class SelecionarLocalizacao extends Component {
       },
       locationName: null,
       transportMode: "DRIVING",
-      loading: true,
       centerLocationHidden: true
     }
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View } from 'react-native'
+import moment from 'moment'
 
 import fonts from '@/resources/fonts'
 import colors from '@/resources/colors'
@@ -14,8 +15,7 @@ export default class PendingEventCard extends Component {
       title
     } = this.props.eventData;
 
-    const eventDateTime = new Date(datetime);
-    let eventDate = eventDateTime.toLocaleDateString();
+    let eventDate = moment(new Date(datetime)).format('DD/MM/YYYY')
 
     return (
       <TouchableScale style={styles.cardContainer}

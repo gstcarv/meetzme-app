@@ -121,7 +121,6 @@ class SelecionarConvidados extends Component {
       navigation.navigate('Eventos')
     }
     catch (e) {
-      console.log(e)
       Snackbar.show({
         title: 'Ocorreu um erro, tente novamente mais tarde',
         duration: Snackbar.LENGTH_LONG,

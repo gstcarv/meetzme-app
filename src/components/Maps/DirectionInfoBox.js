@@ -20,8 +20,8 @@ import colors from '@/resources/colors'
 import TouchableTransportButton from './DirectionInfoBox/TouchableTransportButton';
 
 const heightValue = 260;
-const initialTranslateValue = heightValue + 20;
-const minimizedValue = heightValue - 40;
+const minimizedValue = heightValue - 50;
+const initialTranslateValue = heightValue + 10;
 
 export default class DirectionInfoBox extends Component {
 
@@ -54,7 +54,7 @@ export default class DirectionInfoBox extends Component {
   }
 
   componentWillMount() {
-    if (this.props.canReturn) {
+    if (this.props.canReturn == true) {
       BackHandler.addEventListener('hardwareBackPress', () => {
         if (this.state.visible) {
           this.props.onClose()
@@ -65,7 +65,7 @@ export default class DirectionInfoBox extends Component {
   }
 
   componentWillUnmount() {
-    if (this.props.canReturn) {
+    if (this.props.canReturn == true) {
       BackHandler.removeEventListener('hardwareBackPress')
     }
   }
@@ -120,7 +120,7 @@ export default class DirectionInfoBox extends Component {
 
     if (this.state.transport != transport) {
       this.setState({ transport })
-      if (this.props.onSelectTransport){
+      if (this.props.onSelectTransport) {
         this.props.onSelectTransport(transport);
       }
     }
@@ -210,7 +210,7 @@ export default class DirectionInfoBox extends Component {
           onPress={this.props.onNext}>Próximo</Button>
 
         {
-          this.props.canReturn &&
+          this.props.canReturn == true &&
           <TouchableNativeFeedback
             backgroundColor={TouchableNativeFeedback.Ripple("#eee", true)}
             onPress={this.props.onClose}>
@@ -229,10 +229,10 @@ const styles = StyleSheet.create({
   container: {
     elevation: 2,
     backgroundColor: 'white',
-    width: '90%',
+    width: '95%',
     alignSelf: 'center',
     position: 'absolute',
-    bottom: 20,
+    bottom: 10,
     height: heightValue,
     borderRadius: 4,
     alignItems: 'center',

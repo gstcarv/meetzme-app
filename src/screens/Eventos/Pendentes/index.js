@@ -10,6 +10,10 @@ import {
 
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
+import {
+  withNavigation
+} from 'react-navigation'
+
 import SearchField from '@/components/SearchField'
 import PendingEventCard from '@/components/Eventos/PendingEventCard'
 import PendingEventBottomSheet from '@/components/Eventos/PendingEventBottomSheet'
@@ -20,16 +24,16 @@ import {
   Line
 } from '@/components/Forms'
 
-import { 
-  inject, 
-  observer 
+import {
+  inject,
+  observer
 } from 'mobx-react/native'
 
 import { toJS } from 'mobx'
 
 @inject('EventsStore')
 @observer
-export default class Pendentes extends Component {
+class Pendentes extends Component {
 
   openEventSheet(id) {
     this.refs.eventBottomSheet.open(id);
@@ -57,11 +61,17 @@ export default class Pendentes extends Component {
 
           <Line spaceVertical={15} />
         </ScrollView>
-        <PendingEventBottomSheet ref="eventBottomSheet" />
+        <PendingEventBottomSheet
+          ref="eventBottomSheet"
+          onNext={(infoEvento) => {
+            this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })
+          }} />
       </View>
     )
   }
 }
+
+export default withNavigation(Pendentes)
 
 const styles = StyleSheet.create({
   container: {

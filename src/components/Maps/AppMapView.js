@@ -62,6 +62,15 @@ export default class AppMapView extends Component {
       longitudeDelta: 0.0134,
     }
 
+    const getChildren = () => {
+      const { children } = this.props
+      if(typeof children == 'array'){
+        return children.map(children => children)
+      } else if (typeof children == 'object'){
+        return children
+      }
+    }
+
     return (
       <MapView style={[styles.mapview, this.props.style]}
         region={userRegion}
@@ -77,7 +86,7 @@ export default class AppMapView extends Component {
         {...this.props}>
 
         {
-          this.props.children.map(children => children)
+          getChildren()
         }
 
       </MapView>

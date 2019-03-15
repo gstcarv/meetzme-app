@@ -13,6 +13,8 @@ import BottomSheet from "react-native-raw-bottom-sheet";
 
 import EventsStore from '@/store/EventsStore'
 
+import { toJS } from 'mobx'
+
 import {
   Button
 } from '@/components/Forms'
@@ -33,11 +35,6 @@ export default class PendingEventBottomSheet extends Component {
     let eventData = EventsStore.pendingEvents.find(({ id }) => id == eventID)
     this.setState({ eventData })
     this.EventSheet.open()
-  }
-
-
-  onNext(){
-
   }
 
   onRecuse(){
@@ -105,14 +102,21 @@ export default class PendingEventBottomSheet extends Component {
                 style={{
                   marginRight: 6,
                   borderColor: '#C57A7A',
-                  fontSize: 10
+                  ...styles.buttonStyle
                 }}>Recusar</Button>
           <Button color='#47C1CF'
                 rounded
                 mode="outlined"
                 small
                 icon="keyboard-arrow-right"
-                style={{ borderColor: "#47C1CF", fontSize: 10 }}>Próximo</Button>
+                onPress={() => {
+                  this.EventSheet.close()
+                  this.props.onNext(toJS(this.state.eventData))
+                }}
+                style={{ 
+                  borderColor: "#47C1CF", 
+                  ...styles.buttonStyle 
+                }}>Próximo</Button>
         </View>
 
       </BottomSheet>
@@ -173,5 +177,9 @@ const styles = StyleSheet.create({
     right: 10,
     flexDirection: 'row',
     marginTop: 15
+  },
+  buttonStyle: {
+    borderWidth: 1,
+    fontSize: 10
   }
 })
