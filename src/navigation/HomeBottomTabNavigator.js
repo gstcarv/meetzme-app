@@ -59,7 +59,7 @@ var BottomNavigator = createBottomTabNavigator(
   },
   {
     tabBarComponent: TabBarComponent,
-    initialRouteName: "Dashboard",
+    initialRouteName: "Eventos",
     lazy: false,
     tabBarOptions: {
       inactiveTintColor: "#D6D6D6",

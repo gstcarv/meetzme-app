@@ -1,6 +1,7 @@
 import {
   observable,
-  action
+  action,
+  computed
 } from 'mobx'
 
 import firebase from 'react-native-firebase'
@@ -60,6 +61,17 @@ class EventsStore {
           ...event.data()
         })
       }
+    })
+  }
+
+  @computed
+  get userCreatedEvents(){
+
+    const userID = LoggedUserStore.info.uid;
+
+    // Retorna os Eventos na qual o Usuário é o Administrador
+    return this.acceptedEvents.filter(event => {
+      return event.adminID == userID
     })
   }
 

@@ -15,7 +15,7 @@ import fonts from '@/resources/fonts'
 
 import firebase from 'react-native-firebase'
 
-import EventCircleBar from '@/components/Dashboard/EventCircleSlider'
+import EventCircleSlider from '@/components/Dashboard/EventCircleSlider'
 
 import { inject, observer } from 'mobx-react/native'
 import { toJS } from 'mobx';
@@ -30,6 +30,9 @@ class Dashboard extends Component {
   }
 
   render() {
+
+    const { EventsStore } = this.props;
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.userStats}>
@@ -43,22 +46,22 @@ class Dashboard extends Component {
           </View>
           <View style={styles.statSquare}>
             <Text style={styles.statNumber}>20</Text>
-            <Text style={styles.statTitle}>Contatos Adicionados</Text>
+            <Text style={styles.statTitle}>Eventos Participados</Text>
           </View>
         </View>
         <View style={{
           paddingVertical: 25
         }}>
-          <EventCircleBar
+          <EventCircleSlider
             title="Proximos Eventos"
-            data={toJS(this.props.EventsStore.acceptedEvents)}
+            data={toJS(EventsStore.acceptedEvents)}
             limit={10}
           />
 
-          <EventCircleBar
-            title="Seus Eventos"
-            data={toJS(this.props.EventsStore.acceptedEvents)}
-            limit={10}
+          <EventCircleSlider
+            title="Eventos criados por você"
+            data={toJS(EventsStore.userCreatedEvents)}
+            limit={6}
           />
         </View>
       </ScrollView>

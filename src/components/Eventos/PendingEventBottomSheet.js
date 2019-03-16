@@ -27,13 +27,39 @@ export default class PendingEventBottomSheet extends Component {
   constructor(){
     super()
     this.state = {
-      eventData: {}
+      eventData: {},
+      pending: 0,
+      accepted: 0,
+      recused: 0
     }
   }
 
   open(eventID) {
     let eventData = EventsStore.pendingEvents.find(({ id }) => id == eventID)
-    this.setState({ eventData })
+
+    let accepted = 0, 
+    pending = 0, 
+    recused = 0;
+
+    const invites = eventData.participants;
+    for(let invitedUser in invites){
+      let inviteState = invites[invitedUser];
+      if(inviteState == true){
+        accepted++
+      } else if (inviteState == false){
+        recused++
+      } else if (inviteState == null){
+        pending++
+      }
+    }
+
+    this.setState({ 
+      eventData,
+      accepted,
+      pending,
+      recused
+    })
+
     this.EventSheet.open()
   }
 
@@ -75,16 +101,16 @@ export default class PendingEventBottomSheet extends Component {
           <Image source={{uri: imageURL}}
             style={styles.eventImage} />
           <View style={styles.inviteNumberContainer}>
-            <Text style={styles.inviteTitle}>Convites</Text>
-            <Text style={styles.inviteNumber}>50</Text>
+            <Text style={styles.inviteTitle}>Pendentes</Text>
+            <Text style={styles.inviteNumber}>{this.state.pending}</Text>
           </View>
           <View style={styles.inviteNumberContainer}>
             <Text style={styles.inviteTitle}>Aceitos</Text>
-            <Text style={styles.inviteNumber}>35</Text>
+            <Text style={styles.inviteNumber}>{this.state.accepted}</Text>
           </View>
           <View style={styles.inviteNumberContainer}>
             <Text style={styles.inviteTitle}>Recusados</Text>
-            <Text style={styles.inviteNumber}>15</Text>
+            <Text style={styles.inviteNumber}>{this.state.recused}</Text>
           </View>
         </View>
 
