@@ -18,13 +18,10 @@ class EventsStore {
 
     const userID = LoggedUserStore.info.uid;
 
-    console.log(userID)
-
     // Pega os Eventos Pendentes em Tempo Real
     firebase.firestore()
       .collection('events')
       .where(`participants.${userID}`, '==', null)
-      // .orderBy()
       .onSnapshot(snap => {
         snap.docChanges.forEach(changedDoc => {
           // Adiciona no Store de Eventos Pendentes
