@@ -64,16 +64,8 @@ export default class PendingEventBottomSheet extends Component {
   }
 
   onRecuse(){
+    this.props.onRecuse(this.state.eventData);
     this.EventSheet.close();
-    // Snackbar.show({
-    //   title: 'Convite Recusado',
-    //   duration: Snackbar.LENGTH_LONG,
-    //   action: {
-    //     title: 'Desfazer',
-    //     color: '#fff',
-    //     onPress: () => { /* Do something. */ },
-    //   },
-    // })
   }
 
   render() {

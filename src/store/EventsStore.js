@@ -8,6 +8,8 @@ import firebase from 'react-native-firebase'
 
 import LoggedUserStore from './LoggedUserStore'
 
+const firestoreRef = firebase.firestore();
+
 class EventsStore {
 
   @observable acceptedEvents = []
@@ -20,19 +22,23 @@ class EventsStore {
     const userID = LoggedUserStore.info.uid;
 
     // Pega os Eventos Pendentes em Tempo Real
-    firebase.firestore()
+    firestoreRef
       .collection('events')
       .where(`participants.${userID}`, '==', null)
       .onSnapshot(snap => {
         snap.docChanges.forEach(changedDoc => {
-          // Adiciona no Store de Eventos Pendentes
           const { doc } = changedDoc;
           if (changedDoc.type == "added") {
-            this.pendingEvents.push({
-              id: doc.id,
-              ...doc.data()
-            })
+            // Adiciona no Store de Eventos Pendentes
+            let eventExists = this.pendingEvents.some(event => event.id == doc.id);
+            if (!eventExists) {
+              this.pendingEvents.push({
+                id: doc.id,
+                ...doc.data()
+              })
+            }
           } else if (changedDoc.type == "removed") {
+            // Remove do Store de Eventos Pendentes
             this.pendingEvents = this.pendingEvents.filter(event => (
               event.id != doc.id
             ))
@@ -47,7 +53,7 @@ class EventsStore {
     const userID = LoggedUserStore.info.uid;
 
     // Procura os Eventos do Usuário Logado
-    let acceptedEvents = await firebase.firestore()
+    let acceptedEvents = await firestoreRef
       .collection('events')
       .where(`participants.${userID}`, "==", true)
       .get();
@@ -65,7 +71,7 @@ class EventsStore {
   }
 
   @computed
-  get userCreatedEvents(){
+  get userCreatedEvents() {
 
     const userID = LoggedUserStore.info.uid;
 
@@ -91,7 +97,7 @@ class EventsStore {
     } = eventInfo
 
     // Cria um novo documento para o Evento
-    const newEventRef = firebase.firestore().collection('events').doc(),
+    const newEventRef = firestoreRef.collection('events').doc(),
       eventImageRef = firebase.storage().ref('events').child(newEventRef.id)
 
     // Faz upload da Imagem
@@ -131,7 +137,7 @@ class EventsStore {
     this.eventsID.push(newEventRef.id)
 
     // Adiciona o Admin ao Evento criado
-    await firebase.firestore()
+    await firestoreRef
       .collection('users')
       .doc(adminID)
       .collection('acceptedEvents')
@@ -145,8 +151,6 @@ class EventsStore {
   @action
   async acceptEvent({ eventID, transportMode }) {
     const userID = LoggedUserStore.info.uid;
-
-    const firestoreRef = firebase.firestore()
 
     // Adiciona o Evento à Collection de Eventos Aceitos do Usuário
     await firestoreRef
@@ -174,6 +178,44 @@ class EventsStore {
 
     // Adiciona o Evento a Array de Eventos Aceitos
     this.acceptedEvents.push(acceptedEvent);
+  }
+
+  @action
+  async recuseEvent(eventID) {
+    const userID = LoggedUserStore.info.uid;
+
+    // Remove o Convite da Array de Convites
+    this.pendingEvents = this.pendingEvents.filter(event => (
+      event.id != eventID
+    ))
+
+    // Recusa o Convite
+    await firestoreRef
+      .collection('events')
+      .doc(eventID)
+      .set({
+        participants: {
+          [userID]: false
+        }
+      }, { merge: true })
+  }
+
+  @action
+  async undoRecuse(event){
+    const userID = LoggedUserStore.info.uid;
+
+    // Adiciona de volta o Evento
+    this.pendingEvents.push(event)
+
+    // Desfaz a ação de recusar o convite
+    await firestoreRef
+      .collection('events')
+      .doc(event.id)
+      .set({
+        participants: {
+          [userID]: null
+        }
+      }, { merge: true })
   }
 }
 

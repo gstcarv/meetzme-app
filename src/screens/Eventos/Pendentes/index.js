@@ -10,6 +10,8 @@ import {
 
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
+import Snackbar from 'react-native-snackbar'
+
 import {
   withNavigation
 } from 'react-navigation'
@@ -39,6 +41,24 @@ class Pendentes extends Component {
     this.refs.eventBottomSheet.open(id);
   }
 
+  _onRecuseEvent(event){
+    const { EventsStore } = this.props;
+    EventsStore.recuseEvent(event.id);
+    setTimeout(() => {
+      Snackbar.show({
+        title: 'Convite Recusado',
+        duration: Snackbar.LENGTH_LONG,
+        action: {
+          title: 'Desfazer',
+          color: '#fff',
+          onPress: () => {
+            EventsStore.undoRecuse(event);
+          },
+        },
+      })
+    }, 500)
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -65,7 +85,8 @@ class Pendentes extends Component {
           ref="eventBottomSheet"
           onNext={(infoEvento) => {
             this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })
-          }} />
+          }}
+          onRecuse={this._onRecuseEvent.bind(this)} />
       </View>
     )
   }
