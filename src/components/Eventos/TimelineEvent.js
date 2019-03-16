@@ -1,13 +1,21 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { 
+  Text, 
+  StyleSheet, 
+  View
+} from 'react-native'
+
+import { Avatar } from 'react-native-paper';
 
 import TouchableScale from 'react-native-touchable-scale'
-
-import fonts from '@/resources/fonts'
-
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 
+import fonts from '@/resources/fonts'
 import colors from '@/resources/colors'
+
+import moment from 'moment'
+
+import LoggedUserStore from '@/store/LoggedUserStore'
 
 export default class TimelineEvent extends Component {
   render() {
@@ -15,53 +23,64 @@ export default class TimelineEvent extends Component {
     const {
       title,
       locationName,
-      datetime
+      datetime,
+      imageURL,
+      adminID
     } = this.props.eventData;
 
     const eventDateTime = new Date(datetime);
-    let eventDate = eventDateTime.toLocaleDateString(),
-      eventTime = eventDateTime.toLocaleTimeString();
+    const formattedDate = moment(eventDateTime).format("DD/MM/YYYY");
+    eventTime = eventDateTime.toLocaleTimeString();
 
-    var eventTimeFormat = eventTime.split(":");
-    eventTimeFormat.pop();
-    eventTimeFormat = eventTimeFormat.join(":").replace(":", "h")
-    eventTime = eventTimeFormat;
+    var formattedTime = moment(eventDateTime).format("H:mm").replace(':', 'h');
 
+    const isAdmin = LoggedUserStore.info.uid == adminID;
+    
     return (
       <View style={styles.container}>
         <View style={styles.timelineTextContainer}>
           <Text style={[styles.dateText]}>
-            {eventDate}
+            {formattedDate}
           </Text>
           <Text style={[styles.timeText]}>
-            {eventTime}
+            {formattedTime}
           </Text>
         </View>
         <View style={styles.timelineLine}>
           <View style={styles.timelineMarker}></View>
         </View>
         <TouchableScale style={styles.timelineCard}>
-          <Text style={styles.eventTitle}>{title}</Text>
+          <View style={styles.cardHeader}>
+            <Text style={styles.eventTitle}>{title}</Text>
+            <Avatar.Image 
+              size={24} 
+              source={{uri: imageURL}} 
+            />
+          </View>
           <View style={styles.localContainer}>
-            <FAIcon name="map-marker-alt" size={15} color="#ccc"
-                style={{marginRight: 5}}></FAIcon>
+            {/* <FAIcon 
+              name="map-marker-alt" 
+              size={20}
+              color="#ccc"
+              style={styles.locationIcon}
+            /> */}
             <Text style={styles.localText}>
-              { locationName }
+              {locationName}
             </Text>
           </View>
 
           {
-              this.props.admin ? (
-                <View style={{
-                  alignSelf: 'flex-end',
-                  marginTop: 7,
-                  backgroundColor: colors.primaryColor,
-                  padding: 5,
-                  borderRadius: 5
-                }}>
-                  <Text style={{ fontFamily: fonts.primaryBold, color: "#fff", fontSize: 10 }}>ADMIN</Text>
-                </View>
-              ) : null
+            isAdmin ? (
+              <View style={{
+                alignSelf: 'flex-end',
+                marginTop: 7,
+                backgroundColor: colors.primaryColor,
+                padding: 5,
+                borderRadius: 5
+              }}>
+                <Text style={{ fontFamily: fonts.primaryBold, color: "#fff", fontSize: 10 }}>ADMIN</Text>
+              </View>
+            ) : null
           }
 
         </TouchableScale>
@@ -107,15 +126,19 @@ const styles = StyleSheet.create({
     flex: 1,
     borderColor: colors.primaryColor
   },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   localContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 7
   },
   eventTitle: {
     fontFamily: fonts.primary,
     color: '#9B9B9B',
-    fontSize: 17
+    fontSize: 17,
+    width: "90%"
   },
   localText: {
     fontFamily: fonts.primary,
@@ -129,5 +152,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary,
     color: '#9B9B9B',
     alignSelf: 'flex-end'
-  },
+  }
 })

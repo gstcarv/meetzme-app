@@ -13,14 +13,16 @@ import SearchField from '@/components/SearchField'
 
 import fonts from '@/resources/fonts'
 
+import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
+
 import {
   Line
 } from '@/components/Forms'
 
 
-import { 
-  inject, 
-  observer 
+import {
+  inject,
+  observer
 } from 'mobx-react/native'
 
 import { toJS } from 'mobx'
@@ -30,32 +32,48 @@ import { toJS } from 'mobx'
 export default class Aceitos extends Component {
   render() {
 
-    console.log(toJS(this.props.EventsStore.events))
+    let acceptedEvents = toJS(this.props.EventsStore.acceptedEvents);
 
     return (
       <ScrollView style={styles.container}
         overScrollMode="always">
 
-        <SearchField placeholder="Digite o nome do Evento" />
+        {
+          acceptedEvents.length > 0 &&
 
-        <FlatList
-          data={toJS(this.props.EventsStore.acceptedEvents)}
-          keyExtractor={item => item.id}
+          <View>
+            <SearchField placeholder="Digite o nome do Evento" />
 
-          renderItem={
-            ({ item, index }) => (
-              <TimelineEvent
-                eventData={item}
-                rowIndex={index}
-              />
-            )
-          }
-        />
-        {/* <View style={styles.emptyContainer}>
+            <FlatList
+              data={acceptedEvents}
+              keyExtractor={item => item.id}
+
+              renderItem={
+                ({ item, index }) => (
+                  <TimelineEvent
+                    eventData={item}
+                    rowIndex={index}
+                  />
+                )
+              }
+
+              style={{
+                marginBottom: 40
+              }}
+            />
+          </View>
+        }
+
+        {
+          acceptedEvents.length == 0 &&
+
+          <View style={styles.emptyContainer}>
             <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
             <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
-          </View> */}
-        {/* <Line spaceVertical={15} /> */}
+            <Line spaceVertical={15} />
+          </View>
+        }
+
       </ScrollView >
     )
   }
@@ -65,7 +83,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F9FAFC",
     padding: 20,
-    flex: 1
+    flex: 1,
   },
   emptyContainer: {
     flex: 1,
