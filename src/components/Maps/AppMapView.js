@@ -37,11 +37,11 @@ export default class AppMapView extends Component {
       },
       async err => {
         if (!this.isUnmounted) {
-          Snackbar.show({
-            title: 'Ocorreu um erro ao determinar sua localização atual',
-            duration: Snackbar.LENGTH_LONG,
-            backgroundColor: '#b71b25'
-          })
+          // Snackbar.show({
+          //   title: 'Ocorreu um erro ao determinar sua localização atual',
+          //   duration: Snackbar.LENGTH_LONG,
+          //   backgroundColor: '#b71b25'
+          // })
           if(this.props.onPositionLoaded) this.props.onPositionLoaded(this.state.userLocation)
         }
       },

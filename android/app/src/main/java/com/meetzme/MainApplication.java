@@ -3,6 +3,7 @@ package com.meetzme;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnnestedscrollview.RNNestedScrollViewPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNNestedScrollViewPackage(),
             new ReanimatedPackage(),
             new RNGooglePlacesPackage(),
             new MapsPackage(),
