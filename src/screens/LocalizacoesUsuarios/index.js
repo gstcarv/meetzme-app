@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
+  Dimensions
 } from 'react-native'
 
 import {
@@ -48,7 +49,7 @@ class LocalizacoesUsuarios extends Component {
       this.setState({
         loading: false
       })
-    }, 0)
+    }, 500)
   }
 
   onDirectionReady(result) {
@@ -67,9 +68,10 @@ class LocalizacoesUsuarios extends Component {
   }
 
   render() {
-    if (this.state.loading == false) {
-      return (
-        <CoordinatorLayout style={{ flex: 1 }}>
+
+    const getMap = () => {
+      if (this.state.loading == false) {
+        return (
           <AppMapView
             ref={ref => this.mapview = ref}
             onPositionLoaded={(userLocation) => this.setState({ userLocation })}>
@@ -79,21 +81,26 @@ class LocalizacoesUsuarios extends Component {
             />
 
           </AppMapView>
-          <MapBottomSheet />
-        </CoordinatorLayout>
-
-      )
-    } else {
-      return (
-        <View style={styles.loadingContainer}>
-          <BackButton color={colors.primaryColor} />
-          <ActivityIndicator
-            size="large"
-            color={colors.primaryColor}
-          />
-        </View>
-      )
+        )
+      } else {
+        return (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator
+              size="large"
+              color={colors.primaryColor}
+              style={styles.loader}
+            />
+          </View>
+        )
+      }
     }
+
+    return (
+      <CoordinatorLayout style={{ flex: 1 }}>
+        {getMap()}
+        <MapBottomSheet />
+      </CoordinatorLayout>
+    )
   }
 }
 
@@ -102,7 +109,12 @@ export default withNavigation(LocalizacoesUsuarios)
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
+    width: '100%',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  loader: {
+    marginTop: 200
   }
 })

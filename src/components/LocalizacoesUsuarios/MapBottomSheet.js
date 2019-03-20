@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  BackHandler
+} from 'react-native'
 
 import {
   BottomSheetBehavior,
@@ -9,7 +13,7 @@ import {
 
 import colors from '@/resources/colors'
 
-import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import BottomSheetHeader from './BottomSheetHeader'
 import BottomSheetContent from './BottomSheetContent'
@@ -18,27 +22,26 @@ export default class MapBottomSheet extends Component {
 
   constructor() {
     super()
-    this.showingFAB = true;
+    this.state = {
+      BottomSheetState: 4
+    }
   }
 
   componentDidMount() {
     this.bottomSheet.attachNestedScrollChild(this.sheetContent.getNestedScroll())
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      if (this.state.BottomSheetState == 3) {
+        this.bottomSheet.setBottomSheetState(4)
+        return true;
+      }
+    })
   }
 
-  toggleFAB(e) {
-    const { fab } = this
-    let offset = e.nativeEvent.offset
-    console.log(offset)
-    if (offset >= 0.45) {
-      if (this.showingFAB){
-        fab.hide()
-        this.showingFAB = false
-      }
-    } else {
-      if (!this.showingFAB){
-        fab.show()
-        this.showingFAB = true
-      }
+  _onMenuIconPress() {
+    if (this.state.BottomSheetState == 3) {
+      this.bottomSheet.setBottomSheetState(4)
+    } else if (this.state.BottomSheetState == 4) {
+      this.bottomSheet.setBottomSheetState(3)
     }
   }
 
@@ -46,13 +49,14 @@ export default class MapBottomSheet extends Component {
     return (
       <View>
         <BottomSheetBehavior
-          // onSlide={this.toggleFAB.bind(this)}
+          onStateChange={(e) => this.setState({ BottomSheetState: e.nativeEvent.state })}
           peekHeight={70}
           hideable={false}
+          anchorEnabled={false}
           ref={ref => this.bottomSheet = ref}
-          state={BottomSheetBehavior.STATE_EXPANDED}>
+          state={BottomSheetBehavior.STATE_COLLAPSED}>
           <View style={{ backgroundColor: colors.primaryDark }}>
-            <BottomSheetHeader />
+            <BottomSheetHeader onMenuIconPress={this._onMenuIconPress.bind(this)} />
             <BottomSheetContent ref={ref => this.sheetContent = ref} />
           </View>
         </BottomSheetBehavior>

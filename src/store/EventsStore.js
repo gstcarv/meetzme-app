@@ -70,6 +70,22 @@ class EventsStore {
     })
   }
 
+  async getEventParticipants(eventID) {
+    let invites = this.acceptedEvents.find(event => event.id == eventID).participants
+    let users = []
+    for(let invitedUser in invites){
+      let inviteState = invites[invitedUser];
+      if(inviteState == true){
+        let user = await firestoreRef
+          .collection('users')
+          .doc(invitedUser)
+          .get()
+        users.push(user.data())
+      }
+    }
+    return users;
+  }
+
   @computed
   get userCreatedEvents() {
 
@@ -201,7 +217,7 @@ class EventsStore {
   }
 
   @action
-  async undoRecuse(event){
+  async undoRecuse(event) {
     const userID = LoggedUserStore.info.uid;
 
     // Adiciona de volta o Evento

@@ -4,7 +4,8 @@ import {
   View,
   Image,
   Dimensions,
-  FlatList
+  FlatList,
+  TouchableNativeFeedback
 } from 'react-native'
 
 import ContatoRow from "@/components/Contatos/ContatoRow"
@@ -18,7 +19,7 @@ import {
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 
 import {
-  Text,
+  Text
 } from 'react-native-paper'
 
 import colors from '@/resources/colors'
@@ -27,51 +28,68 @@ import sizes from '@/resources/sizes'
 
 const { height } = Dimensions.get('window')
 
-import {
-  inject,
-  observer
-} from 'mobx-react/native'
+import moment from 'moment'
 
-@inject('EventsStore')
-@observer
+import EventsStore from '@/store/EventsStore'
+
 export default class BottomSheetContent extends Component {
 
-  state = {
-    users: [
-      {
-        name: "Gustavo"
-      }
-    ]
+  constructor() {
+    super()
+    this.state = {
+      eventInfo: {},
+      participants: []
+    }
+  }
+
+  async componentDidMount() {
+    let eventInfo = EventsStore.acceptedEvents.find(event => event.id == "LnY6MUHa2bsbx03TlrLI")
+    this.setState({ eventInfo })
+    let participants = await EventsStore.getEventParticipants("LnY6MUHa2bsbx03TlrLI")
+    this.setState({ participants })
   }
 
   getNestedScroll() {
-    return this.NestedScrollView;
+    return this.NestedScrollView
   }
 
   render() {
 
-    let uri = "https://www.aussiespecialist.com/content/asp/en/sales-resources/image-and-video-galleries/_jcr_content/mainParsys/hero/image.adapt.1663.medium.jpg";
+    const {
+      id,
+      title,
+      datetime,
+      description,
+      locationName,
+      imageURL
+    } = this.state.eventInfo;
+
+    let formattedDateTime =  moment(new Date(datetime)).format("DD/MM/YYYY H:mm");
+    formattedDateTime = formattedDateTime.replace(':', 'h');
 
     return (
       <NestedScrollView style={styles.container}
         ref={ref => this.NestedScrollView = ref}>
-        <View>
-          <Image
-            style={styles.image}
-            source={{ uri }}
-          />
-        </View>
+        <TouchableNativeFeedback onPress={() => {}}
+        useForeground={true}>
+          <View>
+            <Image
+              style={styles.image}
+              source={{ uri: imageURL }}
+            />
+          </View>
+        </TouchableNativeFeedback>
         <View style={styles.infoSpacing}>
-          <Text style={styles.title}>Nome do Evento</Text>
-          <Text style={styles.eventDescription}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi voluptatibus sequi ea deleniti repudiandae dolores dignissimos? Nobis nesciunt fugit soluta doloremque error, facilis iure, mollitia asperiores reprehenderit consequuntur quaerat incidunt?</Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.eventDescription}>{description}</Text>
           <View style={styles.dateContainer}>
             <FAIcon
               name="calendar-alt"
               size={20}
               color="#ccc"
-              style={{marginRight: 8}}
+              style={{ marginRight: 8 }}
             />
-            <Text style={styles.eventDescription}>23/04/2002 22h40</Text>
+            <Text style={styles.eventDescription}>{formattedDateTime}</Text>
           </View>
 
           <Line
@@ -80,7 +98,7 @@ export default class BottomSheetContent extends Component {
           />
 
           <Text style={styles.title}>Localização</Text>
-          <Text style={styles.eventDescription}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi voluptatibus sequi ea deleniti repudiandae dolores dignissimos? Nobis nesciunt fugit soluta doloremque error, facilis iure, mollitia asperiores reprehenderit consequuntur quaerat incidunt?</Text>
+          <Text style={styles.eventDescription}>{locationName}</Text>
 
           <Line
             width="85%"
@@ -90,32 +108,7 @@ export default class BottomSheetContent extends Component {
           <Text style={styles.title}>Participantes</Text>
         </View>
         <FlatList
-          data={[
-            {
-              id: "1",
-              name: "ajsdhkasd",
-              username: "hjasdad",
-              photoURL: uri
-            },
-            {
-              id: "2",
-              name: "ghj",
-              username: "ghjghj",
-              photoURL: uri
-            },
-            {
-              id: "3",
-              name: "fgd",
-              username: "asdasd",
-              photoURL: uri
-            },
-            {
-              id: "4",
-              name: "dghgh",
-              username: "dfgdfg",
-              photoURL: uri
-            }
-          ]}
+          data={this.state.participants}
           keyExtractor={item => item.id}
 
           renderItem={
@@ -158,6 +151,6 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 15
+    marginTop: 30
   }
 })

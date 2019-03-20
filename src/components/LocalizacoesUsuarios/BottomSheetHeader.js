@@ -15,13 +15,17 @@ export default class BottomSheetHeader extends Component {
       <View style={styles.header}>
 
         <IconButton
+          icon="arrow-back"
+          color="#fff"
+          onPress={() => {}}
+        />
+
+        <IconButton
           icon="menu"
           color="#fff"
-          onPress={() => {
-
-          }}
+          onPress={this.props.onMenuIconPress}
         />
-        
+
       </View>
     )
   }
