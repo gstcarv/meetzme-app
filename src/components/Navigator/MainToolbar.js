@@ -40,7 +40,7 @@ class MainToolbar extends Component {
 
   render() {
 
-    const { info: userData } = this.props.LoggedUserStore
+    const userData = LoggedUserStore.get()
 
     return (
       <View style={[styles.container]}>

@@ -57,7 +57,10 @@ export default class MapBottomSheet extends Component {
           state={BottomSheetBehavior.STATE_COLLAPSED}>
           <View style={{ backgroundColor: colors.primaryDark }}>
             <BottomSheetHeader onMenuIconPress={this._onMenuIconPress.bind(this)} />
-            <BottomSheetContent ref={ref => this.sheetContent = ref} />
+            <BottomSheetContent
+              ref={ref => this.sheetContent = ref}
+              eventData={this.props.eventData}
+            />
           </View>
         </BottomSheetBehavior>
       </View>

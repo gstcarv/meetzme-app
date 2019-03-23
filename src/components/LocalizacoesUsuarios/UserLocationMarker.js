@@ -12,9 +12,11 @@ import { Marker } from 'react-native-maps'
 
 import TouchableScale from 'react-native-touchable-scale'
 
+import colors from '@/resources/colors'
+
 import LoggedUserStore from '@/store/LoggedUserStore'
 
-export default class UserMapMarker extends Component {
+export default class UserLocationMarker extends Component {
 
   constructor() {
     super();
@@ -23,7 +25,7 @@ export default class UserMapMarker extends Component {
     }
   }
 
-  _onMarkerLoad(){
+  _onMarkerLoad() {
     // setTimeout(() => {
     //   this.setState({ tracksViewChanges: false })
     // }, 0)
@@ -37,22 +39,23 @@ export default class UserMapMarker extends Component {
       <Marker coordinate={this.props.coordinate}
         title={this.props.title || ""}
         description={this.props.description || null}
-        anchor={{x: 0.5, y: 0.5}}
         tracksViewChanges={false}>
         <View>
-          <View style={[styles.wave, styles.wave1]}>
-            <View style={[styles.wave, styles.wave2]}>
-              <View style={[styles.wave, styles.wave3]}>
-                <Image 
-                  source={{uri: userData.photoURL}}
-                  imageStyle={{ borderRadius: 100}}
-                  style={styles.image}
+          {
+            true &&
+            <View style={{
+              height: 63,
+            }}>
+              <View style={styles.markerContainer}>
+                <Image
+                  source={{ uri: this.props.image }}
+                  imageStyle={{ borderRadius: 100 }}
+                  style={[styles.otherUserImage]}
                   onLoad={this._onMarkerLoad.bind(this)}>
                 </Image>
-                <View style={styles.locationIndicator}></View>  
               </View>
             </View>
-          </View>
+          }
         </View>
       </Marker>
     )
@@ -64,8 +67,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 100,
     borderColor: "#fff",
-    width: 13,
-    height: 13,
+    width: 6,
+    height: 6,
     backgroundColor: "#80a6e8",
     position: 'absolute'
   },
@@ -75,24 +78,50 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   wave1: {
-    width: 105,
-    height: 105,
+    width: 80,
+    height: 80,
     backgroundColor: 'rgba(128, 166, 232, .2)',
     margin: 3
   },
   wave2: {
-    width: 90,
-    height: 90,
+    width: 65,
+    height: 65,
     backgroundColor: 'rgba(128, 166, 232, .4)'
   },
   wave3: {
-    width: 75,
-    height: 75,
+    width: 50,
+    height: 50,
     backgroundColor: 'rgba(128, 166, 232, .5)'
   },
   image: {
-    width: 55,
-    height: 55,
+    width: 35,
+    height: 35,
     borderRadius: 100
-  }
+  },
+  otherUserImage: {
+    borderColor: colors.primaryDark,
+    transform: [
+      {
+        rotate: "-45deg"
+      }
+    ],
+    width: 40,
+    height: 40,
+    borderRadius: 100
+  },
+  markerContainer: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.primaryColor,
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
+    borderBottomLeftRadius: 100,
+    transform: [
+      {
+        rotate: "45deg"
+      }
+    ],
+  },
 })

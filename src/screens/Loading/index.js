@@ -16,18 +16,38 @@ import firebase, { firestore } from 'react-native-firebase'
 
 import { inject, observer } from 'mobx-react/native'
 
-import LoggedUserStore from '@/store/LoggedUserStore'
-
 @inject('ContactsStore')
 @inject('EventsStore')
+@inject('LoggedUserStore')
 @observer
 class Principal extends Component {
 
+  async getUserLocation() {
+    navigator.geolocation.getCurrentPosition(
+      async pos => {
+        const UID = this.props.LoggedUserStore.get().uid;
+        const { latitude, longitude } =  pos.coords;
+        console.log(latitude)
+        await firebase.firestore()
+          .collection('users')
+          .doc(UID)
+          .update({
+            lastLocation: {
+              latitude, longitude
+            }
+          })
+      },
+      err => {},
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
+    )
+  }
+
   componentDidMount() {
     const { navigate } = this.props.navigation;
-    const { 
-      ContactsStore, 
-      EventsStore, 
+    const {
+      ContactsStore,
+      EventsStore,
+      LoggedUserStore
     } = this.props;
 
     let isWatchingEvents = false;
@@ -52,8 +72,9 @@ class Principal extends Component {
 
         await ContactsStore.fetchContacts();
         await EventsStore.fetchEvents();
+        await this.getUserLocation();
 
-        if(!isWatchingEvents){
+        if (!isWatchingEvents) {
           EventsStore.watchEvents();
           isWatchingEvents = true
         }

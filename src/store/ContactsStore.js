@@ -22,7 +22,7 @@ class ContactsStore {
     // Procura todos os Contatos do Usuário Logado
     let userContacts = await firestoreRef
       .collection('users')
-      .doc(LoggedUserStore.info.uid)
+      .doc(LoggedUserStore.get().uid)
       .collection('contacts')
       .get();
 
@@ -56,7 +56,7 @@ class ContactsStore {
       // Adiciona Contato ao USuário Logado
       await firestoreRef
         .collection('users')
-        .doc(LoggedUserStore.info.uid)
+        .doc(LoggedUserStore.get().uid)
         .collection('contacts')
         .add({
           uid: contactData.id,
@@ -76,7 +76,7 @@ class ContactsStore {
       let deleteContact =
         await firestoreRef
           .collection('users')
-          .doc(LoggedUserStore.info.uid)
+          .doc(LoggedUserStore.get().uid)
           .collection('contacts')
           .where("uid", "==", contactToRemove.id)
           .get();

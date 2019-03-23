@@ -43,10 +43,7 @@ export default class BottomSheetContent extends Component {
   }
 
   async componentDidMount() {
-    let eventInfo = EventsStore.acceptedEvents.find(event => event.id == "LnY6MUHa2bsbx03TlrLI")
-    this.setState({ eventInfo })
-    let participants = await EventsStore.getEventParticipants("LnY6MUHa2bsbx03TlrLI")
-    this.setState({ participants })
+    
   }
 
   getNestedScroll() {
@@ -62,7 +59,7 @@ export default class BottomSheetContent extends Component {
       description,
       locationName,
       imageURL
-    } = this.state.eventInfo;
+    } = this.props.eventData.info;
 
     let formattedDateTime =  moment(new Date(datetime)).format("DD/MM/YYYY H:mm");
     formattedDateTime = formattedDateTime.replace(':', 'h');
@@ -108,7 +105,7 @@ export default class BottomSheetContent extends Component {
           <Text style={styles.title}>Participantes</Text>
         </View>
         <FlatList
-          data={this.state.participants}
+          data={this.props.eventData.participants}
           keyExtractor={item => item.id}
 
           renderItem={

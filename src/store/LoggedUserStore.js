@@ -11,6 +11,10 @@ class LoggedUserStore {
     this.info = data
   }
 
+  get(){
+    return this.info;
+  }
+
 }
 
 export default new LoggedUserStore();

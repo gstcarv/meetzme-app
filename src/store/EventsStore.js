@@ -19,7 +19,7 @@ class EventsStore {
   @action
   watchEvents() {
 
-    const userID = LoggedUserStore.info.uid;
+    const userID = LoggedUserStore.get().uid;
 
     // Pega os Eventos Pendentes em Tempo Real
     firestoreRef
@@ -50,7 +50,7 @@ class EventsStore {
   @action
   async fetchEvents() {
 
-    const userID = LoggedUserStore.info.uid;
+    const userID = LoggedUserStore.get().uid;
 
     // Procura os Eventos do Usuário Logado
     let acceptedEvents = await firestoreRef
@@ -80,7 +80,10 @@ class EventsStore {
           .collection('users')
           .doc(invitedUser)
           .get()
-        users.push(user.data())
+        users.push({
+          uid: user.id,
+          ...user.data(),
+        })
       }
     }
     return users;
@@ -89,7 +92,7 @@ class EventsStore {
   @computed
   get userCreatedEvents() {
 
-    const userID = LoggedUserStore.info.uid;
+    const userID = LoggedUserStore.get().uid;
 
     // Retorna os Eventos na qual o Usuário é o Administrador
     return this.acceptedEvents.filter(event => {
@@ -99,7 +102,7 @@ class EventsStore {
 
   @action
   async createEvent(eventInfo) {
-    const adminID = LoggedUserStore.info.uid
+    const adminID = LoggedUserStore.get().uid
 
     const {
       title,
@@ -166,7 +169,7 @@ class EventsStore {
 
   @action
   async acceptEvent({ eventID, transportMode }) {
-    const userID = LoggedUserStore.info.uid;
+    const userID = LoggedUserStore.get().uid;
 
     // Adiciona o Evento à Collection de Eventos Aceitos do Usuário
     await firestoreRef
@@ -198,7 +201,7 @@ class EventsStore {
 
   @action
   async recuseEvent(eventID) {
-    const userID = LoggedUserStore.info.uid;
+    const userID = LoggedUserStore.get().uid;
 
     // Remove o Convite da Array de Convites
     this.pendingEvents = this.pendingEvents.filter(event => (
@@ -218,7 +221,7 @@ class EventsStore {
 
   @action
   async undoRecuse(event) {
-    const userID = LoggedUserStore.info.uid;
+    const userID = LoggedUserStore.get().uid;
 
     // Adiciona de volta o Evento
     this.pendingEvents.push(event)

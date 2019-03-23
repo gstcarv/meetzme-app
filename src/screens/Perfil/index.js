@@ -38,7 +38,7 @@ class Perfil extends Component {
 
   render() {
 
-    const { info: infoUser } = this.props.LoggedUserStore
+    const infoUser = this.props.LoggedUserStore.get()
 
     return (
       <View style={{ flex: 1 }}>

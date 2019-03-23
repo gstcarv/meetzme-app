@@ -40,11 +40,12 @@ class LocalizacaoEventoPendente extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      infoEvento: this.props.navigation.getParam('infoEvento')
-    })
 
-    this.destination = this.props.navigation.getParam('infoEvento').destination;
+    let infoEvento = this.props.navigation.getParam('infoEvento');
+
+    this.setState({ infoEvento })
+
+    this.destination = infoEvento.destination;
 
     setTimeout(() => {
       this.setState({

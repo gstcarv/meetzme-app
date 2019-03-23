@@ -34,7 +34,7 @@ export default class TimelineEvent extends Component {
 
     var formattedTime = moment(eventDateTime).format("H:mm").replace(':', 'h');
 
-    const isAdmin = LoggedUserStore.info.uid == adminID;
+    const isAdmin = LoggedUserStore.get().uid == adminID;
     
     return (
       <View style={styles.container}>

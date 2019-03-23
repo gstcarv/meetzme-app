@@ -19,13 +19,17 @@ import { withNavigation } from 'react-navigation'
 
 import AppMapView from '@/components/Maps/AppMapView'
 import MapDirections from '@/components/Maps/MapDirections'
-import UserMapMarker from '@/components/Maps/UserMapMarker'
+import UserLocationMarker from '@/components/LocalizacoesUsuarios/UserLocationMarker'
+import DestinationMapMarker from '@/components/Maps/DestinationMapMarker'
 
 import BackButton from '@/components/BackButton'
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 
 import { inject, observer } from 'mobx-react/native'
+import { toJS } from 'mobx'
+
+import LoggedUserStore from '@/store/LoggedUserStore'
 
 @inject('EventsStore')
 class LocalizacoesUsuarios extends Component {
@@ -40,11 +44,21 @@ class LocalizacoesUsuarios extends Component {
       },
       infoEvento: {},
       directionResult: {},
-      transportMode: "DRIVING"
+      transportMode: "DRIVING",
+      participants: []
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+
+    const { EventsStore } = this.props;
+
+    let infoEvento = toJS(EventsStore.acceptedEvents).find(event => event.id == "LnY6MUHa2bsbx03TlrLI")
+    this.setState({ infoEvento })
+
+    let participants = await EventsStore.getEventParticipants("LnY6MUHa2bsbx03TlrLI")
+    this.setState({ participants })
+
     setTimeout(() => {
       this.setState({
         loading: false
@@ -56,18 +70,19 @@ class LocalizacoesUsuarios extends Component {
 
   }
 
-  async _onAcceptEvent() {
-    const { transportMode } = this.state;
-
-    await this.props.EventsStore.acceptEvent({
-      eventID: this.state.infoEvento.id,
-      transportMode
-    });
-
-    this.props.navigation.navigate('EventosAceitos');
-  }
-
   render() {
+
+    const {
+      infoEvento,
+      participants
+    } = this.state;
+
+    const {
+      destination,
+      locationName
+    } = this.state.infoEvento;
+
+    const { uid } = LoggedUserStore.get();
 
     const getMap = () => {
       if (this.state.loading == false) {
@@ -76,9 +91,25 @@ class LocalizacoesUsuarios extends Component {
             ref={ref => this.mapview = ref}
             onPositionLoaded={(userLocation) => this.setState({ userLocation })}>
 
-            <UserMapMarker coordinate={this.state.userLocation}
-              title="Você"
-            />
+            {
+              this.state.participants.map(user => {
+                return <UserLocationMarker coordinate={user.lastLocation}
+                  title={user.uid == uid ? "Você" : user.name.split(" ")[0]}
+                  isOtherUser={user.uid != uid}
+                  image={user.photoURL}
+                />
+              })
+            }
+
+            {
+              destination &&
+              <DestinationMapMarker
+                coordinate={destination}
+                title={
+                  locationName.split('-')[0]
+                }
+              />
+            }
 
           </AppMapView>
         )
@@ -98,7 +129,7 @@ class LocalizacoesUsuarios extends Component {
     return (
       <CoordinatorLayout style={{ flex: 1 }}>
         {getMap()}
-        <MapBottomSheet />
+        <MapBottomSheet eventData={{ info: infoEvento, participants }} />
       </CoordinatorLayout>
     )
   }
