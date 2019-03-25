@@ -31,6 +31,8 @@ import { toJS } from 'mobx'
 
 import LoggedUserStore from '@/store/LoggedUserStore'
 
+import { LocationListener } from '@/modules'
+
 @inject('EventsStore')
 class LocalizacoesUsuarios extends Component {
 
@@ -50,6 +52,8 @@ class LocalizacoesUsuarios extends Component {
   }
 
   async componentDidMount() {
+
+    LocationListener.startService()
 
     const { EventsStore } = this.props;
 
@@ -93,11 +97,14 @@ class LocalizacoesUsuarios extends Component {
 
             {
               this.state.participants.map(user => {
-                return <UserLocationMarker coordinate={user.lastLocation}
-                  title={user.uid == uid ? "Você" : user.name.split(" ")[0]}
-                  isOtherUser={user.uid != uid}
-                  image={user.photoURL}
-                />
+                return (
+                  <UserLocationMarker coordinate={user.lastLocation}
+                    title={user.uid == uid ? "Você" : user.name.split(" ")[0]}
+                    isOtherUser={user.uid != uid}
+                    image={user.photoURL}
+                    key={user.uid}
+                  />
+                )
               })
             }
 

@@ -106,7 +106,7 @@ export default class BottomSheetContent extends Component {
         </View>
         <FlatList
           data={this.props.eventData.participants}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.uid}
 
           renderItem={
             ({ item, index }) => (

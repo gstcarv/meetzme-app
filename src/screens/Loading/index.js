@@ -27,7 +27,6 @@ class Principal extends Component {
       async pos => {
         const UID = this.props.LoggedUserStore.get().uid;
         const { latitude, longitude } =  pos.coords;
-        console.log(latitude)
         await firebase.firestore()
           .collection('users')
           .doc(UID)

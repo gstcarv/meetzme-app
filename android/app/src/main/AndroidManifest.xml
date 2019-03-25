@@ -15,6 +15,10 @@
       android:allowBackup="false"
       android:theme="@style/AppTheme">
 
+      <service 
+        android:name=".app_location_service.services.LocationListenerService" 
+      />
+
       <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyBGgQ68-4tZvO_nGU4BMNUjReZBwx9zzKw"/>
