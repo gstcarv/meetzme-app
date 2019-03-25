@@ -39,7 +39,10 @@ export default class UserLocationMarker extends Component {
       <Marker coordinate={this.props.coordinate}
         title={this.props.title || ""}
         description={this.props.description || null}
-        tracksViewChanges={false}>
+        tracksViewChanges={false}
+        ref={
+          ref => this.markerRef = ref
+        }>
         <View>
           {
             true &&

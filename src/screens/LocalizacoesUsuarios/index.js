@@ -51,7 +51,13 @@ class LocalizacoesUsuarios extends Component {
     }
   }
 
+  componentWillMount(){
+    this.mapMarkers = []
+  }
+
   async componentDidMount() {
+
+    this.watchLocations = []
 
     LocationListener.startService()
 
@@ -61,6 +67,38 @@ class LocalizacoesUsuarios extends Component {
     this.setState({ infoEvento })
 
     let participants = await EventsStore.getEventParticipants("LnY6MUHa2bsbx03TlrLI")
+
+    const usersRef = firebase.firestore().collection('users');
+
+    participants.forEach(participant => {
+      let watch = usersRef
+        .doc(participant.uid)
+        .onSnapshot(snap => {
+
+          const {
+            latitude,
+            longitude
+          } = snap.data().lastLocation
+
+          let newLocations = this.state.participants.map(p => {
+            if (p.uid == snap.id) {
+              p.lastLocation = snap.data().lastLocation
+            }
+            return p;
+          })
+
+          if(this.mapMarkers[snap.id]){
+            this.mapMarkers[snap.id].markerRef.animateMarkerToCoordinate({
+              latitude,
+              longitude,
+              duration: 1000
+            })
+          }
+
+          // this.setState({ participants: newLocations });
+        })
+    })
+
     this.setState({ participants })
 
     setTimeout(() => {
@@ -92,17 +130,22 @@ class LocalizacoesUsuarios extends Component {
       if (this.state.loading == false) {
         return (
           <AppMapView
+            moveOnMarkerPress={true}
             ref={ref => this.mapview = ref}
             onPositionLoaded={(userLocation) => this.setState({ userLocation })}>
 
             {
               this.state.participants.map(user => {
                 return (
-                  <UserLocationMarker coordinate={user.lastLocation}
+                  <UserLocationMarker
+                    coordinate={user.lastLocation}
                     title={user.uid == uid ? "Você" : user.name.split(" ")[0]}
                     isOtherUser={user.uid != uid}
                     image={user.photoURL}
                     key={user.uid}
+                    ref={
+                      ref => this.mapMarkers[user.uid] = ref
+                    }
                   />
                 )
               })

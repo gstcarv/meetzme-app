@@ -7,6 +7,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
 
+import android.content.Context;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -37,16 +40,20 @@ public class AppBackgroundLocationListenerModule extends ReactContextBaseJavaMod
 
   @ReactMethod
   public void startService() {
-    createNotificationChannel();
-    Intent serviceIntent = new Intent(getContext(), LocationListenerService.class);
-    serviceIntent.putExtra("reactContext", getContext().toString());
-    getContext().startService(serviceIntent);
+    if(!isLocationServiceRunning()){
+      createNotificationChannel();
+      Intent serviceIntent = new Intent(getContext(), LocationListenerService.class);
+      serviceIntent.putExtra("reactContext", getContext().toString());
+      getContext().startService(serviceIntent);
+    }
   }
 
   @ReactMethod
   public void stopService() {
-    Intent serviceIntent = new Intent(getContext(), LocationListenerService.class);
-    getContext().startService(serviceIntent);
+    if(isLocationServiceRunning()){
+      Intent serviceIntent = new Intent(getContext(), LocationListenerService.class);
+      getContext().startService(serviceIntent);
+    }
   }
 
   private void createNotificationChannel(){
@@ -60,6 +67,16 @@ public class AppBackgroundLocationListenerModule extends ReactContextBaseJavaMod
         NotificationManager manager = getContext().getSystemService(NotificationManager.class);
         manager.createNotificationChannel(channel);
     }
-}
+  }
+
+  private boolean isLocationServiceRunning() {
+    ActivityManager manager = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+        if (LocationListenerService.class.getName().equals(service.service.getClassName())) {
+            return true;
+        }
+    }
+    return false;
+  }
 
 }
