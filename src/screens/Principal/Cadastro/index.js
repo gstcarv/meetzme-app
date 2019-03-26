@@ -129,12 +129,14 @@ class Cadastro extends Component {
               onChangeText={passwordConfirm => this.setState({ passwordConfirm })}
               ref="confirmPassField"
             />
+
+            <Button mode="contained"
+              noRadius
+              icon="keyboard-arrow-right"
+              onPress={() => this.validaCadastro()}>Próximo</Button>
+
           </View>
 
-          <Button mode="contained"
-            noRadius
-            icon="keyboard-arrow-right"
-            onPress={() => this.validaCadastro()}>Próximo</Button>
         </KeyboardAwareScrollView>
       </View>
     )

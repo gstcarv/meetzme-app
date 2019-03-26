@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { 
-  Text, 
-  StyleSheet, 
+import {
+  Text,
+  StyleSheet,
   View
 } from 'react-native'
 
@@ -21,13 +21,14 @@ export default class TimelineEvent extends Component {
   render() {
 
     const {
+      id,
       title,
       locationName,
       datetime,
       imageURL,
       adminID
     } = this.props.eventData;
-
+    
     const eventDateTime = new Date(datetime);
     const formattedDate = moment(eventDateTime).format("DD/MM/YYYY");
     eventTime = eventDateTime.toLocaleTimeString();
@@ -35,7 +36,7 @@ export default class TimelineEvent extends Component {
     var formattedTime = moment(eventDateTime).format("H:mm").replace(':', 'h');
 
     const isAdmin = LoggedUserStore.get().uid == adminID;
-    
+
     return (
       <View style={styles.container}>
         <View style={styles.timelineTextContainer}>
@@ -49,21 +50,18 @@ export default class TimelineEvent extends Component {
         <View style={styles.timelineLine}>
           <View style={styles.timelineMarker}></View>
         </View>
-        <TouchableScale style={styles.timelineCard}>
+        <TouchableScale
+          style={styles.timelineCard}
+          onPress={() => this.props.onPress(id)}
+        >
           <View style={styles.cardHeader}>
             <Text style={styles.eventTitle}>{title}</Text>
-            <Avatar.Image 
-              size={24} 
-              source={{uri: imageURL}} 
+            <Avatar.Image
+              size={24}
+              source={{ uri: imageURL }}
             />
           </View>
           <View style={styles.localContainer}>
-            {/* <FAIcon 
-              name="map-marker-alt" 
-              size={20}
-              color="#ccc"
-              style={styles.locationIcon}
-            /> */}
             <Text style={styles.localText}>
               {locationName}
             </Text>

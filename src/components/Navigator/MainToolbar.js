@@ -40,7 +40,7 @@ class MainToolbar extends Component {
 
   render() {
 
-    const userData = LoggedUserStore.get()
+    const userData = this.props.LoggedUserStore.get()
 
     return (
       <View style={[styles.container]}>
@@ -63,9 +63,6 @@ class MainToolbar extends Component {
           <IconButton
             icon="notifications"
             color="#fff"
-            onPress={() => {
-              
-            }}
           />
         </View>
       </View>

@@ -27,6 +27,7 @@ export default class AppButton extends Component {
         style={
           [ this.props.style, 
             { 
+              overflow: 'hidden',
               borderRadius: getRadius(),
               paddingVertical: getPadding()
             }

@@ -7,6 +7,7 @@ import firebase, { firestore } from 'react-native-firebase'
 
 class LoggedUserStore {
   @observable info = {}
+  @observable lastLocation = {}
 
   @action
   setUser(data) {
@@ -20,6 +21,7 @@ class LoggedUserStore {
   @action
   async sendLocation(coords) {
     const { uid } = this.get();
+    this.lastLocation = coords;
     await firebase.firestore()
       .collection('users')
       .doc(uid)

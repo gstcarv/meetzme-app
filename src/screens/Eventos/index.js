@@ -28,7 +28,7 @@ export default createMaterialTopTabNavigator(
     },
   },
   {
-    initialRouteName: 'EventosPendentes',
+    initialRouteName: 'EventosAceitos',
     tabBarOptions: {
       upperCaseLabel: false,
       activeTintColor: '#e91e63',

@@ -78,10 +78,18 @@ export default class AppMapView extends Component {
         showsMyLocationButton={false}
         showsCompass={false}
         showsBuildings={false}
+        showsIndoors={false}
+        showsTraffic={false}
         maxZoomLevel={16.7}
         rotateEnabled={false}
         moveOnMarkerPress={false}
-        customMapStyle={require("@assets/mapstyle.json")}
+        mapPadding={{
+          top: 15,
+          bottom: 15,
+          right: 50,
+          left: 50
+        }}
+        // customMapStyle={require("@assets/mapstyle.json")}
         ref={ref => this.map = ref}
         {...this.props}>
 

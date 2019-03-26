@@ -15,6 +15,8 @@ import fonts from '@/resources/fonts'
 
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 
+import { withNavigation } from 'react-navigation'
+
 import {
   Line
 } from '@/components/Forms'
@@ -28,7 +30,12 @@ import { toJS } from 'mobx'
 
 @inject('EventsStore')
 @observer
-export default class Aceitos extends Component {
+class Aceitos extends Component {
+
+  goToEvent(eventID){
+    this.props.navigation.navigate('LocalizacoesUsuarios', { eventID })
+  }
+
   render() {
 
     let acceptedEvents = toJS(this.props.EventsStore.acceptedEvents);
@@ -46,16 +53,15 @@ export default class Aceitos extends Component {
             <FlatList
               data={acceptedEvents}
               keyExtractor={item => item.id}
-
               renderItem={
                 ({ item, index }) => (
                   <TimelineEvent
                     eventData={item}
                     rowIndex={index}
+                    onPress={this.goToEvent.bind(this)}
                   />
                 )
               }
-
               style={{
                 marginBottom: 40
               }}
@@ -77,6 +83,8 @@ export default class Aceitos extends Component {
     )
   }
 }
+
+export default withNavigation(Aceitos)
 
 const styles = StyleSheet.create({
   container: {

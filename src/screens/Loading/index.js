@@ -27,14 +27,9 @@ class Principal extends Component {
       async pos => {
         const UID = this.props.LoggedUserStore.get().uid;
         const { latitude, longitude } =  pos.coords;
-        await firebase.firestore()
-          .collection('users')
-          .doc(UID)
-          .update({
-            lastLocation: {
-              latitude, longitude
-            }
-          })
+        await this.props.LoggedUserStore.sendLocation({
+          latitude, longitude
+        })
       },
       err => {},
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }

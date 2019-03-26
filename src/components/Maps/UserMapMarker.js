@@ -8,7 +8,7 @@ import {
   Image
 } from 'react-native'
 
-import { Marker } from 'react-native-maps'
+import { Marker, Callout } from 'react-native-maps'
 
 import TouchableScale from 'react-native-touchable-scale'
 

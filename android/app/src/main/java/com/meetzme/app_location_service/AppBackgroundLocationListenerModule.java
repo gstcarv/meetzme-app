@@ -17,12 +17,11 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 
 import com.meetzme.app_location_service.services.LocationListenerService;
+import com.meetzme.Channels;
 
 public class AppBackgroundLocationListenerModule extends ReactContextBaseJavaModule {
 
   public static ReactApplicationContext REACT_APP_CONTEXT = null;
-
-  private static final String CHANNEL_ID = "meetzme_notification_channel";
 
   public AppBackgroundLocationListenerModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -59,8 +58,8 @@ public class AppBackgroundLocationListenerModule extends ReactContextBaseJavaMod
   private void createNotificationChannel(){
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
         NotificationChannel channel = new NotificationChannel(
-                CHANNEL_ID,
-                "ServiceChannel",
+                Channels.SHARE_LOCATION,
+                "Compartilhar Localização",
                 NotificationManager.IMPORTANCE_DEFAULT
         );
 

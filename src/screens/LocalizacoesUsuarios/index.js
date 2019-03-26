@@ -32,6 +32,12 @@ import { toJS } from 'mobx'
 import LoggedUserStore from '@/store/LoggedUserStore'
 
 import { LocationListener } from '@/modules'
+import { MapView, Polyline } from 'react-native-maps';
+
+import {
+  Text,
+  FAB
+} from 'react-native-paper'
 
 @inject('EventsStore')
 class LocalizacoesUsuarios extends Component {
@@ -51,11 +57,27 @@ class LocalizacoesUsuarios extends Component {
     }
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.mapMarkers = []
   }
 
+  fitAllMarkers() {
+    this.mapview.map.fitToElements(true)
+  }
+
+  centerUserMarker() {
+    const { lastLocation } = LoggedUserStore;
+
+    this.mapview.map.animateCamera({
+      center: toJS(lastLocation),
+      pitch: 30,
+      zoom: 15,
+    })
+  }
+
   async componentDidMount() {
+
+    const eventID = this.props.navigation.getParam('eventID') || "LnY6MUHa2bsbx03TlrLI";
 
     this.watchLocations = []
 
@@ -63,10 +85,10 @@ class LocalizacoesUsuarios extends Component {
 
     const { EventsStore } = this.props;
 
-    let infoEvento = toJS(EventsStore.acceptedEvents).find(event => event.id == "LnY6MUHa2bsbx03TlrLI")
+    let infoEvento = toJS(EventsStore.acceptedEvents).find(event => event.id == eventID)
     this.setState({ infoEvento })
 
-    let participants = await EventsStore.getEventParticipants("LnY6MUHa2bsbx03TlrLI")
+    let participants = await EventsStore.getEventParticipants(eventID)
 
     const usersRef = firebase.firestore().collection('users');
 
@@ -87,7 +109,7 @@ class LocalizacoesUsuarios extends Component {
             return p;
           })
 
-          if(this.mapMarkers[snap.id]){
+          if (this.mapMarkers[snap.id]) {
             this.mapMarkers[snap.id].markerRef.animateMarkerToCoordinate({
               latitude,
               longitude,
@@ -106,10 +128,6 @@ class LocalizacoesUsuarios extends Component {
         loading: false
       })
     }, 500)
-  }
-
-  onDirectionReady(result) {
-
   }
 
   render() {
@@ -137,16 +155,18 @@ class LocalizacoesUsuarios extends Component {
             {
               this.state.participants.map(user => {
                 return (
-                  <UserLocationMarker
-                    coordinate={user.lastLocation}
-                    title={user.uid == uid ? "Você" : user.name.split(" ")[0]}
-                    isOtherUser={user.uid != uid}
-                    image={user.photoURL}
-                    key={user.uid}
-                    ref={
-                      ref => this.mapMarkers[user.uid] = ref
-                    }
-                  />
+                  <View>
+                    <UserLocationMarker
+                      coordinate={user.lastLocation}
+                      title={user.uid == uid ? "Você" : user.name.split(" ")[0]}
+                      isOtherUser={user.uid != uid}
+                      image={user.photoURL}
+                      key={user.uid}
+                      ref={
+                        ref => this.mapMarkers[user.uid] = ref
+                      }
+                    />
+                  </View>
                 )
               })
             }
@@ -177,10 +197,23 @@ class LocalizacoesUsuarios extends Component {
     }
 
     return (
-      <CoordinatorLayout style={{ flex: 1 }}>
-        {getMap()}
-        <MapBottomSheet eventData={{ info: infoEvento, participants }} />
-      </CoordinatorLayout>
+      <View style={{ flex: 1 }}>
+        <CoordinatorLayout style={{ flex: 1 }}>
+          {getMap()}
+          <MapBottomSheet eventData={{ info: infoEvento, participants }} />
+        </CoordinatorLayout>
+        <FAB
+          icon="gps-fixed"
+          onPress={this.centerUserMarker.bind(this)}
+          style={styles.fab}
+        />
+        <FAB
+          icon="people"
+          onPress={this.fitAllMarkers.bind(this)}
+          style={[styles.fab, { bottom: 160 }]}
+        />
+      </View>
+
     )
   }
 }
@@ -197,5 +230,10 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 200
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 85,
+    right: 10
   }
 })

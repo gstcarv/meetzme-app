@@ -26,15 +26,14 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.Arguments;
 
 import com.meetzme.app_location_service.AppBackgroundLocationListenerModule;
+import com.meetzme.Channels;
+
 
 public class LocationListenerService extends Service {
 
-    private static final String CHANNEL_ID = "meetzme_notification_channel";
     private static final String TAG = "APP_LOCATION";
 
     LocationManager mLocationManager = null;
-
-    Context reactContext;
 
     LocationListener mLocationListener = new LocationListener() {
         @Override
@@ -73,8 +72,6 @@ public class LocationListenerService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Bundle extras = intent.getExtras();
-        Log.wtf(TAG, "Extra: " + extras.get("reactContext"));
-        // this.reactContext = extras.get("reactContext");
         return null;
     }
 
@@ -111,11 +108,14 @@ public class LocationListenerService extends Service {
     }
 
     private Notification getNotification(){
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Service is Running")
-                .setContentText("I'm an foreground Service")
-                .setContentInfo("MyApp")
-                .build();
+        Context context = getApplicationContext();
+        int icon = context.getResources().getIdentifier("ic_launcher", "mipmap",context.getPackageName());
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(), Channels.SHARE_LOCATION)
+            .setContentTitle("Compartilhando Localização")
+            .setContentText("Sua Localização está sendo compartilhada pelo MeetzMe")
+            .setContentInfo("MeetzMe")
+            .setSmallIcon(icon)
+            .build();
         return notification;
     }
 
