@@ -49,7 +49,10 @@ export default class MapBottomSheet extends Component {
     return (
       <View>
         <BottomSheetBehavior
-          onStateChange={(e) => this.setState({ BottomSheetState: e.nativeEvent.state })}
+          onStateChange={(e) => {
+            if(this.props.onStateChange) this.props.onStateChange(e.nativeEvent.state)
+            this.setState({ BottomSheetState: e.nativeEvent.state })
+          }}
           peekHeight={70}
           hideable={false}
           anchorEnabled={false}

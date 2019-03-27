@@ -14,19 +14,17 @@ import TouchableScale from 'react-native-touchable-scale'
 
 import LoggedUserStore from '@/store/LoggedUserStore'
 
+import Geocoder from 'react-native-geocoding'
+
+import strings from '@/resources/strings'
+
 export default class UserMapMarker extends Component {
 
   constructor() {
     super();
     this.state = {
-      tracksViewChanges: true
+      locationName: null
     }
-  }
-
-  _onMarkerLoad(){
-    // setTimeout(() => {
-    //   this.setState({ tracksViewChanges: false })
-    // }, 0)
   }
 
   render() {
@@ -36,20 +34,20 @@ export default class UserMapMarker extends Component {
     return (
       <Marker coordinate={this.props.coordinate}
         title={this.props.title || ""}
-        description={this.props.description || null}
-        anchor={{x: 0.5, y: 0.5}}
+        description={this.state.locationName}
+        anchor={{ x: 0.5, y: 0.5 }}
         tracksViewChanges={false}>
         <View>
           <View style={[styles.wave, styles.wave1]}>
             <View style={[styles.wave, styles.wave2]}>
               <View style={[styles.wave, styles.wave3]}>
-                <Image 
-                  source={{uri: userData.photoURL}}
-                  imageStyle={{ borderRadius: 100}}
+                <Image
+                  source={{ uri: userData.photoURL }}
+                  imageStyle={{ borderRadius: 100 }}
                   style={styles.image}
                   onLoad={this._onMarkerLoad.bind(this)}>
                 </Image>
-                <View style={styles.locationIndicator}></View>  
+                <View style={styles.locationIndicator}></View>
               </View>
             </View>
           </View>

@@ -21,6 +21,7 @@ import AppMapView from '@/components/Maps/AppMapView'
 import MapDirections from '@/components/Maps/MapDirections'
 import UserLocationMarker from '@/components/LocalizacoesUsuarios/UserLocationMarker'
 import DestinationMapMarker from '@/components/Maps/DestinationMapMarker'
+import TogglableFloatButton from '@/components/LocalizacoesUsuarios/TogglableFloatButton'
 
 import BackButton from '@/components/BackButton'
 import colors from '@/resources/colors'
@@ -69,29 +70,45 @@ class LocalizacoesUsuarios extends Component {
     const { lastLocation } = LoggedUserStore;
 
     this.mapview.map.animateCamera({
-      center: toJS(lastLocation),
+      center: this.state.userLocation,
       pitch: 30,
       zoom: 15,
     })
   }
 
+  _onBottomSheetStateChanged(state) {
+    if (state == 4) {
+      this.FABCenterCamera.show()
+      this.FABSeeAllMarkers.show(200)
+    } else if (state == 2) {
+      this.FABCenterCamera.hide(200)
+      this.FABSeeAllMarkers.hide(0)
+    }
+  }
+
   async componentDidMount() {
-
-    const eventID = this.props.navigation.getParam('eventID') || "LnY6MUHa2bsbx03TlrLI";
-
     this.watchLocations = []
 
+    // Pega a ID do Evento
+    const eventID = this.props.navigation.getParam('eventID') || "LnY6MUHa2bsbx03TlrLI";
+
+    // Inicia o Service de Localizaçãp
     LocationListener.startService()
 
+    // Pega as Informações do Evento
     const { EventsStore } = this.props;
-
     let infoEvento = toJS(EventsStore.acceptedEvents).find(event => event.id == eventID)
     this.setState({ infoEvento })
 
+    // Pega os Participantes do Evento
     let participants = await EventsStore.getEventParticipants(eventID)
 
-    const usersRef = firebase.firestore().collection('users');
+    // Mostra os Float Action Buttons
+    this.FABCenterCamera.show(600)
+    this.FABSeeAllMarkers.show(1000)
 
+    // Pega em Tempo Real a Localização de cada participante
+    const usersRef = firebase.firestore().collection('users');
     participants.forEach(participant => {
       let watch = usersRef
         .doc(participant.uid)
@@ -116,7 +133,6 @@ class LocalizacoesUsuarios extends Component {
               duration: 1000
             })
           }
-
           // this.setState({ participants: newLocations });
         })
     })
@@ -200,17 +216,26 @@ class LocalizacoesUsuarios extends Component {
       <View style={{ flex: 1 }}>
         <CoordinatorLayout style={{ flex: 1 }}>
           {getMap()}
-          <MapBottomSheet eventData={{ info: infoEvento, participants }} />
+          <MapBottomSheet
+            eventData={{ info: infoEvento, participants }}
+            onStateChange={this._onBottomSheetStateChanged.bind(this)}
+          />
         </CoordinatorLayout>
-        <FAB
+        <TogglableFloatButton
           icon="gps-fixed"
           onPress={this.centerUserMarker.bind(this)}
-          style={styles.fab}
+          bottom={80}
+          ref={
+            ref => this.FABCenterCamera = ref
+          }
         />
-        <FAB
+        <TogglableFloatButton
           icon="people"
           onPress={this.fitAllMarkers.bind(this)}
-          style={[styles.fab, { bottom: 160 }]}
+          bottom={150}
+          ref={
+            ref => this.FABSeeAllMarkers = ref
+          }
         />
       </View>
 
@@ -230,10 +255,5 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 200
-  },
-  fab: {
-    position: 'absolute',
-    bottom: 85,
-    right: 10
   }
 })
