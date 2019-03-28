@@ -34,7 +34,7 @@ export default createStackNavigator(
     LocalizacoesUsuarios
   },
   {
-    initialRouteName: 'LocalizacoesUsuarios',
+    initialRouteName: 'Home',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }

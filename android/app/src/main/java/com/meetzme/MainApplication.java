@@ -15,7 +15,9 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.storage.RNFirebaseStoragePackage; 
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage; 
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage; 
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.horcrux.svg.SvgPackage;
 import com.facebook.react.ReactNativeHost;
@@ -47,12 +49,14 @@ public class MainApplication extends Application implements ReactApplication {
             new SnackbarPackage(),
             new PickerPackage(),
             new RNGestureHandlerPackage(),
-            new RNFirebasePackage(),
             new VectorIconsPackage(),
             new SvgPackage(),
+            new RNFirebasePackage(),
             new RNFirebaseAuthPackage(),
             new RNFirebaseFirestorePackage(),
             new RNFirebaseStoragePackage(),
+            new RNFirebaseMessagingPackage(),
+            new RNFirebaseNotificationsPackage(),
             new AppBackgroundLocationListenerPackage()
       );
     }

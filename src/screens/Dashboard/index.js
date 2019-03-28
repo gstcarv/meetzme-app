@@ -23,12 +23,6 @@ import { toJS } from 'mobx';
 @inject('EventsStore')
 @observer
 class Dashboard extends Component {
-
-  signout() {
-    firebase.auth().signOut()
-    this.props.navigation.navigate('Login');
-  }
-
   render() {
 
     const { EventsStore } = this.props;

@@ -194,6 +194,7 @@ class LocalizacoesUsuarios extends Component {
                 title={
                   locationName.split('-')[0]
                 }
+                description={locationName.split('-')[1]}
               />
             }
 
