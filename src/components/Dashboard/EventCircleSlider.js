@@ -27,7 +27,7 @@ export default class EventCircleBar extends Component {
           {
             this.props.data.map((event, index) => {
               if (index <= this.props.limit - 1) {
-                return <CircleThumbnail image={event.imageURL} />
+                return <CircleThumbnail image={event.imageURL} key={index}/>
               }
             })
           }

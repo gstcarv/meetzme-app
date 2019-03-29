@@ -5,17 +5,31 @@ import {
 
 import firebase, { firestore } from 'react-native-firebase'
 
+import { AsyncStorage } from 'react-native'
+
 class LoggedUserStore {
   @observable info = {}
   @observable lastLocation = {}
+
+  get() {
+    return this.info;
+  }
 
   @action
   setUser(data) {
     this.info = data
   }
 
-  get() {
-    return this.info;
+  @action
+  async updateToken(token) {
+    if (this.info) {
+      await firebase.firestore()
+        .collection('users')
+        .doc(uid)
+        .update({ token })
+      this.info.FCMToken = token;
+      await AsyncStorage.setItem("USER_DATA", this.info)
+    }
   }
 
   @action

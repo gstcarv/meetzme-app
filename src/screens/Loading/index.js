@@ -26,12 +26,12 @@ class Principal extends Component {
     navigator.geolocation.getCurrentPosition(
       async pos => {
         const UID = this.props.LoggedUserStore.get().uid;
-        const { latitude, longitude } =  pos.coords;
+        const { latitude, longitude } = pos.coords;
         await this.props.LoggedUserStore.sendLocation({
           latitude, longitude
         })
       },
-      err => {},
+      err => { },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
     )
   }
@@ -47,25 +47,52 @@ class Principal extends Component {
     let isWatchingEvents = false;
 
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
+      await AsyncStorage.removeItem("USER_DATA")
+
       const userData = await AsyncStorage.getItem("USER_DATA");
+
       if (auth) {
-        const user = auth._user;
+        const AuthUser = auth._user;
+
         if (!userData) {
-          const { displayName, email, phoneNumber, photoURL, uid } = user;
-          let userInfo = {
+          // Pega as Informações do Usuários
+          const { displayName, email, phoneNumber, photoURL, uid } = AuthUser;
+
+          // Referência do Usuário no Firestore
+          const userCollection = firebase.firestore()
+            .collection('users')
+            .doc(uid)
+
+          // Põe o Token do FCM no Usuário 
+          const FCMToken = await firebase.messaging().getToken()
+          userCollection.update({ FCMToken })
+
+          // Pega as informações adicionais do Usuário do Firestore
+          let getUserFromFirestore = await userCollection.get()
+          let { name, phone, username } = getUserFromFirestore.data()
+
+          // Salva o Usuário no Store
+          LoggedUserStore.setUser({
             displayName,
+            username,
+            name,
             email,
             phoneNumber,
+            phone,
             photoURL,
-            uid
-          }
-          LoggedUserStore.setUser(userInfo)
+            uid,
+            FCMToken
+          })
+
+          console.log(LoggedUserStore.get())
         } else {
           LoggedUserStore.setUser(JSON.parse(userData))
         }
 
+        // Começa a ouvir as atualizações dos Contatos e Eventos
         await ContactsStore.fetchContacts();
         await EventsStore.fetchEvents();
+        // Pega a Localização Atual
         await this.getUserLocation();
 
         if (!isWatchingEvents) {
