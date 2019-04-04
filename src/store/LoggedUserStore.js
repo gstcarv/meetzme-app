@@ -22,11 +22,11 @@ class LoggedUserStore {
 
   @action
   async updateToken(token) {
-    if (this.info) {
+    if (this.info.uid) {
       await firebase.firestore()
         .collection('users')
-        .doc(uid)
-        .update({ token })
+        .doc(this.info.uid)
+        .update({ FCMToken: token })
       this.info.FCMToken = token;
       await AsyncStorage.setItem("USER_DATA", this.info)
     }

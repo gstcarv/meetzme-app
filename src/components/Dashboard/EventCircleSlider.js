@@ -5,14 +5,14 @@ import { Text } from 'react-native-paper'
 
 import CircleThumbnail from './EventCircleSlider/CircleThumbnail'
 
-export default class EventCircleBar extends Component {
+export default class EventCircleSlider extends Component {
   render() {
 
     let emptyCircles = []
 
     if(this.props.data.length <= 4){
       for(i = this.props.data.length; i <= 4; i++){
-        emptyCircles.push(<CircleThumbnail empty/>)
+        emptyCircles.push(<CircleThumbnail empty key={i}/>)
       }
     }
 

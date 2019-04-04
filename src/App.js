@@ -48,6 +48,7 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
+
     // Escuta as Alterações no TOKEN
     firebase.messaging().onTokenRefresh(async token => await LoggedUserStore.updateToken(token))
 
@@ -78,16 +79,17 @@ export default class App extends Component {
           .setSubtitle(notification.subtitle)
           .setBody(notification.body)
           .setData(notification.data)
+          .android.setAutoCancel(true)
           .android.setChannelId(notificationChannel) // e.g. the id you chose above
-          .android.setSmallIcon('icon') // create this icon in Android Studio
+          .android.setSmallIcon('ic_launcher') // create this icon in Android Studio
           .android.setColor(COLORS.primaryColor) // you can set a color here
           .android.setPriority(firebase.notifications.Android.Priority.High);
 
-        if(notificationChannel == STRINGS.CHANNELS.USERS){
+        if(notificationChannel == STRINGS.CHANNELS.EVENTS){
           const eventID = notification.data.event_id ? notification.data.event_id : "undefined"
           const action = new firebase.notifications.Android.Action(eventID, 'ic_launcher', 'Ver Evento');
           localNotification.android.addAction(action)
-        } else if (notificationChannel == STRINGS.CHANNELS.EVENTS){
+        } else if (notificationChannel == STRINGS.CHANNELS.USERS){
           if(!notification.data.already_friend){
             const userID = notification.data.user_id ? notification.data.user_id : "undefined"
             const actionAddUser = new firebase.notifications.Android.Action(userID, 'ic_launcher', 'Adicionar');
@@ -139,8 +141,8 @@ export default class App extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubcribscribeLocalNotificationOpened();
-    this.unsubcribscribePushNotificationOpened()
-    this.unsubcribscribeNotificationReceiver();
+    this.unsubcribscribeLocalNotificationOpened = null;
+    this.unsubcribscribePushNotificationOpened = null
+    this.unsubcribscribeNotificationReceiver = null;
   }
 }

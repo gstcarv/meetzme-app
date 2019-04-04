@@ -44,8 +44,7 @@ export default class UserMapMarker extends Component {
                 <Image
                   source={{ uri: userData.photoURL }}
                   imageStyle={{ borderRadius: 100 }}
-                  style={styles.image}
-                  onLoad={this._onMarkerLoad.bind(this)}>
+                  style={styles.image}>
                 </Image>
                 <View style={styles.locationIndicator}></View>
               </View>

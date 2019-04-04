@@ -47,10 +47,8 @@ class Principal extends Component {
     let isWatchingEvents = false;
 
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
-      await AsyncStorage.removeItem("USER_DATA")
-
+      // Pega os dados do usuário do AsyncStorage
       const userData = await AsyncStorage.getItem("USER_DATA");
-
       if (auth) {
         const AuthUser = auth._user;
 
@@ -83,8 +81,6 @@ class Principal extends Component {
             uid,
             FCMToken
           })
-
-          console.log(LoggedUserStore.get())
         } else {
           LoggedUserStore.setUser(JSON.parse(userData))
         }
@@ -93,7 +89,7 @@ class Principal extends Component {
         await ContactsStore.fetchContacts();
         await EventsStore.fetchEvents();
         // Pega a Localização Atual
-        await this.getUserLocation();
+        this.getUserLocation();
 
         if (!isWatchingEvents) {
           EventsStore.watchEvents();
