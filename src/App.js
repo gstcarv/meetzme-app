@@ -49,13 +49,13 @@ export default class App extends Component {
 
   async componentDidMount() {
 
-    // Escuta as Alterações no TOKEN
-    firebase.messaging().onTokenRefresh(async token => await LoggedUserStore.updateToken(token))
-
     // Evento ao Receber Alterações na Localização
     DeviceEventEmitter.addListener('onLocationChanged', coordinates => {
       LoggedUserStore.sendLocation(coordinates)
     })
+
+    // Escuta as Alterações no TOKEN
+    firebase.messaging().onTokenRefresh(async token => await LoggedUserStore.updateToken(token))
 
     this.createNotificationChannels()
 
@@ -85,12 +85,12 @@ export default class App extends Component {
           .android.setColor(COLORS.primaryColor) // you can set a color here
           .android.setPriority(firebase.notifications.Android.Priority.High);
 
-        if(notificationChannel == STRINGS.CHANNELS.EVENTS){
+        if (notificationChannel == STRINGS.CHANNELS.EVENTS) {
           const eventID = notification.data.event_id ? notification.data.event_id : "undefined"
           const action = new firebase.notifications.Android.Action(eventID, 'ic_launcher', 'Ver Evento');
           localNotification.android.addAction(action)
-        } else if (notificationChannel == STRINGS.CHANNELS.USERS){
-          if(!notification.data.already_friend){
+        } else if (notificationChannel == STRINGS.CHANNELS.USERS) {
+          if (!notification.data.already_friend) {
             const userID = notification.data.user_id ? notification.data.user_id : "undefined"
             const actionAddUser = new firebase.notifications.Android.Action(userID, 'ic_launcher', 'Adicionar');
             const actionSeeUser = new firebase.notifications.Android.Action(userID, 'ic_launcher', 'Ver Usuário');

@@ -18,7 +18,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import BottomSheetHeader from './BottomSheetHeader'
 import BottomSheetContent from './BottomSheetContent'
 
-export default class MapBottomSheet extends Component {
+import { withNavigation } from 'react-navigation'
+
+class MapBottomSheet extends Component {
 
   constructor() {
     super()
@@ -45,12 +47,20 @@ export default class MapBottomSheet extends Component {
     }
   }
 
+  _onBottomSheetonReturnButtonPress() {
+    if (this.state.BottomSheetState == 3) {
+      this.bottomSheet.setBottomSheetState(4)
+    } else if (this.state.BottomSheetState == 4) {
+      this.props.navigation.goBack()
+    }
+  }
+
   render() {
     return (
       <View>
         <BottomSheetBehavior
           onStateChange={(e) => {
-            if(this.props.onStateChange) this.props.onStateChange(e.nativeEvent.state)
+            if (this.props.onStateChange) this.props.onStateChange(e.nativeEvent.state)
             this.setState({ BottomSheetState: e.nativeEvent.state })
           }}
           peekHeight={70}
@@ -59,7 +69,10 @@ export default class MapBottomSheet extends Component {
           ref={ref => this.bottomSheet = ref}
           state={BottomSheetBehavior.STATE_COLLAPSED}>
           <View style={{ backgroundColor: colors.primaryDark }}>
-            <BottomSheetHeader onMenuIconPress={this._onMenuIconPress.bind(this)} />
+            <BottomSheetHeader
+              onMenuIconPress={this._onMenuIconPress.bind(this)}
+              onReturnButtonPress={this._onBottomSheetonReturnButtonPress.bind(this)}
+            />
             <BottomSheetContent
               ref={ref => this.sheetContent = ref}
               eventData={this.props.eventData}
@@ -70,6 +83,8 @@ export default class MapBottomSheet extends Component {
     )
   }
 }
+
+export default withNavigation(MapBottomSheet)
 
 const styles = StyleSheet.create({
   appBarMerged: {

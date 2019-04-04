@@ -8,9 +8,9 @@ import {
   Image
 } from 'react-native'
 
-import { Marker } from 'react-native-maps'
+import { Marker, Callout } from 'react-native-maps'
 
-import TouchableScale from 'react-native-touchable-scale'
+import UserLocationCallout from './UserLocationMarker/UserLocationCallout'
 
 import colors from '@/resources/colors'
 
@@ -37,8 +37,9 @@ export default class UserLocationMarker extends Component {
 
     return (
       <Marker coordinate={this.props.coordinate}
-        title={this.props.title || ""}
-        description={this.props.description || null}
+        // title={this.props.title || ""}
+        // description={this.props.description || null}
+        calloutOffset={{ x: -50, y: 28 }}
         tracksViewChanges={false}
         ref={
           ref => this.markerRef = ref
@@ -60,6 +61,7 @@ export default class UserLocationMarker extends Component {
             </View>
           }
         </View>
+        <UserLocationCallout />
       </Marker>
     )
   }

@@ -130,7 +130,7 @@ class LocalizacoesUsuarios extends Component {
             this.mapMarkers[snap.id].markerRef.animateMarkerToCoordinate({
               latitude,
               longitude,
-              duration: 1000
+              duration: 2500
             })
           }
           // this.setState({ participants: newLocations });

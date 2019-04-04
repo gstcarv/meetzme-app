@@ -17,7 +17,7 @@ export default class BottomSheetHeader extends Component {
         <IconButton
           icon="arrow-back"
           color="#fff"
-          onPress={() => {}}
+          onPress={this.props.onReturnButtonPress}
         />
 
         <IconButton
