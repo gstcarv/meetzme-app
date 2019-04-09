@@ -25,10 +25,15 @@ export default class UserLocationMarker extends Component {
     }
   }
 
-  _onMarkerLoad() {
-    // setTimeout(() => {
-    //   this.setState({ tracksViewChanges: false })
-    // }, 0)
+  update({ latitude, longitude }){
+    this.calloutRef.updateInfo({
+      latitude, longitude
+    })
+    this.markerRef.animateMarkerToCoordinate({
+      latitude,
+      longitude,
+      duration: 2500
+    })
   }
 
   render() {
@@ -37,8 +42,6 @@ export default class UserLocationMarker extends Component {
 
     return (
       <Marker coordinate={this.props.coordinate}
-        // title={this.props.title || ""}
-        // description={this.props.description || null}
         calloutOffset={{ x: -50, y: 28 }}
         tracksViewChanges={false}
         ref={
@@ -54,14 +57,20 @@ export default class UserLocationMarker extends Component {
                 <Image
                   source={{ uri: this.props.image }}
                   imageStyle={{ borderRadius: 100 }}
-                  style={[styles.otherUserImage]}
-                  onLoad={this._onMarkerLoad.bind(this)}>
-                </Image>
+                  style={[styles.otherUserImage]} />
               </View>
             </View>
           }
         </View>
-        <UserLocationCallout />
+        <UserLocationCallout 
+          {...this.props}
+          renderAgain={() => {
+            this.markerRef.showCallout()
+          }}
+          ref={
+            ref => this.calloutRef = ref
+          }
+        />
       </Marker>
     )
   }

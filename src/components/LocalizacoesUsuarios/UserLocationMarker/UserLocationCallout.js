@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {
-  Image,              // Renders images
-  StyleSheet,         // CSS-like styles
-  View,               // Container component
+  Image,
+  StyleSheet,
+  View,
 } from 'react-native';
 
 import {
@@ -18,36 +18,105 @@ import { Line } from '@/components/Forms'
 
 import FAIcon from 'react-native-vector-icons/FontAwesome5'
 
+import strings from '@/resources/strings'
+
+import moment from 'moment'
+
 export default class UserLocationCallout extends Component {
 
+  constructor(props){
+    super()
+    this.state = {
+      distance: "...",
+      duration: "..."
+    }
+
+    this.icons = {
+      driving: "car",
+      transit: "bus",
+      bicycling: "bicycle",
+      walking: "walking"
+    }
+
+  }
+
+  componentDidMount(){
+    this.mapClient = require('react-native-google-maps-services').createClient({
+      key: strings.GoogleMapsKey
+    });
+    this.updateInfo(this.props.coordinate)
+  }
+
+  updateInfo(coordinates){
+    const {
+      destination,
+      transportMode
+    } = this.props;
+
+    this.mapClient.distanceMatrix({
+      origins: [
+        coordinates
+      ],
+      destinations: [
+        destination
+      ],
+      mode: transportMode.toLowerCase()
+    }, (err, { json }) => {
+
+      const {
+        distance,
+        duration
+      } = json.rows[0].elements[0]
+
+      const formattedDistance = distance.text.replace(" ", "").toUpperCase();
+
+      var formattedDuration = "";
+
+      if(duration.value >= 3600){
+        formattedDuration = moment.utc(duration.value * 1000).format('HH:mm');
+        formattedDuration.toString().replace(":", "H")
+      } else {
+        formattedDuration = moment.utc(duration.value * 1000).format('mm');
+        formattedDuration.toUpperCase()
+      }
+
+      this.setState({
+        distance: formattedDistance,
+        duration: formattedDuration
+      })
+
+      this.props.renderAgain()
+
+    })
+  }
+
   render() {
+
+    const { distance, duration } = this.state;
+
     return (
       <Callout style={styles.calloutContainer}>
         <View style={styles.container}>
-          <Text style={styles.username}>Gustavo Carvalho</Text>
+          <Text style={styles.username}>{this.props.title}</Text>
           <Line />
           <View style={styles.infoContainer}>
             <View style={styles.textInfoContainer}>
               <Text style={styles.infoTextLabel}>Distância</Text>
-              <Text style={[styles.infoText, {
-                // fontSize: distance > 1000 ? 30 : 40
-              }]}>
-                100M
+              <Text style={styles.infoText}>
+                { distance }
               </Text>
             </View>
             <View style={styles.textInfoContainer}>
               <Text style={styles.infoTextLabel}>Tempo estimado</Text>
-              <Text style={[styles.infoText, {
-                // fontSize: distance > 1000 ? 30 : 40
-              }]}>
-                10h50
+              <Text style={styles.infoText}>
+                { duration }
               </Text>
             </View>
           </View>
           <View style={styles.bottomBoxLine}></View>
         </View>
           <FAIcon
-            name={"car"}
+            name={this.icons[this.props.transportMode]}
             size={23}
             color={"#cacaca"}
             style={styles.transportModeIndicator}

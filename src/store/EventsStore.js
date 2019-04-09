@@ -71,18 +71,30 @@ class EventsStore {
   }
 
   async getEventParticipants(eventID) {
+    // Pega as IDS dos Pariticipantes na Array de Eventos
     let invites = this.acceptedEvents.find(event => event.id == eventID).participants
     let users = []
-    for(let invitedUser in invites){
+
+    // Pega dos dados de cada participante
+    for (let invitedUser in invites) {
       let inviteState = invites[invitedUser];
-      if(inviteState == true){
-        let user = await firestoreRef
+      if (inviteState == true) {
+
+        const userRef = firestoreRef
           .collection('users')
           .doc(invitedUser)
-          .get()
+
+        let user = await userRef.get();
+
+        let participantEventInfo = await userRef
+          .collection('acceptedEvents')
+          .doc(eventID)
+          .get();
+
         users.push({
           uid: user.id,
           ...user.data(),
+          ...participantEventInfo.data()
         })
       }
     }

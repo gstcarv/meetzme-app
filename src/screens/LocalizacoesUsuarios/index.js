@@ -67,10 +67,10 @@ class LocalizacoesUsuarios extends Component {
   }
 
   centerUserMarker() {
-    const { lastLocation } = LoggedUserStore;
+    const { lastLocation } = toJS(LoggedUserStore);
 
     this.mapview.map.animateCamera({
-      center: this.state.userLocation,
+      center: lastLocation,
       pitch: 30,
       zoom: 15,
     })
@@ -78,9 +78,11 @@ class LocalizacoesUsuarios extends Component {
 
   _onBottomSheetStateChanged(state) {
     if (state == 4) {
+      // Mostra os Floating Action Buttons
       this.FABCenterCamera.show()
       this.FABSeeAllMarkers.show(200)
     } else if (state == 2) {
+      // Esconde os Floating Action Buttons
       this.FABCenterCamera.hide(200)
       this.FABSeeAllMarkers.hide(0)
     }
@@ -109,7 +111,7 @@ class LocalizacoesUsuarios extends Component {
 
     // Pega em Tempo Real a Localização de cada participante
     const usersRef = firebase.firestore().collection('users');
-    participants.forEach(participant => {
+    participants.forEach(async participant => {
       let watch = usersRef
         .doc(participant.uid)
         .onSnapshot(snap => {
@@ -119,21 +121,12 @@ class LocalizacoesUsuarios extends Component {
             longitude
           } = snap.data().lastLocation
 
-          let newLocations = this.state.participants.map(p => {
-            if (p.uid == snap.id) {
-              p.lastLocation = snap.data().lastLocation
-            }
-            return p;
-          })
-
           if (this.mapMarkers[snap.id]) {
-            this.mapMarkers[snap.id].markerRef.animateMarkerToCoordinate({
+            this.mapMarkers[snap.id].update({
               latitude,
-              longitude,
-              duration: 2500
+              longitude
             })
           }
-          // this.setState({ participants: newLocations });
         })
     })
 
@@ -174,10 +167,12 @@ class LocalizacoesUsuarios extends Component {
                   <View>
                     <UserLocationMarker
                       coordinate={user.lastLocation}
-                      title={user.uid == uid ? "Você" : user.name.split(" ")[0]}
+                      destination={destination}
+                      title={user.uid == uid ? "Você" : user.name}
                       isOtherUser={user.uid != uid}
                       image={user.photoURL}
                       key={user.uid}
+                      transportMode={user.transportMode}
                       ref={
                         ref => this.mapMarkers[user.uid] = ref
                       }
@@ -239,7 +234,6 @@ class LocalizacoesUsuarios extends Component {
           }
         />
       </View>
-
     )
   }
 }
