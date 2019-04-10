@@ -19,6 +19,7 @@ import { inject, observer } from 'mobx-react/native'
 @inject('ContactsStore')
 @inject('EventsStore')
 @inject('LoggedUserStore')
+@inject('NotificationsStore')
 @observer
 class Principal extends Component {
 
@@ -41,7 +42,8 @@ class Principal extends Component {
     const {
       ContactsStore,
       EventsStore,
-      LoggedUserStore
+      LoggedUserStore,
+      NotificationsStore
     } = this.props;
 
     let isWatchingEvents = false;
@@ -90,6 +92,9 @@ class Principal extends Component {
         await EventsStore.fetchEvents();
         // Pega a Localização Atual
         this.getUserLocation();
+
+        // Pega as Notificações do Async Storage
+        NotificationsStore.fetchNotifications();
 
         if (!isWatchingEvents) {
           EventsStore.watchEvents();

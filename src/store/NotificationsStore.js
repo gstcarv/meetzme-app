@@ -1,23 +1,40 @@
 import {
   observable,
-  action
+  action,
+  computed
 } from 'mobx'
-
-import firebase, { firestore } from 'react-native-firebase'
 
 import { AsyncStorage } from 'react-native'
 
 class NotificationsStore {
   @observable notifications = []
 
-  @action
-  fetchNotifications(){
-
+  get(){
+    return this.notifications;
   }
 
   @action
-  addNotification(notification){
+  async fetchNotifications(){
+
+    let notifications = await AsyncStorage.getItem("notifications");
+    notifications = JSON.parse(notifications);
+
+    this.notifications = notifications;
+  }
+
+  @action
+  async addNotification(notification){
     
+  }
+
+  @computed get
+  eventsNotifications(){
+    return this.get().filter(notification => notification.type == "event")
+  }
+
+  @computed get
+  contactsNotifications(){
+    return this.get().filter(notification => notification.type == "contacts")
   }
 
 }

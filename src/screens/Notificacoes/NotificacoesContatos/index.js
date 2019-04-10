@@ -1,14 +1,49 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  ScrollView
+} from 'react-native'
 
-export default class NotificacoesSolicitacoes extends Component {
+import NotificationCard from '@/components/Notificacoes/NotificationCard'
+
+import { inject, observer } from 'mobx-react/native'
+import { toJS } from 'mobx'
+
+@inject('NotificationsStore')
+@observer
+export default class NotificacoesContatos extends Component {
+
   render() {
+
+    let notificationsData = toJS(this.props.NotificationsStore.contactsNotifications);
+
     return (
-      <View>
-        <Text> Contatos </Text>
-      </View>
+      <ScrollView>
+
+        <FlatList
+          data={notificationsData}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={
+            ({ item, index }) => (
+              <NotificationCard
+                title={item.title}
+                description={item.description}
+                date={item.date}
+              />
+            )
+          }
+          style={styles.notificationsFlatList}
+        />
+
+      </ScrollView>
     )
   }
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  notificationsFlatList: {
+    padding: 15,
+  }
+})

@@ -62,9 +62,7 @@ class Aceitos extends Component {
                   />
                 )
               }
-              style={{
-                marginBottom: 40
-              }}
+              style={{ marginBottom: 40 }}
             />
           </View>
         }
