@@ -11,6 +11,7 @@ import PaperThemes from '@/resources/themes'
 import ContactsStore from '@/store/ContactsStore'
 import LoggedUserStore from '@/store/LoggedUserStore'
 import EventsStore from '@/store/EventsStore'
+import NotificationsStore from '@/store/NotificationsStore'
 
 // Firebase
 import firebase from 'react-native-firebase'
@@ -120,7 +121,8 @@ export default class App extends Component {
         <MobxProvider
           ContactsStore={ContactsStore}
           LoggedUserStore={LoggedUserStore}
-          EventsStore={EventsStore}>
+          EventsStore={EventsStore}
+          NotificationsStore={NotificationsStore}>
           <NavigationStack />
         </MobxProvider>
         <Snackbar

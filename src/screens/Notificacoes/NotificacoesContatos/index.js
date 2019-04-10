@@ -5,7 +5,7 @@ export default class NotificacoesSolicitacoes extends Component {
   render() {
     return (
       <View>
-        <Text> SOLICITAÇÕES </Text>
+        <Text> Contatos </Text>
       </View>
     )
   }

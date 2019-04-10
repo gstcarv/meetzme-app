@@ -12,8 +12,7 @@ import MIcon from 'react-native-vector-icons/MaterialIcons'
 
 // Screens
 import NotificacoesEventos from './NotificacoesEventos'
-import NotificacoesSolicitacoes from './NotificacoesSolicitacoes'
-import NotificacoesLembretes from './NotificacoesLembretes'
+import NotificacoesContatos from './NotificacoesContatos'
 
 export default createMaterialTopTabNavigator(
   {
@@ -23,16 +22,10 @@ export default createMaterialTopTabNavigator(
         tabBarIcon: ({ tintColor }) => <FAIcon name="map-marked-alt" size={24} color={tintColor} />
       }
     },
-    NotificacoesSolicitacoes: {
-      screen: NotificacoesSolicitacoes,
+    NotificacoesContatos: {
+      screen: NotificacoesContatos,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => <FAIcon name="user-circle" size={26} color={tintColor} />
-      }
-    },
-    NotificacoesLembretes: {
-      screen: NotificacoesLembretes,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <FAIcon name="calendar-day" size={24} color={tintColor} />
       }
     }
   },
