@@ -21,26 +21,34 @@ import { inject, observer } from 'mobx-react/native'
 import { toJS } from 'mobx';
 
 @inject('EventsStore')
+@inject('ContactsStore')
 @observer
 class Dashboard extends Component {
   render() {
 
-    const { EventsStore } = this.props;
+    const { 
+      EventsStore,
+      ContactsStore
+    } = this.props;
+
+    let numEvents = toJS(EventsStore.acceptedEvents).length;
+    let numConvites = toJS(EventsStore.pendingEvents).length;
+    let numContacts = toJS(ContactsStore.contacts).length;
 
     return (
       <ScrollView style={styles.container}>
         <View style={styles.userStats}>
           <View style={styles.statSquare}>
-            <Text style={styles.statNumber}>20</Text>
-            <Text style={styles.statTitle}>Convites Recebidos</Text>
+            <Text style={styles.statNumber}>{numConvites}</Text>
+            <Text style={styles.statTitle}>Convites</Text>
           </View>
           <View style={[styles.statSquare, styles.centerSquare]}>
-            <Text style={styles.statNumber}>20</Text>
-            <Text style={styles.statTitle}>Eventos Administrados</Text>
+            <Text style={styles.statNumber}>{numEvents}</Text>
+            <Text style={styles.statTitle}>Eventos</Text>
           </View>
           <View style={styles.statSquare}>
-            <Text style={styles.statNumber}>20</Text>
-            <Text style={styles.statTitle}>Eventos Participados</Text>
+            <Text style={styles.statNumber}>{numContacts}</Text>
+            <Text style={styles.statTitle}>Contatos</Text>
           </View>
         </View>
         <View style={{

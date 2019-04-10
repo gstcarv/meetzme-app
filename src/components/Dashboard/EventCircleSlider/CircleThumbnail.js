@@ -3,14 +3,23 @@ import { Text, StyleSheet, View, Image } from 'react-native'
 
 import TouchableScale from 'react-native-touchable-scale'
 
-export default class CircleThumbnail extends Component {
+import { withNavigation } from 'react-navigation'
+
+class CircleThumbnail extends Component {
   render() {
 
     return (
       <TouchableScale
-        style={styles.circle}>
+        style={styles.circle}
+        onPress={
+          () => {
+            this.props.navigation.navigate('LocalizacoesUsuarios', {
+              eventID: this.props.id
+            })
+          }
+        }>
         {
-          !this.props.empty && 
+          !this.props.empty &&
 
           <Image
             style={styles.image}
@@ -40,3 +49,5 @@ const styles = StyleSheet.create({
     borderRadius: 100
   }
 })
+
+export default withNavigation(CircleThumbnail)

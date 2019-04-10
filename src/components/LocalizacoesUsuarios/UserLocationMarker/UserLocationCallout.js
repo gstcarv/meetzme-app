@@ -74,7 +74,7 @@ export default class UserLocationCallout extends Component {
 
       if(duration.value >= 3600){
         formattedDuration = moment.utc(duration.value * 1000).format('HH:mm');
-        formattedDuration.toString().replace(":", "H")
+        formattedDuration = formattedDuration.replace(':', "h")
       } else {
         formattedDuration = moment.utc(duration.value * 1000).format('mm');
         formattedDuration.toUpperCase()

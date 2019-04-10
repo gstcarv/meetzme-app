@@ -10,9 +10,9 @@ export default class EventCircleSlider extends Component {
 
     let emptyCircles = []
 
-    if(this.props.data.length <= 4){
-      for(i = this.props.data.length; i <= 4; i++){
-        emptyCircles.push(<CircleThumbnail empty key={i}/>)
+    if (this.props.data.length <= 4) {
+      for (i = this.props.data.length; i <= 4; i++) {
+        emptyCircles.push(<CircleThumbnail empty key={i} />)
       }
     }
 
@@ -27,12 +27,18 @@ export default class EventCircleSlider extends Component {
           {
             this.props.data.map((event, index) => {
               if (index <= this.props.limit - 1) {
-                return <CircleThumbnail image={event.imageURL} key={index}/>
+                return (
+                  <CircleThumbnail
+                    image={event.imageURL}
+                    id={event.id}
+                    key={index}
+                  />
+                )
               }
             })
           }
 
-          { emptyCircles.map(c => c) }
+          {emptyCircles.map(c => c)}
 
         </ScrollView>
       </View>
