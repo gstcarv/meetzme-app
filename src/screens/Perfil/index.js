@@ -9,32 +9,42 @@ import {
   StatusBar
 } from 'react-native'
 
-import {
-  FAB
-} from 'react-native-paper'
-
 import BackButton from '@/components/BackButton'
-
 
 import ProfileDataRow from '@/components/Perfil/ProfileDataRow'
 import UserPhotoThumbnail from '@/components/Perfil/UserPhotoThumbnail'
+import EditUserBottomSheet from '@/components/Perfil/EditUserBottomSheet'
 
 import {
   withNavigation
 } from 'react-navigation'
 
-import {
-  TextField
-} from '@/components/Forms'
-
 import colors from '@/resources/colors'
-import TouchableScale from 'react-native-touchable-scale';
+
+import Snackbar from 'react-native-snackbar'
 
 import { inject, observer } from 'mobx-react/native'
 
 @inject('LoggedUserStore')
 @observer
 class Perfil extends Component {
+
+  constructor() {
+    super()
+  }
+
+  async editName(name) {
+    this.setState({ showEditNameDialog: false })
+    setTimeout(() => {
+      Snackbar.show({
+        title: 'Seu nome foi alterado',
+        duration: Snackbar.LENGTH_LONG,
+      })
+    }, 1000)
+    await this.props.LoggedUserStore.updateData({
+      name
+    })
+  }
 
   render() {
 
@@ -49,18 +59,25 @@ class Perfil extends Component {
         <ScrollView style={styles.container}>
           <View style={styles.headerContainer}>
             <View style={styles.headerFill}></View>
-            <UserPhotoThumbnail 
+            <UserPhotoThumbnail
               photoURL={infoUser.photoURL}
               style={styles.imageContainer}
             />
           </View>
           <View style={styles.dataContainer}>
-
             <ProfileDataRow
               title="Nome"
               content={infoUser.name}
               editable
               icon="user-alt"
+              onPress={() => {
+                this.editBottomSheet.open({
+                  title: "Digite seu nome",
+                  initialText: infoUser.name,
+                  submitButtonText: "Salvar",
+                  onSubmit: (text) => this.editName(text)
+                })
+              }}
             />
 
             <ProfileDataRow
@@ -74,10 +91,15 @@ class Perfil extends Component {
               content={infoUser.email}
               icon="at"
             />
-
           </View>
 
           <BackButton color="#fff" />
+
+          <EditUserBottomSheet
+            ref={
+              ref => this.editBottomSheet = ref
+            }
+          />
 
         </ScrollView>
 

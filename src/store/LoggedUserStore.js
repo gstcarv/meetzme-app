@@ -59,6 +59,34 @@ class LoggedUserStore {
   }
 
   @action
+  async updateData({ name }) {
+
+    const { uid } = this.info;
+    
+    // Atualiza os dados Store
+    this.info.name = name
+
+    // Atualiza os dados no firestore
+    await firebase.firestore()
+      .collection('users')
+      .doc(uid)
+      .update({ name })
+
+    // Atualiza os dados no AsyncStorage
+    const user = JSON.parse(await AsyncStorage.getItem("USER_DATA"))
+
+    if (user) {
+      user.name = name
+      await AsyncStorage.setItem("USER_DATA", JSON.stringify(user))
+    }
+
+    // Atualiza os dados no usuário
+    await firebase.auth().currentUser.updateProfile({
+      displayName: name
+    })
+  }
+
+  @action
   async updateToken(token) {
     if (this.info.uid) {
       await firebase.firestore()

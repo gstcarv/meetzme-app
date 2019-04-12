@@ -128,19 +128,6 @@ export default class App extends Component {
           NotificationsStore={NotificationsStore}>
           <NavigationStack />
         </MobxProvider>
-        <Snackbar
-          visible={this.state.snackbarVisible}
-          duration={5000}
-          onDismiss={() => this.setState({ visible: false })}
-          action={{
-            label: 'Undo',
-            onPress: () => {
-              // Do something
-            },
-          }}
-        >
-          Hey there! I'm a Snackbar.
-        </Snackbar>
       </PaperProvider>
     )
   }
