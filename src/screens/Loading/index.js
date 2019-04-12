@@ -16,6 +16,8 @@ import firebase, { firestore } from 'react-native-firebase'
 
 import { inject, observer } from 'mobx-react/native'
 
+import { toJS } from 'mobx'
+
 @inject('ContactsStore')
 @inject('EventsStore')
 @inject('LoggedUserStore')
@@ -83,6 +85,10 @@ class Principal extends Component {
             uid,
             FCMToken
           })
+
+          // Salva os dados no Store
+          const StorageData = JSON.stringify(toJS(LoggedUserStore.get()));
+          await AsyncStorage.setItem("USER_DATA", StorageData)
         } else {
           LoggedUserStore.setUser(JSON.parse(userData))
         }

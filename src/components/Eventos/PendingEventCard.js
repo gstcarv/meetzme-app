@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { Text, StyleSheet, View, Image } from 'react-native'
 import moment from 'moment'
 
 import fonts from '@/resources/fonts'
@@ -12,7 +12,8 @@ export default class PendingEventCard extends Component {
 
     const {
       datetime,
-      title
+      title,
+      imageURL
     } = this.props.eventData;
 
     let eventDate = moment(new Date(datetime)).format('DD/MM/YYYY')
@@ -22,6 +23,12 @@ export default class PendingEventCard extends Component {
           onPress={this.props.onPress}>
         <Text style={[styles.eventText, styles.eventDate]}>{eventDate}</Text>
         <Text style={[styles.eventText, styles.eventTitle]}>{title}</Text>
+        <Image 
+          source={{
+            uri: imageURL
+          }}
+          style={styles.eventImage}
+        />
       </TouchableScale>
     )
   }
@@ -48,5 +55,14 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     fontSize: 15,
     marginTop: 4,
+  },
+  eventImage: {
+    width: 20,
+    height: 20,
+    position: 'absolute',
+    borderRadius: 50,
+    right: 10,
+    top: 10,
+    backgroundColor: "#f6f6f6"
   }
 })

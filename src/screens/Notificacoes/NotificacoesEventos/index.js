@@ -26,11 +26,9 @@ export default class NotificacoesEventos extends Component {
           data={notificationsData}
           keyExtractor={(item, index) => index.toString()}
           renderItem={
-            ({ item, index }) => (
+            ({ item: notificationData }) => (
               <NotificationCard
-                title={item.title}
-                description={item.description}
-                date={item.date}
+               {...notificationData}
               />
             )
           }

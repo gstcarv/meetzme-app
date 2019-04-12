@@ -8,6 +8,7 @@ import { AsyncStorage } from 'react-native'
 
 class NotificationsStore {
   @observable notifications = []
+  fetched = false;
 
   get(){
     return this.notifications;
@@ -15,21 +16,29 @@ class NotificationsStore {
 
   @action
   async fetchNotifications(){
-
-    let notifications = await AsyncStorage.getItem("notifications");
+    let notifications = await AsyncStorage.getItem("DEVICE_NOTIFICATIONS");
     notifications = JSON.parse(notifications);
 
-    this.notifications = notifications;
+    fetched = true;
+
+    this.notifications = notifications || [];
   }
 
   @action
   async addNotification(notification){
-    
+    if(!fetched){
+      this.fetchNotifications()
+    }
+
+    this.notifications.unshift(notification)
+
+    await AsyncStorage.setItem("DEVICE_NOTIFICATIONS", JSON.stringify(this.get()))
+
   }
 
   @computed get
   eventsNotifications(){
-    return this.get().filter(notification => notification.type == "event")
+    return this.get().filter(notification => notification.type == "events")
   }
 
   @computed get

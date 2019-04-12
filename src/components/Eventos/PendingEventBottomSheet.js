@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 100,
     borderWidth: 4,
-    borderColor: "#F6F6F6"
+    borderColor: "#F6F6F6",
+    backgroundColor: "#F6F6F6"
   },
   inviteNumberContainer: {
     alignItems: 'center'

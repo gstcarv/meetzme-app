@@ -70,6 +70,9 @@ export default class App extends Component {
       firebase.notifications().onNotification((notification) => {
         const notificationChannel = notification.data.channel || STRINGS.CHANNELS.EVENTS;
 
+        // Salva a notificação
+        NotificationsStore.addNotification(notification.data);
+
         // Montando a Notificação
         const localNotification = new firebase.notifications.Notification({
           sound: 'default',

@@ -9,15 +9,15 @@ import {
   StatusBar
 } from 'react-native'
 
-import { 
+import {
   FAB
 } from 'react-native-paper'
 
-import TouchableRipple from 'react-native-material-ripple'
-
 import BackButton from '@/components/BackButton'
 
-import FAIcon from 'react-native-vector-icons/FontAwesome5'
+
+import ProfileDataRow from '@/components/Perfil/ProfileDataRow'
+import UserPhotoThumbnail from '@/components/Perfil/UserPhotoThumbnail'
 
 import {
   withNavigation
@@ -49,59 +49,38 @@ class Perfil extends Component {
         <ScrollView style={styles.container}>
           <View style={styles.headerContainer}>
             <View style={styles.headerFill}></View>
-            <TouchableScale
-              style={styles.imageContainer}>
-              <View>
-                <Image
-                  source={{uri: infoUser.photoURL}}
-                  style={styles.image}
-                />
-              </View>
-            </TouchableScale>
+            <UserPhotoThumbnail 
+              photoURL={infoUser.photoURL}
+              style={styles.imageContainer}
+            />
           </View>
-          <View style={styles.fieldsContainer}>
-            <TextField
-              label="Nome"
-              value={infoUser.displayName}
-              disabled
-              style={styles.textInput}
+          <View style={styles.dataContainer}>
+
+            <ProfileDataRow
+              title="Nome"
+              content={infoUser.name}
+              editable
+              icon="user-alt"
             />
 
-            <TextField
-              label="Nome de Usuário"
-              value={"@" + infoUser.displayName}
-              disabled
-              style={styles.textInput}
+            <ProfileDataRow
+              title="Usuário"
+              content={"@" + infoUser.username}
+              icon="user"
             />
 
-            <TextField
-              label="Email"
-              value={infoUser.email}
-              disabled
-              style={styles.textInput}
-            />
-
-            <TextField
-              label="Telefone"
-              value={infoUser.displayName}
-              disabled
-              style={styles.textInput}
+            <ProfileDataRow
+              title="Email"
+              content={infoUser.email}
+              icon="at"
             />
 
           </View>
 
           <BackButton color="#fff" />
-          <TouchableRipple style={styles.configButton}>
-            <View>
-              <FAIcon name="cogs" color="#fff" size={25}/>
-            </View>
-          </TouchableRipple>
 
         </ScrollView>
-        <FAB
-          icon="edit"
-          style={styles.fabEdit}
-        />
+
       </View >
     )
   }
@@ -116,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   headerFill: {
-    backgroundColor: colors.primaryColor,
+    backgroundColor: colors.primaryDark,
     height: 200
   },
   imageContainer: {
@@ -125,16 +104,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignSelf: 'center'
   },
-  image: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    borderWidth: 12,
-    borderColor: colors.primaryColor,
-    overflow: 'hidden'
-  },
-  fieldsContainer: {
-    padding: 20,
+  dataContainer: {
+    paddingTop: 20,
+    paddingBottom: 20
   },
   textInput: {
     marginTop: 14
@@ -143,13 +115,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 15,
     right: 15
-  },
-  configButton: {
-    position: 'absolute',
-    top: 7,
-    right: 7,
-    padding: 10,
-    borderRadius: 50
   }
 })
 

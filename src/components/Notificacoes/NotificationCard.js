@@ -18,10 +18,11 @@ export default class NotificationCard extends Component {
     const {
       title,
       description,
-      date
+      date,
+      imageURL
     } = this.props;
 
-    let formattedDate = moment(date).format("DD/MM/YYYY H:mm")
+    let formattedDate = moment(new Date(parseInt(date))).format("DD/MM/YYYY H:mm")
     formattedDate = formattedDate.replace(":", "h")
 
     return (
@@ -31,7 +32,7 @@ export default class NotificationCard extends Component {
           <View style={styles.imageContainer}>
             <Image
               style={styles.notificationImage}
-              source={require('@assets/images/event-test-image.jpg')}
+              source={{ uri: imageURL }}
             />
           </View>
           <View style={styles.textContainer}>
@@ -57,8 +58,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   notificationImage: {
-    width: 55,
-    height: 55,
+    width: 50,
+    height: 50,
     borderRadius: 60
   },
   imageContainer: {
