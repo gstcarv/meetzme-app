@@ -45,8 +45,8 @@ class Login extends Component {
 
   async signIn() {
 
-    const email = this.state.email || "gueti2010@gmail.com"
-    const password = this.state.password || "pai152123"
+    const email = this.state.email || ""
+    const password = this.state.password || ""
 
     this.setState({
       loading: true
@@ -58,7 +58,7 @@ class Login extends Component {
       this.setState({
         loading: false
       })
-      this.props.navigation.navigate("Logged");
+      this.props.navigation.navigate("Loading");
     } catch (err) {
       Snackbar.show({
         title: 'Login ou Senha incorretos',

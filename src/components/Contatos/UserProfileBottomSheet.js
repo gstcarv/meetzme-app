@@ -40,17 +40,19 @@ export default class UserProfileBottomSheet extends Component {
   onRemovePress() {
     Alert.alert(
       "Apagar Contato",
-      "Tem certeza que deseja apagar esse contato?",
+      "Deseja apagar esse contato?",
       [
         {
-          text: 'Sim', onPress: () => {
+          text: "Cancelar"
+        },
+        {
+          text: 'Apagar', onPress: () => {
             this.props.onRemoveButtonPress(this.state.userData)
             this.setState({
               isContact: false
             })
           }
         },
-        { text: 'Não' },
       ],
     )
   }
@@ -60,7 +62,7 @@ export default class UserProfileBottomSheet extends Component {
       userData,
       isContact: ContactsStore.contactsID.includes(userData.id)
     })
-    
+
     this.EventSheet.open()
   }
 

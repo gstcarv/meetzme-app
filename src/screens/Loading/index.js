@@ -56,7 +56,7 @@ class Principal extends Component {
       if (auth) {
         const AuthUser = auth._user;
 
-        if (!userData) {
+        if (!userData || JSON.parse(userData).uid != AuthUser.uid) {
           // Pega as Informações do Usuários
           const { displayName, email, phoneNumber, photoURL, uid } = AuthUser;
 

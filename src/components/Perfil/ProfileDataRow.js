@@ -19,7 +19,7 @@ export default class ProfileDataRow extends Component {
       }}
         style={styles.touchable}>
         <View style={styles.container}>
-          <View>
+          <View style={{marginLeft: 10}}>
             <FAIcon
               name={this.props.icon}
               size={20}

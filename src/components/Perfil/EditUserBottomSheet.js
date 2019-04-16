@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1F1F1',
     alignSelf: 'center',
     margin: 10,
+    borderRadius: 10
   },
   buttonContainer: {
     alignSelf: 'flex-end',

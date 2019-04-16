@@ -110,6 +110,11 @@ class LoggedUserStore {
       })
   }
 
+  @action async loggout(){
+    await firebase.auth().signOut()
+    this.info = {}
+  }
+
 }
 
 export default new LoggedUserStore();

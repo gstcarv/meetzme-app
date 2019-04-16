@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import {
-  Text,
   StyleSheet,
   View,
-  AsyncStorage,
-  Image,
   ScrollView,
-  StatusBar
+  StatusBar,
+  Alert
 } from 'react-native'
+
+import {
+  Button
+} from '@/components/Forms'
 
 import BackButton from '@/components/BackButton'
 
@@ -31,6 +33,9 @@ class Perfil extends Component {
 
   constructor() {
     super()
+    this.state = {
+      isLoggouting: false
+    }
   }
 
   async editName(name) {
@@ -44,6 +49,27 @@ class Perfil extends Component {
     await this.props.LoggedUserStore.updateData({
       name
     })
+  }
+
+  loggoutAccount() {
+    Alert.alert(
+      "Sair da conta",
+      "Tem certeza que deseja sair da conta?",
+      [
+        {
+          text: 'Cancelar'
+        },
+        {
+          text: 'Sair', onPress: async () => {
+            // Sair da conta
+            this.setState({ isLoggouting: true })
+            const { LoggedUserStore, navigation } = this.props
+            await LoggedUserStore.loggout()
+            navigation.navigate('Login')
+          }
+        },
+      ],
+    )
   }
 
   render() {
@@ -69,7 +95,7 @@ class Perfil extends Component {
               title="Nome"
               content={infoUser.name}
               editable
-              icon="user-alt"
+              icon="user"
               onPress={() => {
                 this.editBottomSheet.open({
                   title: "Digite seu nome",
@@ -83,14 +109,23 @@ class Perfil extends Component {
             <ProfileDataRow
               title="Usuário"
               content={"@" + infoUser.username}
-              icon="user"
+              icon="address-book"
             />
 
             <ProfileDataRow
               title="Email"
               content={infoUser.email}
-              icon="at"
+              icon="envelope"
             />
+
+
+            <Button mode="contained"
+              noRadius
+              icon="exit-to-app"
+              style={{ marginTop: 15 }}
+              onPress={this.loggoutAccount.bind(this)}
+              loading={this.state.isLoggouting}>Sair da Conta</Button>
+
           </View>
 
           <BackButton color="#fff" />
@@ -127,8 +162,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   dataContainer: {
-    paddingTop: 20,
-    paddingBottom: 20
+    paddingTop: 20
   },
   textInput: {
     marginTop: 14
