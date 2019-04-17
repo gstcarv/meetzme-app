@@ -1,28 +1,26 @@
 import React, { Component } from 'react'
 import {
-  Text,
   StyleSheet,
   View,
   StatusBar,
   Image,
-  Alert,
   ScrollView,
-  AsyncStorage,
 } from 'react-native'
 
 import Waves from '@/components/Waves'
 
 import {
   withNavigation,
-  NavigationActions,
-  StackActions
 } from 'react-navigation'
 
 import {
   TextField,
-  Line,
   Button
 } from '@/components/Forms'
+
+import {
+  HelperText
+} from 'react-native-paper'
 
 import BackButton from '@/components/BackButton'
 import Snackbar from 'react-native-snackbar'
@@ -39,32 +37,50 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      loading: false
+      loading: false,
+      errors: {}
     }
   }
 
   async signIn() {
 
-    const email = this.state.email || ""
-    const password = this.state.password || ""
+    const { email, password } = this.state;
 
     this.setState({
-      loading: true
+      errors: {}
     })
 
-    try {
-      await firebase.auth()
-        .signInWithEmailAndPassword(email, password)
+    if (!email.includes("@") || !email.includes(".") || email.length < 4) {
       this.setState({
-        loading: false
+        errors: {
+          email: "Digite o email corretamente. Exemplo: pessoa@email.com"
+        }
       })
-      this.props.navigation.navigate("Loading");
-    } catch (err) {
-      Snackbar.show({
-        title: 'Login ou Senha incorretos',
-        duration: Snackbar.LENGTH_SHORT,
-        backgroundColor: '#b71b25'
+    } else if (password.length == 0) {
+      this.setState({
+        errors: {
+          password: "Digite a senha"
+        }
       })
+    } else {
+      this.setState({
+        loading: true
+      })
+
+      try {
+        await firebase.auth()
+          .signInWithEmailAndPassword(email, password)
+        this.setState({
+          loading: false
+        })
+        this.props.navigation.navigate("Loading");
+      } catch (err) {
+        Snackbar.show({
+          title: 'Login ou Senha incorretos',
+          duration: Snackbar.LENGTH_SHORT,
+          backgroundColor: '#b71b25'
+        })
+      }
     }
   }
 
@@ -72,6 +88,9 @@ class Login extends Component {
   }
 
   render() {
+
+    const { errors } = this.state;
+
     return (
       <ScrollView style={styles.scrollView}
         keyboardShouldPersistTaps='always'
@@ -87,20 +106,22 @@ class Login extends Component {
         <View style={styles.loginForm}>
           <TextField label="Email"
             placeholder="Digite seu email"
-            style={{ marginBottom: 5 }}
             value={this.state.email}
+            error={errors.email}
             onChangeText={email => this.setState({ email })}
             onFocus={() => this.onFocusInput()} />
 
           <TextField label="Senha"
             placeholder="Digite sua senha"
-            style={{ marginBottom: 20 }}
             secureTextEntry
+            error={errors.password}
+            style={{ marginTop: 10 }}
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
             onFocus={() => this.onFocusInput()} />
 
           <Button mode="contained"
+            style={{ marginTop: 20 }}
             onPress={() => this.signIn()}
             loading={this.state.loading}
             disabled={this.state.loading}>Login</Button>
@@ -138,7 +159,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primaryBold,
   },
   loginForm: {
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     paddingVertical: 20,
   },
   forgotPasswordButton: {

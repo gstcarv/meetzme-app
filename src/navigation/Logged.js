@@ -34,7 +34,7 @@ export default createStackNavigator(
     LocalizacoesUsuarios
   },
   {
-    initialRouteName: 'Perfil',
+    initialRouteName: 'Home',
     headerMode: 'none',
     transitionConfig: () => fromBottom()
   }

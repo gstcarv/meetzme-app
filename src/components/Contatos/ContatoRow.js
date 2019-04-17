@@ -55,7 +55,7 @@ export default class ContatoRow extends Component {
                 icon={this.props.icon || "more-vert"}
                 style={styles.moreButton}
                 onPress={() => {
-                  if (this.props.onEndButtonPress) this.props.onEndButtonPress(this.props.data)
+                  if (this.props.onPress) this.props.onPress(this.props.data)
                 }}
               />
             }

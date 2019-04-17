@@ -31,7 +31,7 @@ export default class UserProfileBottomSheet extends Component {
   }
 
   onAddPress() {
-    this.props.onAddButtonPress(this.state.userData)
+    this.addContact()
     this.setState({
       isContact: true
     })
@@ -47,7 +47,7 @@ export default class UserProfileBottomSheet extends Component {
         },
         {
           text: 'Apagar', onPress: () => {
-            this.props.onRemoveButtonPress(this.state.userData)
+            this.removeContact()
             this.setState({
               isContact: false
             })
@@ -55,6 +55,14 @@ export default class UserProfileBottomSheet extends Component {
         },
       ],
     )
+  }
+
+  async addContact() {
+    await ContactsStore.addContact(this.state.userData)
+  }
+
+  async removeContact() {
+    await ContactsStore.removeContact(this.state.userData) 
   }
 
   open(userData) {

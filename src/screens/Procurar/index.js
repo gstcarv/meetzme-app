@@ -85,14 +85,6 @@ export default class Procurar extends Component {
     this.UserProfileBottomSheet.open(data)
   }
 
-  async addContact(user) {
-    await this.props.ContactsStore.addContact(user)
-  }
-
-  async removeContact(user) {
-    await this.props.ContactsStore.removeContact(user) 
-  }
-
   render() {
 
     const usersLenght = this.state.usuarios.length;
@@ -166,8 +158,6 @@ export default class Procurar extends Component {
 
         <UserProfileBottomSheet
           ref={ref => this.UserProfileBottomSheet = ref}
-          onAddButtonPress={(data) => this.addContact(data)}
-          onRemoveButtonPress={(data) => this.removeContact(data)}
         />
 
       </View>

@@ -65,7 +65,7 @@ export default class UserLocationMarker extends Component {
         <UserLocationCallout 
           {...this.props}
           renderAgain={() => {
-            this.markerRef.showCallout()
+          
           }}
           ref={
             ref => this.calloutRef = ref

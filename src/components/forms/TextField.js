@@ -1,14 +1,25 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
-import { TextInput } from 'react-native-paper'
+import { TextInput, HelperText } from 'react-native-paper'
 
-export default class AppTextField extends Component {
+export default class TextField extends Component {
   render() {
     return (
-      <TextInput {...this.props} 
+      <View>
+        <TextInput {...this.props}
           theme={{ roundness: 6 }}
-          mode="outlined" />   
+          mode="outlined" />
+        {
+          this.props.error &&
+          <HelperText
+            type="error"
+            style={{ marginBottom: 5 }}
+          >
+            {this.props.error || ""}
+          </HelperText>
+        }
+      </View>
     )
   }
 }

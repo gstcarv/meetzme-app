@@ -11,7 +11,7 @@ export default {
       primary: colors.primaryColor,
       accent: colors.primaryDark,
       background: "#fff",
-      placeholder: "#ddd"
+      placeholder: "#cecece"
     },
     fonts: {
       regular: fonts.primary,

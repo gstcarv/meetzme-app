@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {
-  Text,
   StyleSheet,
   View,
   ScrollView,
@@ -8,22 +7,21 @@ import {
 } from 'react-native'
 
 import {
-  FAB
+  FAB,
+  Text
 } from 'react-native-paper'
 
 import {
   withNavigation
 } from 'react-navigation'
 
-import EventBus from 'eventing-bus';
-
 import SearchField from '@/components/SearchField'
 import ContatoRow from '@/components/Contatos/ContatoRow'
+import UserProfileBottomSheet from '@/components/Contatos/UserProfileBottomSheet'
 
-import firebase from 'react-native-firebase'
+import { toJS } from 'mobx'
 
 import { inject, observer } from 'mobx-react/native'
-import { toJS } from 'mobx'
 
 @inject('ContactsStore')
 @observer
@@ -41,6 +39,10 @@ class Contatos extends Component {
 
   componentWillMount() {
     this.focusSub = null
+  }
+
+  _onContactPress(data) {
+    this.UserProfileBottomSheet.open(data)
   }
 
   render() {
@@ -80,11 +82,23 @@ class Contatos extends Component {
                   data={item}
                   rowIndex={index}
                   isFirstFromChar={isFirstFromChar(item, index)}
+                  onPress={this._onContactPress.bind(this)}
                 />
               )
             }
           />
+
+          {
+            toJS(ContactsStore.searchContacts).length == 0 &&
+            <Text style={{textAlign: 'center'}}>Nenhum contato encontrado</Text>
+          }
+
         </ScrollView>
+
+        <UserProfileBottomSheet
+          ref={ref => this.UserProfileBottomSheet = ref}
+        />
+
         <FAB
           icon="person-add"
           style={styles.fabProcurar}
