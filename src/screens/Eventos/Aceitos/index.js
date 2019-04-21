@@ -32,26 +32,36 @@ import { toJS } from 'mobx'
 @observer
 class Aceitos extends Component {
 
-  goToEvent(eventID){
+  constructor(props) {
+    super();
+    this.state = {
+      searchText: ""
+    }
+  }
+
+  goToEvent(eventID) {
     this.props.navigation.navigate('LocalizacoesUsuarios', { eventID })
   }
 
   render() {
 
-    let acceptedEvents = toJS(this.props.EventsStore.acceptedEvents);
+    const { EventsStore } = this.props
 
     return (
       <ScrollView style={styles.container}
         overScrollMode="always">
 
         {
-          acceptedEvents.length > 0 &&
+          EventsStore.acceptedEvents.length > 0 &&
 
           <View>
-            <SearchField placeholder="Digite o nome do Evento" />
+            <SearchField
+              placeholder="Digite o nome do Evento"
+              onChangeText={searchText => this.setState({ searchText })}
+            />
 
             <FlatList
-              data={acceptedEvents}
+              data={toJS(EventsStore.searchAcceptedEvents(this.state.searchText))}
               keyExtractor={item => item.id}
               renderItem={
                 ({ item, index }) => (
@@ -68,7 +78,7 @@ class Aceitos extends Component {
         }
 
         {
-          acceptedEvents.length == 0 &&
+          EventsStore.acceptedEvents.length == 0 &&
 
           <View style={styles.emptyContainer}>
             <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
@@ -77,7 +87,7 @@ class Aceitos extends Component {
           </View>
         }
 
-      </ScrollView >
+      </ScrollView>
     )
   }
 }

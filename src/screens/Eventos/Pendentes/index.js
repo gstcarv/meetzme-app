@@ -37,11 +37,18 @@ import { toJS } from 'mobx'
 @observer
 class Pendentes extends Component {
 
+  constructor(props) {
+    super();
+    this.state = {
+      searchText: ""
+    }
+  }
+
   openEventSheet(id) {
     this.refs.eventBottomSheet.open(id);
   }
 
-  _onRecuseEvent(event){
+  _onRecuseEvent(event) {
     const { EventsStore } = this.props;
     EventsStore.recuseEvent(event.id);
     setTimeout(() => {
@@ -60,15 +67,29 @@ class Pendentes extends Component {
   }
 
   render() {
+
+    const { EventsStore } = this.props
+
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <SearchField placeholder="Digite o nome do Evento" />
+        <ScrollView
+          style={styles.scrollView}
+          overScrollMode="always">
+
+          {
+            EventsStore.pendingEvents.length > 0 &&
+
+            <SearchField
+              placeholder="Digite o nome do Evento"
+              onChangeText={searchText => this.setState({ searchText })}
+            />
+
+          }
 
           <View style={styles.eventosContainer}>
 
             <FlatList
-              data={toJS(this.props.EventsStore.pendingEvents)}
+              data={toJS(EventsStore.searchPendingEvents(this.state.searchText))}
               renderItem={({ item }) => (
                 <PendingEventCard
                   eventData={item}
@@ -79,14 +100,31 @@ class Pendentes extends Component {
             />
           </View>
 
-          <Line spaceVertical={15} />
+          {
+            EventsStore.pendingEvents.length > 0 &&
+            <Line spaceVertical={15} />
+          }
+
+          {
+            EventsStore.pendingEvents.length == 0 &&
+
+            <View style={styles.emptyContainer}>
+              <SLIcon name="envelope-open" size={150} color="#eee"></SLIcon>
+              <Text style={styles.emptyText}>Nenhum convite pendente. Tem muitos compromissos?</Text>
+              <Line spaceVertical={15} />
+            </View>
+          }
+
+
+          <PendingEventBottomSheet
+            ref="eventBottomSheet"
+            onNext={(infoEvento) => {
+              this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })
+            }}
+            onRecuse={this._onRecuseEvent.bind(this)}
+          />
+
         </ScrollView>
-        <PendingEventBottomSheet
-          ref="eventBottomSheet"
-          onNext={(infoEvento) => {
-            this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })
-          }}
-          onRecuse={this._onRecuseEvent.bind(this)} />
       </View>
     )
   }
@@ -97,7 +135,8 @@ export default withNavigation(Pendentes)
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F9FAFC",
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
     flex: 1
   },
   scrollView: {
@@ -107,5 +146,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap'
+  },
+  emptyContainer: {
+    flex: 1,
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  emptyText: {
+    fontFamily: fonts.primary,
+    color: '#ccc',
+    fontSize: 25,
+    marginTop: 30,
+    textAlign: 'center'
   }
 })

@@ -16,6 +16,22 @@ class EventsStore {
   @observable pendingEvents = []
   @observable eventsID = []
 
+  searchPendingEvents(text){
+    return this.pendingEvents.filter(event => {
+      return event.title
+        .toLowerCase()
+        .includes(text.toLowerCase())
+    })
+  }
+
+  searchAcceptedEvents(text){
+    return this.acceptedEvents.filter(event => {
+      return event.title
+        .toLowerCase()
+        .includes(text.toLowerCase())
+    })
+  }
+
   @action
   watchEvents() {
 
