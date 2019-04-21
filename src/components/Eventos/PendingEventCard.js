@@ -16,7 +16,10 @@ export default class PendingEventCard extends Component {
       imageURL
     } = this.props.eventData;
 
-    let eventDate = moment(new Date(datetime)).format('DD/MM/YYYY')
+    let eventDate = moment(new Date(datetime)).format('DD/MM/YYYY'),
+      eventTime = moment(new Date(datetime)).format('HH:mm')
+    
+    eventTime = eventTime.replace(':', 'h')
 
     return (
       <TouchableScale style={styles.cardContainer}
@@ -29,6 +32,7 @@ export default class PendingEventCard extends Component {
           }}
           style={styles.eventImage}
         />
+        <Text style={[styles.eventText, styles.eventDate]}>{eventTime}</Text>
       </TouchableScale>
     )
   }
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
     color: '#AAA',
     marginLeft: 6,
     fontSize: 15,
-    marginTop: 4,
+    marginVertical: 4,
   },
   eventImage: {
     width: 20,

@@ -1,7 +1,8 @@
 import {
   observable,
   action,
-  computed
+  computed,
+  toJS
 } from 'mobx'
 
 import firebase from 'react-native-firebase'
@@ -10,13 +11,14 @@ import LoggedUserStore from './LoggedUserStore'
 
 const firestoreRef = firebase.firestore();
 
+
 class EventsStore {
 
   @observable acceptedEvents = []
   @observable pendingEvents = []
   @observable eventsID = []
 
-  searchPendingEvents(text){
+  searchPendingEvents(text) {
     return this.pendingEvents.filter(event => {
       return event.title
         .toLowerCase()
@@ -24,7 +26,7 @@ class EventsStore {
     })
   }
 
-  searchAcceptedEvents(text){
+  searchAcceptedEvents(text) {
     return this.acceptedEvents.filter(event => {
       return event.title
         .toLowerCase()
@@ -48,7 +50,7 @@ class EventsStore {
             // Adiciona no Store de Eventos Pendentes
             let eventExists = this.pendingEvents.some(event => event.id == doc.id);
             if (!eventExists) {
-              this.pendingEvents.push({
+              this.pendingEvents.unshift({
                 id: doc.id,
                 ...doc.data()
               })
@@ -59,8 +61,35 @@ class EventsStore {
               event.id != doc.id
             ))
           }
+
+          this.sortPendingEvents()
+
         })
       })
+  }
+
+  @action sortPendingEvents() {
+    this.pendingEvents = toJS(this.pendingEvents).sort((a, b) => {
+      const firstDate = new Date(a.createdAt),
+        secondDate = new Date(b.createdAt);
+      if (firstDate > secondDate) {
+        return -1
+      } else {
+        return 1
+      }
+    })
+  }
+
+  @action sortAcceptedEvents() {
+    this.acceptedEvents = toJS(this.acceptedEvents).sort((a, b) => {
+      const firstDate = new Date(a.datetime),
+        secondDate = new Date(b.datetime);
+      if (firstDate > secondDate) {
+        return 1
+      } else {
+        return -1
+      }
+    })
   }
 
   @action
@@ -84,6 +113,9 @@ class EventsStore {
         })
       }
     })
+
+    this.sortAcceptedEvents()
+
   }
 
   async getEventParticipants(eventID) {

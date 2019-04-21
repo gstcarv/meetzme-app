@@ -71,61 +71,59 @@ class Pendentes extends Component {
     const { EventsStore } = this.props
 
     return (
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.scrollView}
-          overScrollMode="always">
+      <ScrollView
+        style={styles.container}
+        overScrollMode="always">
 
-          {
-            EventsStore.pendingEvents.length > 0 &&
+        {
+          EventsStore.pendingEvents.length > 0 &&
 
-            <SearchField
-              placeholder="Digite o nome do Evento"
-              onChangeText={searchText => this.setState({ searchText })}
-            />
-
-          }
-
-          <View style={styles.eventosContainer}>
-
-            <FlatList
-              data={toJS(EventsStore.searchPendingEvents(this.state.searchText))}
-              renderItem={({ item }) => (
-                <PendingEventCard
-                  eventData={item}
-                  onPress={() => this.openEventSheet(item.id)} />
-              )}
-              keyExtractor={(convite) => convite.id}
-              numColumns={2}
-            />
-          </View>
-
-          {
-            EventsStore.pendingEvents.length > 0 &&
-            <Line spaceVertical={15} />
-          }
-
-          {
-            EventsStore.pendingEvents.length == 0 &&
-
-            <View style={styles.emptyContainer}>
-              <SLIcon name="envelope-open" size={150} color="#eee"></SLIcon>
-              <Text style={styles.emptyText}>Nenhum convite pendente. Tem muitos compromissos?</Text>
-              <Line spaceVertical={15} />
-            </View>
-          }
-
-
-          <PendingEventBottomSheet
-            ref="eventBottomSheet"
-            onNext={(infoEvento) => {
-              this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })
-            }}
-            onRecuse={this._onRecuseEvent.bind(this)}
+          <SearchField
+            placeholder="Digite o nome do Evento"
+            onChangeText={searchText => this.setState({ searchText })}
           />
 
-        </ScrollView>
-      </View>
+        }
+
+        <View style={styles.eventosContainer}>
+
+          <FlatList
+            data={toJS(EventsStore.searchPendingEvents(this.state.searchText))}
+            renderItem={({ item }) => (
+              <PendingEventCard
+                eventData={item}
+                onPress={() => this.openEventSheet(item.id)} />
+            )}
+            keyExtractor={(convite) => convite.id}
+            numColumns={2}
+          />
+        </View>
+
+        {
+          EventsStore.pendingEvents.length > 0 &&
+          <Line spaceVertical={15} />
+        }
+
+        {
+          EventsStore.pendingEvents.length == 0 &&
+
+          <View style={styles.emptyContainer}>
+            <SLIcon name="envelope-open" size={150} color="#eee"></SLIcon>
+            <Text style={styles.emptyText}>Nenhum convite pendente. Tem muitos compromissos?</Text>
+            <Line spaceVertical={15} />
+          </View>
+        }
+
+
+        <PendingEventBottomSheet
+          ref="eventBottomSheet"
+          onNext={(infoEvento) => {
+            this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })
+          }}
+          onRecuse={this._onRecuseEvent.bind(this)}
+        />
+
+      </ScrollView>
     )
   }
 }
@@ -137,9 +135,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9FAFC",
     paddingHorizontal: 20,
     paddingTop: 20,
-    flex: 1
-  },
-  scrollView: {
     flex: 1
   },
   eventosContainer: {
