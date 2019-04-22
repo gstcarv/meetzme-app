@@ -4,7 +4,7 @@ import {
   StyleSheet,
   View,
   StatusBar,
-  ScrollView,
+  ScrollView
 } from 'react-native'
 
 import ReactNative from 'react-native'
@@ -16,8 +16,6 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {
   withNavigation
 } from 'react-navigation'
-
-import BackButton from '@/components/BackButton'
 
 import {
   Button,
@@ -35,28 +33,71 @@ class Cadastro extends Component {
     this.state = {
       name: "",
       email: "",
-      phone: "",
       password: "",
-      passwordConfirm: ""
+      passwordConfirm: "",
+      errors: {
+        name: null,
+        email: null,
+        password: null,
+        passwordConfirm: null
+      }
     }
   }
 
   validaCadastro() {
-    this.props.navigation.navigate("FinalizaCadastro", {
-      userInfo: this.state
-    });
+    // Função para editar o state com o erro
+    const setError = (field, text) => {
+      this.setState({
+        errors: {
+          [field]: text
+        }
+      })
+    }
+
+    const { name, email, password, passwordConfirm } = this.state
+
+    // Limpa os erros
+    this.setState({
+      errors: {
+        name: null,
+        email: null,
+        password: null,
+        passwordConfirm: null
+      }
+    })
+
+    if (name.length < 4) {
+      setError('name', "O nome deve ter no mínimo 4 caracteres")
+      this.scrollToField('nameRef')
+    } else if (email.length < 8 || !email.includes('@') || !email.includes('.')) {
+      setError('email', "Digite o email corretamente. Exemplo: pessoa@email.com")
+      this.scrollToField('emailRef')
+    } else if (password.length < 8) {
+      setError('password', "A senha deve ter no mínimo 8 caracteres")
+      this.scrollToField('passwordRef')
+    } else if (passwordConfirm != password) {
+      setError('passwordConfirm', "As senhas não coincidem")
+      this.scrollToField('confirmPasswordRef')
+    } else {
+      this.props.navigation.navigate("FinalizaCadastro", {
+        userInfo: {
+          name,
+          email,
+          password
+        }
+      });
+    }
   }
 
-  gotoNextInput(fieldName) {
-    const ref = this.refs[fieldName];
-    this.refs[fieldName].focus()
-    this.cadastroScroll.props.scrollToFocusedInput(ReactNative.findNodeHandle(ref))
-  }
-
-  onFocusField(field) {
+  scrollToField(refName) {
+    this[refName].focus()
+    this.cadastroScroll.props.scrollToFocusedInput((ReactNative.findNodeHandle(this[refName])))
   }
 
   render() {
+
+    const { errors } = this.state
+
     return (
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#F5F5F5"
@@ -68,7 +109,8 @@ class Cadastro extends Component {
         <KeyboardAwareScrollView
           innerRef={ref => {
             this.cadastroScroll = ref
-          }}>
+          }}
+          keyboardShouldPersistTaps='always'>
 
           <View style={{
             paddingHorizontal: 20,
@@ -84,29 +126,26 @@ class Cadastro extends Component {
               style={styles.field}
               value={this.state.name}
               onChangeText={name => this.setState({ name })}
-              ref="nameField"
-              onGoNext={() => this.gotoNextInput("emailField")}
+              error={errors.name}
+              returnKeyType="next"
+              maxLength={25}
+              autoCapitalize="words"
+              ref={ref => this.nameRef = ref}
+              onEndType={() => this.scrollToField("emailRef")}
             />
 
             <TextField label="Email"
               placeholder="Digite seu Email"
               style={styles.field}
               type="email-address"
-              maxLenght={40}
               value={this.state.email}
               onChangeText={email => this.setState({ email })}
-              ref="emailField"
-              onGoNext={() => this.gotoNextInput("telField")}
-            />
-
-            <TextField label="Telefone"
-              placeholder="Digite seu Telefone"
-              type="phone-pad"
-              maxLenght={20}
-              value={this.state.phone}
-              onChangeText={phone => this.setState({ phone })}
-              ref="telField"
-              onGoNext={() => this.gotoNextInput("passField")}
+              error={errors.email}
+              returnKeyType="next"
+              maxLength={254}
+              autoCapitalize="none"
+              ref={ref => this.emailRef = ref}
+              onEndType={() => this.scrollToField("passwordRef")}
             />
 
             <Line spaceVertical={40}></Line>
@@ -117,8 +156,11 @@ class Cadastro extends Component {
               style={styles.field}
               value={this.state.password}
               onChangeText={password => this.setState({ password })}
-              ref="passField"
-              onGoNext={() => this.gotoNextInput("confirmPassField")}
+              error={errors.password}
+              returnKeyType="next"
+              maxLength={500}
+              ref={ref => this.passwordRef = ref}
+              onEndType={() => this.scrollToField("confirmPasswordRef")}
             />
 
             <TextField label="Confirmação de senha"
@@ -126,8 +168,12 @@ class Cadastro extends Component {
               secureTextEntry
               style={styles.field}
               value={this.state.passwordConfirm}
+              error={errors.passwordConfirm}
+              returnKeyType="next"
+              maxLength={500}
+              ref={ref => this.confirmPasswordRef = ref}
               onChangeText={passwordConfirm => this.setState({ passwordConfirm })}
-              ref="confirmPassField"
+              onEndType={() => this.validaCadastro()}
             />
 
             <Button mode="contained"

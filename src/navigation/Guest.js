@@ -21,7 +21,7 @@ export default createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: "Login",
+    initialRouteName: "Cadastro",
     transitionConfig: getSlideFromRightTransition
   }
 )

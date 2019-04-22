@@ -13,9 +13,14 @@ class CircleThumbnail extends Component {
         style={styles.circle}
         onPress={
           () => {
-            this.props.navigation.navigate('LocalizacoesUsuarios', {
-              eventID: this.props.id
-            })
+            const { navigate } = this.props.navigation
+            if (this.props.id) {
+              navigate('LocalizacoesUsuarios', {
+                eventID: this.props.id
+              })
+            } else {
+              navigate('EventosAceitos')
+            }
           }
         }>
         {

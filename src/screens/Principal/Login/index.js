@@ -109,6 +109,7 @@ class Login extends Component {
             value={this.state.email}
             error={errors.email}
             onChangeText={email => this.setState({ email })}
+            autoCapitalize="none"
             onFocus={() => this.onFocusInput()} />
 
           <TextField label="Senha"

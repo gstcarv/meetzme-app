@@ -60,10 +60,6 @@ class MainToolbar extends Component {
             </TouchableScale>
             <Text style={styles.toolbarTitle}>{ToolbarTitle.get()}</Text>
           </View>
-          <IconButton
-            icon="notifications"
-            color="#fff"
-          />
         </View>
       </View>
     )
