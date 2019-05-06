@@ -4,15 +4,18 @@ import {
   StyleSheet,
   View,
   StatusBar,
-  ScrollView,
   Alert
 } from 'react-native'
+
+import ReactNative from 'react-native'
 
 import {
   withNavigation
 } from 'react-navigation'
 
-import BackButton from '@/components/BackButton'
+import debounce from 'debounce'
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import {
   Button,
@@ -34,78 +37,145 @@ class Cadastro extends Component {
     this.state = {
       username: "",
       image: null,
-      loading: false
+      loading: false,
+      isUsernameValid: null,
+      errors: {
+        username: null
+      }
     }
   }
 
-  finalizaCadastro() {
+  focusUsername(){
+    this['usernameRef'].focus()
+    this.cadastroScroll.props.scrollToFocusedInput((ReactNative.findNodeHandle(this['usernameRef'])))
+  }
 
-    this.setState({
-      loading: true
-    })
+  async finalizaCadastro() {
 
     const { username, image } = this.state;
-    const userInfo = this.props.navigation.getParam('userInfo');
-    let newUser = {
-      ...userInfo,
-      username,
-      image
-    }
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
-        .then(async res => {
+    this.setState({
+      username: username.toLowerCase()
+    })
 
-          const { user } = res;
+    this.setState({
+      errors: { username: null }
+    })
 
-          try {
+    let regex = new RegExp("^[a-zA-Z0-9._-]*$");
 
-            let downloadURL = null
+    // Valida Campos
+    if(image == null){
+      Alert.alert("Foto", "Selecione a foto do seu perfil");
+    } else if (username.length < 3){
+      this.setState({
+        errors: {
+          username: "O nome de usuário deve ter pelo menos 3 caracteres"
+        }
+      })
+      this.focusUsername()
+    } else if (!regex.test(username)){
+      this.setState({
+        errors: {
+          username: 'Não são permitidos caracteres especiais, com exceção de ".", "_" e "-"'
+        }
+      })
+      this.focusUsername()
+    } else {
 
-            if(this.state.image){
-              const userProfileImageRef = firebase.storage().ref('profile').child(user.uid)
-              var fileUpload = await userProfileImageRef.putFile(image.path, {
-                contentType: image.mime
+      this.setState({
+        loading: true
+      })
+
+      // Verifica se o username ja está em uso
+      let searchForUsername = await firebase.firestore()
+        .collection('users')
+        .where('username', '==', username)
+        .limit(1)
+        .get();
+      
+      if(searchForUsername.size > 0){
+        this.setState({
+          errors: {
+            username: 'Esse nome de usuário ja está em uso'
+          },
+          loading: false
+        })
+        this.focusUsername()
+      } else {
+
+        // Cria a conta
+
+        const userInfo = this.props.navigation.getParam('userInfo');
+
+        let newUser = {
+          ...userInfo,
+          username,
+          image
+        }
+    
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+          .then(async res => {
+    
+            const { user } = res;
+    
+            try {
+    
+              let downloadURL = null
+    
+              if (this.state.image) {
+                const userProfileImageRef = firebase.storage().ref('profile').child(user.uid)
+                var fileUpload = await userProfileImageRef.putFile(image.path, {
+                  contentType: image.mime
+                })
+    
+                downloadURL = fileUpload.downloadURL;
+              }
+    
+              const firestoreRef = firebase.firestore();
+    
+              firestoreRef.collection('users').doc(user.uid).set({
+                name: newUser.name,
+                username: newUser.username,
+                email: newUser.email,
+                photoURL: downloadURL
               })
     
-              downloadURL = fileUpload.downloadURL;
-            }
-          
-            const firestoreRef = firebase.firestore();
-  
-            firestoreRef.collection('users').doc(user.uid).set({
-              name: newUser.name,
-              phone: newUser.phone,
-              username: newUser.username,
-              photoURL: downloadURL
-            })
-  
-            return res.user.updateProfile(
-              {
-                displayName: newUser.name,
-                phoneNumber: newUser.phone,
-                photoURL: downloadURL
-              }
-            ).then(() => this.props.navigation.navigate('Login'));
-          } catch (error) {
-          }
-        })
-        .catch(err => {
-          Alert.alert("Erro", "Ocorreu um erro, tente novamente mais tarde");
-          this.setState({
-            loading: false
+              return res.user.updateProfile(
+                {
+                  displayName: newUser.name,
+                  photoURL: downloadURL
+                }
+              ).then(() => this.props.navigation.navigate('Login'));
+            } catch (error) { }
           })
-        })
+          .catch(err => {
+            Alert.alert("Erro", "Ocorreu um erro, tente novamente mais tarde");
+            this.setState({
+              loading: false
+            })
+          })
+      }
+    }
   }
 
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar backgroundColor="#F5F5F5"
-          animated />
+        <StatusBar 
+          backgroundColor="#F5F5F5"
+          animated
+          barStyle="dark-content"
+        />
         <BackBar />
-        <ScrollView style={styles.formContainer}>
+        <KeyboardAwareScrollView 
+          innerRef={ref => {
+            this.cadastroScroll = ref
+          }}
+          style={styles.formContainer}
+          keyboardShouldPersistTaps='always'>
           <View>
             <Text style={defaultStyles.titleWhite}>Finalizar Cadastro</Text>
             <Text style={defaultStyles.subtitleWhite}>Selecione sua foto e digite seu nome de usuário</Text>
@@ -116,18 +186,25 @@ class Cadastro extends Component {
             <TextField label="Nome de Usuário"
               placeholder="Insira seu Nome de Usuário"
               style={styles.field}
-              maxLenght={25}
+              maxLength={25}
+              autoCapitalize="none"
               value={this.state.username}
-              onChangeText={(username) => this.setState({ username })} />
+              error={this.state.errors.username}
+              onChangeText={(username) => { this.setState({ username }) }}
+              ref={ref => this.usernameRef = ref}
+              onEndType={() => this.finalizaCadastro()}
+            />
           </View>
           <Button
             icon="check"
             mode="contained"
-            style={{ marginBottom: 20 }}
+            style={{ 
+              marginVertical: 20
+            }}
             loading={this.state.loading}
             disabled={this.state.loading}
             onPress={() => this.finalizaCadastro()}>Finalizar Cadastro</Button>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     )
   }
@@ -142,7 +219,6 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   field: {
-    marginBottom: 20,
     marginTop: 50
   }
 })

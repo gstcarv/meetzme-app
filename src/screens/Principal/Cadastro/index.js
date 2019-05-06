@@ -4,12 +4,11 @@ import {
   StyleSheet,
   View,
   StatusBar,
-  ScrollView
 } from 'react-native'
 
 import ReactNative from 'react-native'
 
-import InputScrollView from 'react-native-input-scroll-view';
+import firebase from 'react-native-firebase'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -40,11 +39,12 @@ class Cadastro extends Component {
         email: null,
         password: null,
         passwordConfirm: null
-      }
+      },
+      loading: false
     }
   }
 
-  validaCadastro() {
+  async validaCadastro() {
     // Função para editar o state com o erro
     const setError = (field, text) => {
       this.setState({
@@ -79,13 +79,29 @@ class Cadastro extends Component {
       setError('passwordConfirm', "As senhas não coincidem")
       this.scrollToField('confirmPasswordRef')
     } else {
-      this.props.navigation.navigate("FinalizaCadastro", {
-        userInfo: {
-          name,
-          email,
-          password
-        }
-      });
+      this.setState({ loading: true })
+
+      // Vê se o email ja está cadastrado
+      let searchForEmail = await firebase.firestore()
+        .collection('users')
+        .where('email', '==', email)
+        .limit(1)
+        .get();
+
+      this.setState({ loading: false })
+
+      if(searchForEmail.size == 0){
+        this.props.navigation.navigate("FinalizaCadastro", {
+          userInfo: {
+            name,
+            email,
+            password
+          }
+        });
+      } else {
+        setError('email', "O email ja está cadastrado")
+        this.scrollToField('emailRef')
+      }
     }
   }
 
@@ -102,7 +118,8 @@ class Cadastro extends Component {
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#F5F5F5"
           barStyle="dark-content"
-          animated />
+          animated 
+        />
 
         <BackBar />
 
@@ -179,7 +196,8 @@ class Cadastro extends Component {
             <Button mode="contained"
               noRadius
               icon="keyboard-arrow-right"
-              onPress={() => this.validaCadastro()}>Próximo</Button>
+              onPress={() => this.validaCadastro()}
+              loading={this.state.loading}>Próximo</Button>
 
           </View>
 
