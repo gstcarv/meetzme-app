@@ -4,8 +4,6 @@ import {
 
 import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
 
-import { fromRight } from 'react-navigation-transitions';
-
 // Screens
 import Principal from '@/screens/Principal'
 import Login from '@/screens/Principal/Login'
@@ -21,7 +19,7 @@ export default createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: "FinalizaCadastro",
+    initialRouteName: "Login",
     transitionConfig: getSlideFromRightTransition
   }
 )

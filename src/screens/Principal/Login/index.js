@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import {
+import ReactNative, {
   StyleSheet,
   View,
   StatusBar,
   Image,
-  ScrollView,
 } from 'react-native'
 
 import Waves from '@/components/Waves'
@@ -18,9 +17,7 @@ import {
   Button
 } from '@/components/Forms'
 
-import {
-  HelperText
-} from 'react-native-paper'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import BackButton from '@/components/BackButton'
 import Snackbar from 'react-native-snackbar'
@@ -84,7 +81,9 @@ class Login extends Component {
     }
   }
 
-  onFocusInput() {
+  scrollToInput(refName){
+    this[refName].focus()
+    this.loginScrollView.props.scrollToFocusedInput(ReactNative.findNodeHandle(this[refName]))
   }
 
   render() {
@@ -92,9 +91,9 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-      <ScrollView style={styles.scrollView}
+      <KeyboardAwareScrollView style={styles.scrollView}
         keyboardShouldPersistTaps='always'
-        ref={ref => this.loginScrollView = ref}>
+        innerRef={ref => this.loginScrollView = ref}>
         <StatusBar backgroundColor={colors.primaryDark} />
         <View style={styles.header}>
           <BackButton path="Principal" />
@@ -110,7 +109,10 @@ class Login extends Component {
             error={errors.email}
             onChangeText={email => this.setState({ email })}
             autoCapitalize="none"
-            onFocus={() => this.onFocusInput()} />
+            ref={ref => this.emailRef = ref}
+            returnKeyType="next"
+            onFocus={() => this.scrollToInput("emailRef")}
+            onEndType={() => this.scrollToInput("passwordRef")} />
 
           <TextField label="Senha"
             placeholder="Digite sua senha"
@@ -119,7 +121,10 @@ class Login extends Component {
             style={{ marginTop: 10 }}
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
-            onFocus={() => this.onFocusInput()} />
+            ref={ref => this.passwordRef = ref}
+            onFocus={() => this.scrollToInput("passwordRef")}
+            onEndType={() => this.signIn()}
+          />
 
           <Button mode="contained"
             style={{ marginTop: 20 }}
@@ -134,7 +139,7 @@ class Login extends Component {
             rounded
             onPress={() => console.warn("ok")}>Esquecí a senha</Button>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     )
   }
 }

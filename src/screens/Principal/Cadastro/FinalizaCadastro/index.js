@@ -148,7 +148,10 @@ class Cadastro extends Component {
                   displayName: newUser.name,
                   photoURL: downloadURL
                 }
-              ).then(() => this.props.navigation.navigate('Login'));
+              ).then(async () => {
+                await firebase.auth().signInWithEmailAndPassword(newUser.email, newUser.password);
+                this.props.navigation.navigate("Loading")
+              });
             } catch (error) { }
           })
           .catch(err => {
@@ -204,6 +207,7 @@ class Cadastro extends Component {
             loading={this.state.loading}
             disabled={this.state.loading}
             onPress={() => this.finalizaCadastro()}>Finalizar Cadastro</Button>
+          <Line />
         </KeyboardAwareScrollView>
       </View>
     )

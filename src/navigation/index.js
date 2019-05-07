@@ -23,7 +23,7 @@ const Routes = createSwitchNavigator(
     Loading: LoadingScreen
   },
   {
-    initialRouteName: 'Guest',
+    initialRouteName: 'Loading',
     headerMode: 'none',
   }
 )
