@@ -16,9 +16,11 @@ import {
 
 import Snackbar from 'react-native-snackbar'
 
-import { withNavigation } from 'react-navigation'
-
-import firebase from 'react-native-firebase'
+import {
+  withNavigation,
+  NavigationActions,
+  StackActions
+} from 'react-navigation'
 
 import LoadingModal from '@/components/NovoEvento/LoadingModal'
 import BackBar from '@/components/BackBar'
@@ -26,9 +28,9 @@ import ConvidadosSearchField from '@/components/NovoEvento/ConvidadosSearchField
 import ConvidadosListRow from '@/components/NovoEvento/ConvidadosListRow'
 import defaultStyles from '@/resources/defaultStyles'
 
-import { 
-  inject, 
-  observer 
+import {
+  inject,
+  observer
 } from 'mobx-react/native'
 
 @inject('ContactsStore')
@@ -48,11 +50,11 @@ class SelecionarConvidados extends Component {
 
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.ContactsStore.clearSearch()
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.ContactsStore.clearSearch()
   }
 
@@ -118,7 +120,13 @@ class SelecionarConvidados extends Component {
       })
 
       this.setState({ loading: false })
-      navigation.navigate('Eventos')
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Home' }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
     }
     catch (e) {
       Snackbar.show({
@@ -131,7 +139,6 @@ class SelecionarConvidados extends Component {
   }
 
   render() {
-
 
     const { ContactsStore } = this.props;
 

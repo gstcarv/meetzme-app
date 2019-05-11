@@ -72,6 +72,9 @@ class Login extends Component {
         })
         this.props.navigation.navigate("Loading");
       } catch (err) {
+        this.setState({
+          loading: false
+        })
         Snackbar.show({
           title: 'Login ou Senha incorretos',
           duration: Snackbar.LENGTH_SHORT,
@@ -99,7 +102,7 @@ class Login extends Component {
           <BackButton path="Principal" />
           <Waves>
             <Image source={require("@assets/images/logo_gray.png")}
-              style={{ width: 75, height: 75 }}></Image>
+              style={{ width: 90, height: 90 }}></Image>
           </Waves>
         </View>
         <View style={styles.loginForm}>

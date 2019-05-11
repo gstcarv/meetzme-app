@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-import ReactNative from 'react-native'
-
-import {
+import ReactNative, {
   StyleSheet,
   View,
   StatusBar,
   DatePickerAndroid,
   TimePickerAndroid,
-  TouchableNativeFeedback
+  Alert
 } from 'react-native'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -23,7 +21,6 @@ import {
 } from '@/components/Forms'
 
 import {
-  Switch,
   Text,
   TouchableRipple
 } from 'react-native-paper'
@@ -41,7 +38,11 @@ class NovoEvento extends Component {
       title: "",
       description: "",
       eventDateTime: new Date(Date.now()),
-      image: null
+      image: null,
+      errors: {
+        title: null,
+        description: null
+      }
     }
   }
 
@@ -73,16 +74,46 @@ class NovoEvento extends Component {
     }
   }
 
-  gotoNextInput(fieldName) {
-    const ref = this.refs[fieldName];
-    this.refs[fieldName].focus()
-    this.cadastroScroll.props.scrollToFocusedInput(ReactNative.findNodeHandle(ref))
+  next() {
+    const {
+      title,
+      description,
+      eventDateTime,
+      image
+    } = this.state
+
+    this.setState({
+      errors: {
+        title: null,
+        description: null
+      }
+    })
+
+    if (title.length < 5) {
+      this.setState({
+        errors: { title: "Digite um titulo maior!" }
+      })
+      this.scrollToInput("titleRef")
+    } else if (description.length < 10) {
+      this.setState({
+        errors: { description: "Digite uma descrição maior!" }
+      })
+      this.scrollToInput("descriptionRef")
+    } else if(!image) {
+      this.novoEventoScrollView.scrollTo({x: 0, y: 0, animated: true})
+      Alert.alert("Foto do Evento", "Selecione a Foto do Evento");
+    } else {
+      this.props.navigation.navigate('SelecionarLocalizacao', {
+        infoEvento: {
+          title, description, eventDateTime, image
+        }
+      })
+    }
   }
 
-  next(){
-    this.props.navigation.navigate('SelecionarLocalizacao', {
-      infoEvento: this.state
-    })
+  scrollToInput(fieldName) {
+    this[fieldName].focus();
+    this.novoEventoScrollView.props.scrollToFocusedInput(ReactNative.findNodeHandle(this[fieldName]))
   }
 
   render() {
@@ -108,15 +139,15 @@ class NovoEvento extends Component {
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#F5F5F5"
           barStyle="dark-content"
-          animated 
+          animated
         />
 
         <BackBar />
 
         <KeyboardAwareScrollView
-          innerRef={ref => {
-            this.cadastroScroll = ref
-          }}>
+          innerRef={ref => this.novoEventoScrollView = ref}
+          keyboardShouldPersistTaps='always'
+        >
 
           <View style={{
             paddingHorizontal: 20,
@@ -128,7 +159,7 @@ class NovoEvento extends Component {
 
           <View style={styles.formContainer}>
 
-            <EventImageSelector onSelectImage={image => this.setState({ image })}/>
+            <EventImageSelector onSelectImage={image => this.setState({ image })} />
 
             <Line spaceVertical={20} />
 
@@ -138,7 +169,12 @@ class NovoEvento extends Component {
               placeholder="Digite o Titulo do Evento"
               style={styles.field}
               value={this.state.title}
-              onChangeText={title => this.setState({ title })} />
+              ref={ref => this.titleRef = ref}
+              onChangeText={title => this.setState({ title })}
+              returnKeyType="next"
+              error={this.state.errors.title}
+              onEndType={() => this.scrollToInput('descriptionRef')}
+            />
 
             <TextField
               label="Descrição"
@@ -147,7 +183,10 @@ class NovoEvento extends Component {
               multiline
               style={[styles.field, { height: 160 }]}
               value={this.state.description}
-              onChangeText={description => this.setState({ description })} />
+              ref={ref => this.descriptionRef = ref}
+              error={this.state.errors.description}
+              onChangeText={description => this.setState({ description })}
+            />
 
             <Line />
 
