@@ -5,22 +5,28 @@ import {
 } from 'react-navigation'
 
 import {
-  fromLeft
+  fromRight
 } from 'react-navigation-transitions'
 
 import Guest from './Guest'
 import Logged from './Logged'
 import Loading from '@/screens/Loading'
 
+import PermissaoLocalizacao from '@/screens/PermissaoLocalizacao'
+
 const LoadingScreen = createStackNavigator({
-  Loading
-}, { headerMode: 'none' })
+  Loading,
+  PermissaoLocalizacao
+}, { 
+  headerMode: 'none', 
+  transitionConfig: () => fromRight() 
+})
 
 const Routes = createSwitchNavigator(
   {
     Guest,
     Logged: Logged,
-    Loading: LoadingScreen
+    Loading: LoadingScreen,
   },
   {
     initialRouteName: 'Loading',

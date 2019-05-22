@@ -110,6 +110,24 @@ class LoggedUserStore {
       })
   }
 
+  async getLocation() {
+    return new Promise(function (resolve, reject) {
+      navigator.geolocation.getCurrentPosition(
+        async pos => {
+          resolve(pos.coords)
+        },
+        err => { reject(err) },
+        { enableHighAccuracy: false, timeout: 10000 }
+      )
+    });
+  }
+
+  async getAndSendLocation(){
+    try {
+      this.sendLocation(await this.getLocation())
+    } catch {}
+  }
+  
   @action async loggout(){
     await firebase.auth().signOut()
     this.info = {}

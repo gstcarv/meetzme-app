@@ -8,14 +8,14 @@ import {
   AsyncStorage
 } from 'react-native'
 
+import Permissions from 'react-native-permissions'
 import { withNavigation } from 'react-navigation'
 
 import colors from "@/resources/colors"
 
-import firebase, { firestore } from 'react-native-firebase'
+import firebase from 'react-native-firebase'
 
 import { inject, observer } from 'mobx-react/native'
-
 import { toJS } from 'mobx'
 
 @inject('ContactsStore')
@@ -24,21 +24,6 @@ import { toJS } from 'mobx'
 @inject('NotificationsStore')
 @observer
 class Principal extends Component {
-
-  async getUserLocation() {
-    navigator.geolocation.getCurrentPosition(
-      async pos => {
-        const UID = this.props.LoggedUserStore.get().uid;
-        const { latitude, longitude } = pos.coords;
-        await this.props.LoggedUserStore.sendLocation({
-          latitude, longitude
-        })
-      },
-      err => { },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
-    )
-  }
-
   componentDidMount() {
     const { navigate } = this.props.navigation;
     const {
@@ -96,8 +81,8 @@ class Principal extends Component {
         // Começa a ouvir as atualizações dos Contatos e Eventos
         await ContactsStore.fetchContacts();
         await EventsStore.fetchEvents();
-        // Pega a Localização Atual
-        this.getUserLocation();
+
+        let locationPermission = await Permissions.check('location');
 
         // Pega as Notificações do Async Storage
         NotificationsStore.fetchNotifications();
@@ -107,8 +92,12 @@ class Principal extends Component {
           isWatchingEvents = true
         }
 
-        navigate('Logged');
-
+        if(locationPermission != "authorized"){
+          navigate('PermissaoLocalizacao');
+        } else {
+          LoggedUserStore.getAndSendLocation()
+          navigate('Logged');
+        }
       } else {
         navigate('Principal');
       }
@@ -126,7 +115,7 @@ class Principal extends Component {
           animated />
         <View style={{ alignItems: 'center' }}>
           <Image source={require("@assets/images/logo_gray.png")}
-            style={{ width: 130, height: 130 }}></Image>
+            style={{ width: 150, height: 150 }}></Image>
         </View>
         <View>
           <ActivityIndicator size="large" color="white" style={styles.loader} />
