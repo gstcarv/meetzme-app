@@ -23,8 +23,7 @@ import TabBarComponent from '@/components/Navigator/TabBarComponent'
 import MainToolbar from '@/components/Navigator/MainToolbar'
 
 
-var BottomNavigator = createBottomTabNavigator(
-  {
+var BottomNavigator = createBottomTabNavigator({
     Dashboard: {
       screen: Dashboard,
       navigationOptions: {
@@ -59,7 +58,7 @@ var BottomNavigator = createBottomTabNavigator(
   },
   {
     tabBarComponent: TabBarComponent,
-    initialRouteName: "Eventos",
+    initialRouteName: "Dashboard",
     lazy: false,
     tabBarOptions: {
       inactiveTintColor: "#D6D6D6",
@@ -68,8 +67,7 @@ var BottomNavigator = createBottomTabNavigator(
   }
 )
 
-export default createStackNavigator(
-  {
+export default createStackNavigator({
     HomeNavigator: {
       screen: BottomNavigator,
       navigationOptions: {

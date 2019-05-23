@@ -16,6 +16,8 @@ import fonts from '@/resources/fonts'
 
 import ToolbarTitle from '@/store/ToolbarTitle'
 
+import EventBus from 'eventing-bus';
+
 export default class TabBarComponent extends React.Component {
 
   index = 0
@@ -28,9 +30,16 @@ export default class TabBarComponent extends React.Component {
 
     this.lineOffset = new Animated.Value(20)
     this.routeButtonsPositions = []
-
   }
 
+  componentWillMount() {
+    EventBus.on('moveLineToEventTab', () => {
+      if(this.state.atualRouteIndex != 1){
+        this.setState({ atualRouteIndex: 1 })
+        this.moveLine.bind(this)
+      }
+    })
+  }
 
   moveLine() {
     const { atualRouteIndex } = this.state

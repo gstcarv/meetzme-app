@@ -5,7 +5,8 @@ import {
   View,
   ScrollView,
   RefreshControl,
-  FlatList
+  FlatList,
+  ToastAndroid
 } from 'react-native'
 
 import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
@@ -51,19 +52,6 @@ class Pendentes extends Component {
   _onRecuseEvent(event) {
     const { EventsStore } = this.props;
     EventsStore.recuseEvent(event.id);
-    setTimeout(() => {
-      Snackbar.show({
-        title: 'Convite Recusado',
-        duration: Snackbar.LENGTH_LONG,
-        action: {
-          title: 'Desfazer',
-          color: '#fff',
-          onPress: () => {
-            EventsStore.undoRecuse(event);
-          },
-        },
-      })
-    }, 500)
   }
 
   render() {

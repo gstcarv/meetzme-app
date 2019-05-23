@@ -55,19 +55,21 @@ export default class DirectionInfoBox extends Component {
 
   componentWillMount() {
     if (this.props.canReturn == true) {
-      BackHandler.addEventListener('hardwareBackPress', () => {
-        if (this.state.visible) {
-          this.setState({ visible: false })
-          this.props.onClose()
-          return true;
-        }
-      })
+      BackHandler.addEventListener('hardwareBackPress', this._onBackPress)
     }
   }
 
   componentWillUnmount() {
     if (this.props.canReturn == true) {
-      BackHandler.removeEventListener('hardwareBackPress')
+      BackHandler.removeEventListener('hardwareBackPress', this._onBackPress)
+    }
+  }
+
+  _onBackPress(){
+    if (this.state.visible) {
+      this.setState({ visible: false })
+      this.props.onClose()
+      return true;
     }
   }
 

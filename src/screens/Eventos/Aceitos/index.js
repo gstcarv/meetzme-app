@@ -28,6 +28,8 @@ import {
 
 import { toJS } from 'mobx'
 
+import EventBus from 'eventing-bus'
+
 @inject('EventsStore')
 @observer
 class Aceitos extends Component {
@@ -49,7 +51,9 @@ class Aceitos extends Component {
 
     return (
       <ScrollView style={styles.container}
-        overScrollMode="always">
+        overScrollMode="always"
+        ref={ref => this.eventsScrollView = ref}
+      >
 
         {
           EventsStore.acceptedEvents.length > 0 &&

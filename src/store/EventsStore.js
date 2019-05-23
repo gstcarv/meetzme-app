@@ -17,6 +17,11 @@ class EventsStore {
   @observable acceptedEvents = []
   @observable pendingEvents = []
   @observable eventsID = []
+  @observable lastUserCreatedEvent = "2D4yNTHxb4tNEI2S5ZYa"
+
+  @action clearLastUserCreatedEvent(){
+    this.lastUserCreatedEvent = null
+  }
 
   searchPendingEvents(text) {
     return this.pendingEvents.filter(event => {
@@ -32,6 +37,10 @@ class EventsStore {
         .toLowerCase()
         .includes(text.toLowerCase())
     })
+  }
+
+  getByID(id){
+    return this.acceptedEvents.find(ev => ev.id == id)
   }
 
   @action
@@ -214,6 +223,10 @@ class EventsStore {
     })
 
     this.eventsID.push(newEventRef.id)
+
+    lastUserCreatedEvent = newEventRef.id;
+
+    this.sortAcceptedEvents();
 
     // Adiciona o Admin ao Evento criado
     await firestoreRef

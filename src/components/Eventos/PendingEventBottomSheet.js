@@ -64,8 +64,21 @@ export default class PendingEventBottomSheet extends Component {
   }
 
   onRecuse(){
-    this.props.onRecuse(this.state.eventData);
-    this.EventSheet.close();
+    Alert.alert(
+      "Recursar evento",
+      "Deseja realmente recusar esse convite?",
+      [
+        {
+          text: "Não"
+        },
+        {
+          text: 'Sim', onPress: () => {
+            this.props.onRecuse(this.state.eventData);
+            this.EventSheet.close();
+          }
+        },
+      ],
+    )
   }
 
   render() {

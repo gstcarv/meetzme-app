@@ -18,7 +18,7 @@ class TabBarMainButton extends Component {
   render() {
     return (
       <TouchableScale activeScale={.7} onPress={() => this.props.navigation.push('NovoEvento')}>
-        <View style={styles.button} onPress={() => Alert.alert("ok")}>
+        <View style={styles.button}>
           <FAIcon name="plus" size={16} color="#fff" />
         </View>
       </TouchableScale>

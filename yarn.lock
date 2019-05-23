@@ -5193,6 +5193,11 @@ react-native-snackbar@^0.5.3:
   resolved "https://registry.yarnpkg.com/react-native-snackbar/-/react-native-snackbar-0.5.3.tgz#deabb9ab5bc9eb79a162b46b79ad4d0bf1409c3d"
   integrity sha512-qgMTv4GXZ1yAcqyuWr+KQ68mv7n3GY49hW2oTf0uaFuV5SuUw4wA+ERqwFSxtM4dE7+1TnW9Ivsc7EpHdSPpGw==
 
+react-native-splash-screen@3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.0.6.tgz#c0bbf2c8ae40a313c4c7044f55e569414ff68332"
+  integrity sha512-yaTnGAHRyhduLSfD85gP3Vsf0BRePHW3aNNtDXbkbUhwIIeafu2cJH86U/qKFuKLMYLnFOXteOkP80gaYVGAYg==
+
 react-native-svg@^9.0.3:
   version "9.0.3"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.0.3.tgz#a1c9114bad65e9d2d1a785df44b44749d02fc730"

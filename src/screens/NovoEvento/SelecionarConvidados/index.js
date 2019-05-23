@@ -120,13 +120,8 @@ class SelecionarConvidados extends Component {
       })
 
       this.setState({ loading: false })
-      const resetAction = StackActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'Home' }),
-        ],
-      });
-      this.props.navigation.dispatch(resetAction);
+
+      this.props.navigation.navigate("EventosAceitos");
     }
     catch (e) {
       Snackbar.show({
