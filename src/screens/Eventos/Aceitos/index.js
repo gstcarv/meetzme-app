@@ -45,7 +45,8 @@ class Aceitos extends Component {
 
   goToEvent(eventID) {
     let event = this.props.EventsStore.getByID(eventID);
-    if(new Date(Date.now()) >= event.initTrackingDateTime){
+
+    if(new Date(Date.now()) >= event.initTrackingDatetime){
       this.props.navigation.navigate('LocalizacoesUsuarios', { eventID })
     } else {
       this.refs.eventBottomSheet.open(eventID, true);

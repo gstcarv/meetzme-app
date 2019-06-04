@@ -114,6 +114,7 @@ class LoggedUserStore {
     return new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition(
         async pos => {
+          this.lastLocation = pos.coords;
           resolve(pos.coords)
         },
         err => { reject(err) },

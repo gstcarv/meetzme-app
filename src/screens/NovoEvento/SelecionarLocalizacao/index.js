@@ -61,7 +61,7 @@ class SelecionarLocalizacao extends Component {
 
   onSelectLocation(place) {
     this.setState({
-      locationName: `${place.name} - ${place.adress}`,
+      locationName: `${place.name} - ${place.address}`,
       destination: place.location
     })
   }

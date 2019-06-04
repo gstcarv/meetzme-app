@@ -48,6 +48,8 @@ class EventsStore {
 
     const userID = LoggedUserStore.get().uid;
 
+    let now = new Date(Date.now());
+
     // Pega os Eventos Pendentes em Tempo Real
     firestoreRef
       .collection('events')
@@ -59,10 +61,12 @@ class EventsStore {
             // Adiciona no Store de Eventos Pendentes
             let eventExists = this.pendingEvents.some(event => event.id == doc.id);
             if (!eventExists) {
-              this.pendingEvents.unshift({
-                id: doc.id,
-                ...doc.data()
-              })
+              if(doc.data().endTrackingDatetime > now){
+                this.pendingEvents.unshift({
+                  id: doc.id,
+                  ...doc.data()
+                })
+              }
             }
           } else if (changedDoc.type == "removed") {
             // Remove do Store de Eventos Pendentes
@@ -103,10 +107,12 @@ class EventsStore {
 
   @action
   async fetchEvents() {
-
+    // Pegar os eventos aceitos
     const userID = LoggedUserStore.get().uid;
 
     // Procura os Eventos do Usuário Logado
+    let now = new Date(Date.now());
+
     let acceptedEvents = await firestoreRef
       .collection('events')
       .where(`participants.${userID}`, "==", true)
@@ -115,11 +121,13 @@ class EventsStore {
     // Adiciona no Store
     acceptedEvents.forEach(event => {
       if (!this.eventsID.includes(event.id)) {
-        this.eventsID.push(event.id)
-        this.acceptedEvents.push({
-          id: event.id,
-          ...event.data()
-        })
+        if(event.data().endTrackingDatetime > now){
+          this.eventsID.push(event.id)
+          this.acceptedEvents.push({
+            id: event.id,
+            ...event.data()
+          })
+        }
       }
     })
 
@@ -201,8 +209,8 @@ class EventsStore {
       participants[uid] = null
     })
 
-    let initTrackingDatetime = eventDateTime;
-    initTrackingDatetime.setHours(eventDateTime.getHours() - 4)
+    let initTrackingDatetime = new Date(eventDateTime).setHours(eventDateTime.getHours() - 4),
+      endTrackingDatetime = new Date(eventDateTime).setHours(eventDateTime.getHours() + 4);
 
     let newEventData = {
       adminID,
@@ -210,6 +218,7 @@ class EventsStore {
       description,
       datetime: eventDateTime,
       initTrackingDatetime,
+      endTrackingDatetime,
       locationName,
       destination,
       participants: participants,

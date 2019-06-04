@@ -67,13 +67,17 @@ class LocalizacoesUsuarios extends Component {
   }
 
   centerUserMarker() {
-    const { lastLocation } = toJS(LoggedUserStore);
+    try {
+      const { lastLocation } = toJS(LoggedUserStore);
 
-    this.mapview.map.animateCamera({
-      center: lastLocation,
-      pitch: 30,
-      zoom: 15,
-    })
+      this.mapview.map.animateCamera({
+        center: lastLocation,
+        pitch: 30,
+        zoom: 15,
+      })
+    } catch {
+      LoggedUserStore.getAndSendLocation()
+    }
   }
 
   _onBottomSheetStateChanged(state) {
