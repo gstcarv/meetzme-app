@@ -26,7 +26,7 @@
     "react-native-gesture-handler": "^1.0.14",
     "react-native-google-maps-directions": "^2.0.0",
     "react-native-google-maps-services": "^0.5.1",
-    "react-native-google-places": "bcgilliom/react-native-google-places",
+    "react-native-google-places": "^3.0.5",
     "react-native-google-places-autocomplete": "gstcarv/react-native-google-places-autocomplete",
     "react-native-image-crop-picker": "^0.22.0",
     "react-native-input-scroll-view": "^1.8.0",

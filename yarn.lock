@@ -5082,9 +5082,10 @@ react-native-google-places-autocomplete@gstcarv/react-native-google-places-autoc
     prop-types "^15.5.10"
     qs "^5.2.0"
 
-react-native-google-places@bcgilliom/react-native-google-places:
-  version "2.5.2"
-  resolved "https://codeload.github.com/bcgilliom/react-native-google-places/tar.gz/8ead774b6a6785580b1a7214f1a9b98b1ef635ef"
+react-native-google-places@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-google-places/-/react-native-google-places-3.0.5.tgz#270d7bb126760215a0f7112b7c513410212f5935"
+  integrity sha512-Ov70BAi9yXlruQ5qOHUpj78Kcb/uBMcN9fE6C42EgyfYAYL9v/szcylkqEXvyGjJo+2Jx9bTLiQtWlKNOHQPdQ==
 
 react-native-image-crop-picker@^0.22.0:
   version "0.22.0"

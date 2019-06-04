@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import {
-  Text,
   StyleSheet,
   View,
   StatusBar,
-  AsyncStorage,
   ActivityIndicator
 } from 'react-native'
 
@@ -61,13 +59,10 @@ class SelecionarLocalizacao extends Component {
 
   }
 
-  onSelectLocation(data, { geometry }) {
+  onSelectLocation(place) {
     this.setState({
-      locationName: data.description,
-      destination: {
-        latitude: geometry.location.lat,
-        longitude: geometry.location.lng
-      }
+      locationName: `${place.name} - ${place.adress}`,
+      destination: place.location
     })
   }
 
@@ -195,8 +190,9 @@ class SelecionarLocalizacao extends Component {
 
           <StatusBar
             animated
-            backgroundColor="rgba(255, 255, 255, 0)"
-            barStyle="dark-content" />
+            backgroundColor="#eee"
+            barStyle="dark-content" 
+          />
 
           <AppMapView
             ref={ref => this.mapview = ref}

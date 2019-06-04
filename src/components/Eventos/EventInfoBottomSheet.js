@@ -22,48 +22,59 @@ import {
 import fonts from '@/resources/fonts'
 import colors from '@/resources/colors'
 
-export default class PendingEventBottomSheet extends Component {
+export default class EventInfoBottomSheet extends Component {
 
-  constructor(){
+  constructor() {
     super()
     this.state = {
       eventData: {},
       pending: 0,
       accepted: 0,
-      recused: 0
+      recused: 0,
+      isAccepted: true
     }
   }
 
-  open(eventID) {
-    let eventData = EventsStore.pendingEvents.find(({ id }) => id == eventID)
+  open(eventID, isAccepted) {
 
-    let accepted = 0, 
-    pending = 0, 
-    recused = 0;
+    isAccepted = isAccepted || false;
+
+    let eventData;
+
+    if (!isAccepted) {
+      eventData = EventsStore.pendingEvents.find(({ id }) => id == eventID)
+    } else {
+      eventData = EventsStore.acceptedEvents.find(({ id }) => id == eventID)
+    }
+
+    let accepted = 0,
+      pending = 0,
+      recused = 0;
 
     const invites = eventData.participants;
-    for(let invitedUser in invites){
+    for (let invitedUser in invites) {
       let inviteState = invites[invitedUser];
-      if(inviteState == true){
+      if (inviteState == true) {
         accepted++
-      } else if (inviteState == false){
+      } else if (inviteState == false) {
         recused++
-      } else if (inviteState == null){
+      } else if (inviteState == null) {
         pending++
       }
     }
 
-    this.setState({ 
+    this.setState({
       eventData,
       accepted,
       pending,
-      recused
+      recused,
+      isAccepted
     })
 
     this.EventSheet.open()
   }
 
-  onRecuse(){
+  onRecuse() {
     Alert.alert(
       "Recursar evento",
       "Deseja realmente recusar esse convite?",
@@ -103,7 +114,7 @@ export default class PendingEventBottomSheet extends Component {
         <View style={styles.topSheetLine} />
 
         <View style={styles.sheetHeadContainer}>
-          <Image source={{uri: imageURL}}
+          <Image source={{ uri: imageURL }}
             style={styles.eventImage} />
           <View style={styles.inviteNumberContainer}>
             <Text style={styles.inviteTitle}>Pendentes</Text>
@@ -123,32 +134,37 @@ export default class PendingEventBottomSheet extends Component {
           <Text style={styles.eventTitle}>{title}</Text>
           <Text style={styles.eventDescription}>{description}</Text>
         </View>
-        
-        <View style={styles.buttonContainer}>
-          <Button color='#C57A7A'
-                rounded
-                mode="outlined"
-                small
-                onPress={() => this.onRecuse()}
-                style={{
-                  marginRight: 6,
-                  borderColor: '#C57A7A',
-                  ...styles.buttonStyle
-                }}>Recusar</Button>
-          <Button color='#47C1CF'
-                rounded
-                mode="outlined"
-                small
-                icon="keyboard-arrow-right"
-                onPress={() => {
-                  this.EventSheet.close()
-                  this.props.onNext(toJS(this.state.eventData))
-                }}
-                style={{ 
-                  borderColor: "#47C1CF", 
-                  ...styles.buttonStyle 
-                }}>Próximo</Button>
-        </View>
+
+        {
+
+          !this.state.isAccepted &&
+
+          <View style={styles.buttonContainer}>
+            <Button color='#C57A7A'
+              rounded
+              mode="outlined"
+              small
+              onPress={() => this.onRecuse()}
+              style={{
+                marginRight: 6,
+                borderColor: '#C57A7A',
+                ...styles.buttonStyle
+              }}>Recusar</Button>
+            <Button color='#47C1CF'
+              rounded
+              mode="outlined"
+              small
+              icon="keyboard-arrow-right"
+              onPress={() => {
+                this.EventSheet.close()
+                this.props.onNext(toJS(this.state.eventData))
+              }}
+              style={{
+                borderColor: "#47C1CF",
+                ...styles.buttonStyle
+              }}>Próximo</Button>
+          </View>
+        }
 
       </BottomSheet>
     )

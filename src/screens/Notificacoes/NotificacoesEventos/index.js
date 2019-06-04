@@ -6,6 +6,8 @@ import {
   ScrollView
 } from 'react-native'
 
+import { Text } from 'react-native-paper'
+
 import NotificationCard from '@/components/Notificacoes/NotificationCard'
 
 import { inject, observer } from 'mobx-react/native'
@@ -34,6 +36,11 @@ export default class NotificacoesEventos extends Component {
           }
           style={styles.notificationsFlatList}
         />
+
+        {
+          notificationsData.length == 0 &&
+          <Text style={{textAlign: 'center'}}>Nenhuma notificação aqui :(</Text>
+        }
 
       </ScrollView>
     )

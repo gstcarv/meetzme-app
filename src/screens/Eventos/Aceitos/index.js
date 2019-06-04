@@ -30,6 +30,8 @@ import { toJS } from 'mobx'
 
 import EventBus from 'eventing-bus'
 
+import EventInfoBottomSheet from '@/components/Eventos/EventInfoBottomSheet';
+
 @inject('EventsStore')
 @observer
 class Aceitos extends Component {
@@ -42,7 +44,12 @@ class Aceitos extends Component {
   }
 
   goToEvent(eventID) {
-    this.props.navigation.navigate('LocalizacoesUsuarios', { eventID })
+    let event = this.props.EventsStore.getByID(eventID);
+    if(new Date(Date.now()) >= event.initTrackingDateTime){
+      this.props.navigation.navigate('LocalizacoesUsuarios', { eventID })
+    } else {
+      this.refs.eventBottomSheet.open(eventID, true);
+    }
   }
 
   render() {
@@ -50,48 +57,53 @@ class Aceitos extends Component {
     const { EventsStore } = this.props
 
     return (
-      <ScrollView style={styles.container}
-        overScrollMode="always"
-        ref={ref => this.eventsScrollView = ref}
-      >
+      <View style={{ flex: 1 }}>
+        <ScrollView style={styles.container}
+          overScrollMode="always"
+          ref={ref => this.eventsScrollView = ref}
+        >
 
-        {
-          EventsStore.acceptedEvents.length > 0 &&
+          {
+            EventsStore.acceptedEvents.length > 0 &&
 
-          <View>
-            <SearchField
-              placeholder="Digite o nome do Evento"
-              onChangeText={searchText => this.setState({ searchText })}
-            />
+            <View>
+              <SearchField
+                placeholder="Digite o nome do Evento"
+                onChangeText={searchText => this.setState({ searchText })}
+              />
 
-            <FlatList
-              data={toJS(EventsStore.searchAcceptedEvents(this.state.searchText))}
-              keyExtractor={item => item.id}
-              renderItem={
-                ({ item, index }) => (
-                  <TimelineEvent
-                    eventData={item}
-                    rowIndex={index}
-                    onPress={this.goToEvent.bind(this)}
-                  />
-                )
-              }
-              style={{ marginBottom: 40 }}
-            />
-          </View>
-        }
+              <FlatList
+                data={toJS(EventsStore.searchAcceptedEvents(this.state.searchText))}
+                keyExtractor={item => item.id}
+                renderItem={
+                  ({ item, index }) => (
+                    <TimelineEvent
+                      eventData={item}
+                      rowIndex={index}
+                      onPress={this.goToEvent.bind(this)}
+                    />
+                  )
+                }
+                style={{ marginBottom: 40 }}
+              />
+            </View>
+          }
 
-        {
-          EventsStore.acceptedEvents.length == 0 &&
+          {
+            EventsStore.acceptedEvents.length == 0 &&
 
-          <View style={styles.emptyContainer}>
-            <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
-            <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
-            <Line spaceVertical={15} />
-          </View>
-        }
+            <View style={styles.emptyContainer}>
+              <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
+              <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
+              <Line spaceVertical={15} />
+            </View>
+          }
 
-      </ScrollView>
+        </ScrollView>
+        <EventInfoBottomSheet
+          ref="eventBottomSheet"
+        />
+      </View>
     )
   }
 }

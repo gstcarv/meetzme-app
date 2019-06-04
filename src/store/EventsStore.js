@@ -201,11 +201,15 @@ class EventsStore {
       participants[uid] = null
     })
 
+    let initTrackingDatetime = eventDateTime;
+    initTrackingDatetime.setHours(eventDateTime.getHours() - 4)
+
     let newEventData = {
       adminID,
       title,
       description,
       datetime: eventDateTime,
+      initTrackingDatetime,
       locationName,
       destination,
       participants: participants,

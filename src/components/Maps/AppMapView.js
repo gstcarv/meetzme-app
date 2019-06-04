@@ -89,7 +89,7 @@ export default class AppMapView extends Component {
           right: 50,
           left: 50
         }}
-        // customMapStyle={require("@assets/mapstyle.json")}
+        customMapStyle={require("@assets/mapstyle.json")}
         ref={ref => this.map = ref}
         {...this.props}>
 

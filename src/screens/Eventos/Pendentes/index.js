@@ -19,7 +19,7 @@ import {
 
 import SearchField from '@/components/SearchField'
 import PendingEventCard from '@/components/Eventos/PendingEventCard'
-import PendingEventBottomSheet from '@/components/Eventos/PendingEventBottomSheet'
+import EventInfoBottomSheet from '@/components/Eventos/EventInfoBottomSheet'
 
 import fonts from '@/resources/fonts'
 
@@ -103,7 +103,7 @@ class Pendentes extends Component {
         }
 
 
-        <PendingEventBottomSheet
+        <EventInfoBottomSheet
           ref="eventBottomSheet"
           onNext={(infoEvento) => {
             this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })

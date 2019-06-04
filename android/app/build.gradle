@@ -113,6 +113,10 @@ android {
         versionName "1.0"
         multiDexEnabled true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     splits {
         abi {
             reset()
@@ -145,6 +149,7 @@ android {
 dependencies {
     implementation project(':react-native-nested-scroll-view')
     implementation project(':react-native-reanimated')
+
     implementation(project(':react-native-google-places')){
         exclude group: 'com.google.android.gms', module: 'play-services-base'
         exclude group: 'com.google.android.gms', module: 'play-services-places'
@@ -174,11 +179,16 @@ dependencies {
     implementation "com.google.firebase:firebase-storage:16.0.5"
     implementation "com.google.firebase:firebase-messaging:17.3.4"
 
+    implementation("com.google.code.gson:gson:2.8.5")
+    implementation("com.google.android.gms:play-services-basement:16.2.0")
+    implementation("com.google.android.gms:play-services-maps:16.1.0")
+
 }
 
 configurations.all {
     resolutionStrategy {
         force 'org.webkit:android-jsc:r236355'
+        force "com.google.android.gms:play-services-tasks:15.0.1"
     }
 }
 
