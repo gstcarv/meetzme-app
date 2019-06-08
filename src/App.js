@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { DeviceEventEmitter } from 'react-native'
 import NavigationStack from './navigation'
-import { DefaultTheme, Provider as PaperProvider, Snackbar } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper'
 import { Provider as MobxProvider } from 'mobx-react'
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler'
+
+import Snackbar from 'react-native-snackbar'
 
 // Theme
 import PaperThemes from '@/resources/themes'
@@ -21,13 +24,6 @@ import STRINGS from '@/resources/strings'
 import COLORS from '@/resources/colors'
 
 export default class App extends Component {
-
-  state = {
-    snackbar: {
-      visible: false,
-      text: ''
-    }
-  }
 
   createNotificationChannels() {
     // Criando o Canal de Notificação para Eventos
@@ -50,6 +46,16 @@ export default class App extends Component {
 
   async componentDidMount() {
 
+    // Pedir Permissão para ativar GPS
+    RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
+      .catch(() => {
+        Snackbar.show({
+          title: 'Para usar o MeetzMe sem problemas, pedimos que você ative o GPS',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#b71b25'
+        })
+      });
+      
     // Evento ao Receber Alterações na Localização
     DeviceEventEmitter.addListener('onLocationChanged', coordinates => {
       LoggedUserStore.sendLocation(coordinates)

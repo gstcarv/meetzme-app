@@ -30,6 +30,7 @@ export default class DirectionInfoBox extends Component {
     this.state = {
       transport: "driving",
       visible: false,
+      loading: false
     }
 
     this.boxTranslate = new Animated.Value(initialTranslateValue);
@@ -55,21 +56,17 @@ export default class DirectionInfoBox extends Component {
 
   componentWillMount() {
     if (this.props.canReturn == true) {
-      BackHandler.addEventListener('hardwareBackPress', this._onBackPress)
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.props.canReturn == true) {
-      BackHandler.removeEventListener('hardwareBackPress', this._onBackPress)
-    }
-  }
-
-  _onBackPress(){
-    if (this.state.visible) {
-      this.setState({ visible: false })
-      this.props.onClose()
-      return true;
+      BackHandler.addEventListener('hardwareBackPress', () => {
+        try {
+          if (this.state.visible) {
+            this.setState({ visible: false })
+            this.props.onClose()
+            return true;
+          }
+        } catch (err) {
+          return false
+        }
+      })
     }
   }
 
@@ -86,10 +83,10 @@ export default class DirectionInfoBox extends Component {
   }
 
   enableLoading() {
-    Animated.spring(this.boxTranslate, {
+    Animated.timing(this.boxTranslate, {
       toValue: 150,
-      duration: 1000,
-      bounciness: 15,
+      duration: 400,
+      // bounciness: 15,
       useNativeDriver: true
     }).start()
   }

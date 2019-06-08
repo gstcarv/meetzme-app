@@ -83,12 +83,6 @@ export default class AppMapView extends Component {
         maxZoomLevel={16.7}
         rotateEnabled={false}
         moveOnMarkerPress={false}
-        mapPadding={{
-          top: 15,
-          bottom: 15,
-          right: 50,
-          left: 50
-        }}
         customMapStyle={require("@assets/mapstyle.json")}
         ref={ref => this.map = ref}
         {...this.props}>

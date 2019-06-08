@@ -20,6 +20,7 @@
     "proxy-polyfill": "^0.3.0",
     "react": "16.6.3",
     "react-native": "0.58.0",
+    "react-native-android-location-enabler": "^1.0.8",
     "react-native-bottom-sheet-behavior": "^1.0.0",
     "react-native-firebase": "^5.2.1",
     "react-native-geocoding": "^0.3.0",

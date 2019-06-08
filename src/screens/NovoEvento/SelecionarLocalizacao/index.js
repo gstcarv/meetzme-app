@@ -217,6 +217,7 @@ class SelecionarLocalizacao extends Component {
             ref={ref => this.DirectionInfoBox = ref}
             directionResult={this.state.directionResult}
             onClose={() => this.onCloseDirectionBox()}
+            onCloseError={() => this.props.navigation.goBack()}
             canReturn={true}
             onNext={() => this.selecionarConvidados()}
             onSelectTransport={this._onSelectTransport.bind(this)}
