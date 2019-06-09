@@ -29,10 +29,13 @@ export default class AppButton extends Component {
             { 
               overflow: 'hidden',
               borderRadius: getRadius(),
-              paddingVertical: getPadding()
             }
           ]
-        }>{this.props.children}</Button>
+        }
+        contentStyle={{
+          paddingVertical: getPadding()
+        }}
+        >{this.props.children}</Button>
     )
   }
 }

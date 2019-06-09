@@ -6,7 +6,6 @@ import {
   ScrollView,
   FlatList,
   Keyboard,
-  AsyncStorage,
 } from 'react-native'
 
 import {
@@ -29,6 +28,7 @@ import firebase from 'react-native-firebase'
 import { inject, observer } from 'mobx-react/native'
 
 @inject('ContactsStore')
+@inject('LoggedUserStore')
 @observer
 export default class Procurar extends Component {
 
@@ -61,13 +61,15 @@ export default class Procurar extends Component {
 
         searchUsers.forEach(doc => {
           const { name, phone, photoURL, username } = doc.data()
-          usuarios.push({
-            id: doc.id,
-            name,
-            username: "@" + username,
-            phone,
-            photoURL
-          })
+          if(this.props.LoggedUserStore.get().uid != doc.id){
+            usuarios.push({
+              id: doc.id,
+              name,
+              username: "@" + username,
+              phone,
+              photoURL
+            })
+          }
         })
 
         this.setState({
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 15,
     elevation: 2,
-    borderRadius: 3
+    borderRadius: 3,
   },
   textContainer: {
     flex: 1,

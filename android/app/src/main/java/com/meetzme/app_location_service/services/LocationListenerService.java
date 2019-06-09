@@ -109,11 +109,15 @@ public class LocationListenerService extends Service {
 
     private Notification getNotification(){
         Context context = getApplicationContext();
-        int icon = context.getResources().getIdentifier("ic_launcher", "mipmap",context.getPackageName());
+
+        String notificationText = "Sua Localização está sendo compartilhada pelo MeetzMe";
+
+        int icon = context.getResources().getIdentifier("ic_launcher", "mipmap", context.getPackageName());
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), Channels.SHARE_LOCATION)
             .setContentTitle("Compartilhando Localização")
-            .setContentText("Sua Localização está sendo compartilhada pelo MeetzMe")
+            .setContentText(notificationText)
             .setContentInfo("MeetzMe")
+            .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText))
             .setSmallIcon(icon)
             .build();
         return notification;

@@ -1,9 +1,8 @@
 import {
   observable,
   action,
-  autorun,
   computed,
-  configure
+  toJS
 } from 'mobx'
 
 import LoggedUserStore from './LoggedUserStore'
@@ -46,7 +45,18 @@ class ContactsStore {
           phone,
           photoURL
         })
+
+        this.sortContacts();
+
       }
+    })
+  }
+
+  sortContacts(){
+    this.contacts = toJS(this.contacts).sort((a,b) => {
+      var x = a.name.toLowerCase();
+      var y = b.name.toLowerCase();
+      return x < y ? -1 : x > y ? 1 : 0;
     })
   }
 
@@ -66,6 +76,9 @@ class ContactsStore {
       // Adiciona nas Array de Contatos
       this.contactsID.push(contactData.id)
       this.contacts.push(contactData)
+
+      this.sortContacts();
+
     } catch (e) { }
   }
 
@@ -93,6 +106,9 @@ class ContactsStore {
 
         // Remove do Banco
         await doc.ref.delete()
+
+        this.sortContacts();
+
       });
     } catch (e) { }
   }

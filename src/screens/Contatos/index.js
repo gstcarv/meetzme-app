@@ -30,7 +30,6 @@ class Contatos extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      contacts: [],
       searchContacts: [],
       searchText: ''
     }
@@ -50,8 +49,8 @@ class Contatos extends Component {
     const { ContactsStore } = this.props;
 
     const isFirstFromChar = (string, index) => {
-      const { contacts } = this.state;
-      let lastContact = contacts[index - 1]
+      let lastContact = ContactsStore.contacts[index - 1]
+
       if (lastContact) {
         if (lastContact.name.toString().charAt(0).toUpperCase() != string.toString().charAt(0).toUpperCase()) {
           return true
@@ -81,7 +80,7 @@ class Contatos extends Component {
                 <ContatoRow
                   data={item}
                   rowIndex={index}
-                  isFirstFromChar={isFirstFromChar(item, index)}
+                  isFirstFromChar={isFirstFromChar(item.name, index)}
                   onPress={this._onContactPress.bind(this)}
                 />
               )
