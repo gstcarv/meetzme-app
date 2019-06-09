@@ -118,11 +118,10 @@ class Perfil extends Component {
               icon="envelope"
             />
 
-
             <Button mode="contained"
               noRadius
               icon="exit-to-app"
-              style={{ marginTop: 15 }}
+              style={{ marginTop: 15, marginHorizontal: 15 }}
               onPress={this.loggoutAccount.bind(this)}
               loading={this.state.isLoggouting}>Sair da Conta</Button>
 
