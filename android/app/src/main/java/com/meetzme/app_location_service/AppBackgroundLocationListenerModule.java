@@ -14,7 +14,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.meetzme.app_location_service.services.LocationListenerService;
 import com.meetzme.Channels;

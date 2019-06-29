@@ -13,6 +13,7 @@
     "debounce": "^1.2.0",
     "eventing-bus": "^1.3.3",
     "hex-rgb": "^4.0.0",
+    "jetifier": "^1.5.1",
     "jsc-android": "^236355.1.1",
     "mobx": "^5.9.0",
     "mobx-react": "^5.4.3",
