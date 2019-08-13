@@ -118,7 +118,7 @@ class LoggedUserStore {
           resolve(pos.coords)
         },
         err => { reject(err) },
-        { enableHighAccuracy: false, timeout: 10000 }
+        { enableHighAccuracy: true, timeout: 10000 }
       )
     });
   }

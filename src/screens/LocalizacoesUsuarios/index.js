@@ -3,12 +3,10 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-  Dimensions
 } from 'react-native'
 
 import {
   CoordinatorLayout,
-  MergedAppBarLayout
 } from 'react-native-bottom-sheet-behavior'
 
 import MapBottomSheet from '@/components/LocalizacoesUsuarios/MapBottomSheet'
@@ -18,14 +16,11 @@ import firebase from 'react-native-firebase'
 import { withNavigation } from 'react-navigation'
 
 import AppMapView from '@/components/Maps/AppMapView'
-import MapDirections from '@/components/Maps/MapDirections'
 import UserLocationMarker from '@/components/LocalizacoesUsuarios/UserLocationMarker'
 import DestinationMapMarker from '@/components/Maps/DestinationMapMarker'
 import TogglableFloatButton from '@/components/LocalizacoesUsuarios/TogglableFloatButton'
 
-import BackButton from '@/components/BackButton'
 import colors from '@/resources/colors'
-import fonts from '@/resources/fonts'
 
 import { inject, observer } from 'mobx-react/native'
 import { toJS } from 'mobx'
@@ -33,12 +28,8 @@ import { toJS } from 'mobx'
 import LoggedUserStore from '@/store/LoggedUserStore'
 
 import { LocationListener } from '@/modules'
-import { MapView, Polyline } from 'react-native-maps';
 
-import {
-  Text,
-  FAB
-} from 'react-native-paper'
+import { Snackbar } from 'react-native-paper'
 
 @inject('EventsStore')
 class LocalizacoesUsuarios extends Component {
@@ -54,7 +45,11 @@ class LocalizacoesUsuarios extends Component {
       infoEvento: {},
       directionResult: {},
       transportMode: "DRIVING",
-      participants: []
+      participants: [],
+      snackbar: {
+        visible: false,
+        message: "HelloWorld"
+      }
     }
   }
 
@@ -92,19 +87,79 @@ class LocalizacoesUsuarios extends Component {
     }
   }
 
+  watchEventActions(eventID) {
+    firebase.firestore()
+      .collection('events')
+      .doc(eventID)
+      .onSnapshot(async snap => {
+        const oldParticipants = this.state.infoEvento.participants,
+          newParticipants = snap.data().participants;
+
+        for (let userID in newParticipants) {
+          let inviteState = newParticipants[userID];
+          if (inviteState != oldParticipants[userID]) {
+            if (inviteState == true) {
+              const { EventsStore } = this.props;
+
+              let participantData = await EventsStore.getParticipantData(userID, this.eventID);
+
+              this.setState({
+                participants: [
+                  ...this.state.participants,
+                  participantData
+                ]
+              })
+
+              this.watchParticipant(participantData)
+
+              this.showSnackbar(participantData.name + " aceitou o convite!");
+            }
+          }
+        }
+
+      })
+  }
+
+  watchParticipant(participant) {
+    usersRef = firebase.firestore().collection('users');
+    let watch = usersRef
+      .doc(participant.uid)
+      .onSnapshot(snap => {
+
+        const {
+          latitude,
+          longitude
+        } = snap.data().lastLocation
+
+        if (this.mapMarkers[snap.id]) {
+          this.mapMarkers[snap.id].update({
+            latitude,
+            longitude
+          })
+        }
+      })
+  }
+
   async componentDidMount() {
     this.watchLocations = []
 
     // Pega a ID do Evento
-    const eventID = this.props.navigation.getParam('eventID') || "LnY6MUHa2bsbx03TlrLI";
+    const eventID = this.props.navigation.getParam('eventID');
+
+    this.eventID = eventID;
 
     // Inicia o Service de Localizaçãp
     LocationListener.startService()
 
     // Pega as Informações do Evento
     const { EventsStore } = this.props;
-    let infoEvento = toJS(EventsStore.acceptedEvents).find(event => event.id == eventID)
+
+    await EventsStore.refreshEventData(eventID);
+
+    infoEvento = toJS(EventsStore.acceptedEvents).find(event => event.id == eventID)
     this.setState({ infoEvento })
+
+    this.watchEventActions(eventID);
 
     // Pega os Participantes do Evento
     let participants = await EventsStore.getEventParticipants(eventID)
@@ -114,24 +169,8 @@ class LocalizacoesUsuarios extends Component {
     this.FABSeeAllMarkers.show(1000)
 
     // Pega em Tempo Real a Localização de cada participante
-    const usersRef = firebase.firestore().collection('users');
     participants.forEach(async participant => {
-      let watch = usersRef
-        .doc(participant.uid)
-        .onSnapshot(snap => {
-
-          const {
-            latitude,
-            longitude
-          } = snap.data().lastLocation
-
-          if (this.mapMarkers[snap.id]) {
-            this.mapMarkers[snap.id].update({
-              latitude,
-              longitude
-            })
-          }
-        })
+      this.watchParticipant(participant)
     })
 
     this.setState({ participants })
@@ -141,6 +180,20 @@ class LocalizacoesUsuarios extends Component {
         loading: false
       })
     }, 500)
+
+    setTimeout(() => {
+      this.fitAllMarkers();
+    }, 2000)
+
+  }
+
+  showSnackbar(message){
+    this.setState({
+      snackbar: {
+        message,
+        visible: true
+      }
+    })
   }
 
   render() {
@@ -214,6 +267,7 @@ class LocalizacoesUsuarios extends Component {
 
     return (
       <View style={{ flex: 1 }}>
+
         <CoordinatorLayout style={{ flex: 1 }}>
           {getMap()}
           <MapBottomSheet
@@ -237,6 +291,21 @@ class LocalizacoesUsuarios extends Component {
             ref => this.FABSeeAllMarkers = ref
           }
         />
+        <View style={{
+          position: 'absolute',
+          width: '100%',
+          height: 70,
+          top: 0
+        }}>
+          <Snackbar
+            visible={this.state.snackbar.visible}
+            onDismiss={() => this.setState({ snackbar: { visible: false } })}
+          >
+            {this.state.snackbar.message}
+          </Snackbar>
+
+        </View>
+        
       </View>
     )
   }
@@ -254,5 +323,8 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 200
+  },
+  snackbarStyle: {
+
   }
 })

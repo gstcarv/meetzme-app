@@ -5245,6 +5245,13 @@ react-native-snackbar@^0.5.3:
   resolved "https://registry.yarnpkg.com/react-native-snackbar/-/react-native-snackbar-0.5.3.tgz#deabb9ab5bc9eb79a162b46b79ad4d0bf1409c3d"
   integrity sha512-qgMTv4GXZ1yAcqyuWr+KQ68mv7n3GY49hW2oTf0uaFuV5SuUw4wA+ERqwFSxtM4dE7+1TnW9Ivsc7EpHdSPpGw==
 
+react-native-spinkit@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-spinkit/-/react-native-spinkit-1.4.1.tgz#348e8b72b68741abdabe43fc14a9d69cd6a606de"
+  integrity sha512-lidKv4bnKzVOB+es2BwBGr/giLN6anMg6fOnI4FGPsJp2g6PqFYAbaGNZFDU82toINjQ476Q8qvFss2DHy4npg==
+  dependencies:
+    prop-types "^15.5.8"
+
 react-native-splash-screen@3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.0.6.tgz#c0bbf2c8ae40a313c4c7044f55e569414ff68332"

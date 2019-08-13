@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import {
-  Text,
   StyleSheet,
   View,
-  ImageBackground,
-  AsyncStorage,
   Image
 } from 'react-native'
 

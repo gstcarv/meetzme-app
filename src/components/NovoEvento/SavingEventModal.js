@@ -11,7 +11,7 @@ import {
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
 
-export default class LoadingModal extends Component {
+export default class SavingEventModal extends Component {
   render() {
     return (
       <Modal animationType="slide"

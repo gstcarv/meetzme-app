@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
-  BackHandler
+  BackHandler,
+  SafeAreaView
 } from 'react-native'
 
 import {

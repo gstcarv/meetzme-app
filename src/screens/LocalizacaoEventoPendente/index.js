@@ -69,8 +69,8 @@ class LocalizacaoEventoPendente extends Component {
 
     this.mapview.map.fitToCoordinates(result.coordinates, {
       edgePadding: {
-        left: 100,
-        right: 100,
+        left: 50,
+        right: 50,
         top: 200,
         bottom: 1000
       }

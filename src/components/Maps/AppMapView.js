@@ -3,6 +3,8 @@ import { AsyncStorage, StyleSheet } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import Snackbar from 'react-native-snackbar'
 
+import LoggedUserStore from '@/store/LoggedUserStore';
+
 export default class AppMapView extends Component {
 
   constructor() {
@@ -25,28 +27,26 @@ export default class AppMapView extends Component {
       if(this.props.onPositionLoaded) this.props.onPositionLoaded(this.state.userLocation)
     }
 
-    navigator.geolocation.getCurrentPosition(
-      async pos => {
-        if (!this.isUnmounted) {
-          this.setState({
-            userLocation: pos.coords,
-          })
-          if(this.props.onPositionLoaded) this.props.onPositionLoaded(this.state.userLocation)
-          await AsyncStorage.setItem("USER_LAST_LOCATION", JSON.stringify(pos.coords));
-        }
-      },
-      async err => {
-        if (!this.isUnmounted) {
-          Snackbar.show({
-            title: 'Ocorreu um erro ao determinar sua localização atual',
-            duration: Snackbar.LENGTH_LONG,
-            backgroundColor: '#b71b25'
-          })
-          if(this.props.onPositionLoaded) this.props.onPositionLoaded(this.state.userLocation)
-        }
-      },
-      { enableHighAccuracy: false, timeout: 10000}
-    )
+    LoggedUserStore.getLocation()
+    .then(async coords => {
+      if (!this.isUnmounted) {
+        this.setState({
+          userLocation: coords,
+        })
+        if(this.props.onPositionLoaded) this.props.onPositionLoaded(this.state.userLocation)
+        await AsyncStorage.setItem("USER_LAST_LOCATION", JSON.stringify(coords));
+      }
+    })
+    .catch(err => {
+      if (!this.isUnmounted) {
+        Snackbar.show({
+          title: 'Ocorreu um erro ao determinar sua localização atual',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#b71b25'
+        })
+        if(this.props.onPositionLoaded) this.props.onPositionLoaded(this.state.userLocation)
+      }
+    })
   }
 
   componentWillUnmount() {
@@ -73,7 +73,7 @@ export default class AppMapView extends Component {
 
     return (
       <MapView style={[styles.mapview, this.props.style]}
-        region={userRegion}
+        // region={userRegion}
         provider={PROVIDER_GOOGLE}
         showsMyLocationButton={false}
         showsCompass={false}

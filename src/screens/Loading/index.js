@@ -5,7 +5,8 @@ import {
   StatusBar,
   Image,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  Animated
 } from 'react-native'
 
 import Permissions from 'react-native-permissions'
@@ -18,12 +19,15 @@ import firebase from 'react-native-firebase'
 import { inject, observer } from 'mobx-react/native'
 import { toJS } from 'mobx'
 
+import LoadingSpinner from 'react-native-spinkit'
+
 @inject('ContactsStore')
 @inject('EventsStore')
 @inject('LoggedUserStore')
 @inject('NotificationsStore')
 @observer
 class Principal extends Component {
+
   componentDidMount() {
     const { navigate } = this.props.navigation;
     const {
@@ -92,7 +96,7 @@ class Principal extends Component {
           isWatchingEvents = true
         }
 
-        if(locationPermission != "authorized"){
+        if (locationPermission != "authorized") {
           navigate('PermissaoLocalizacao');
         } else {
           LoggedUserStore.getAndSendLocation()
@@ -102,10 +106,42 @@ class Principal extends Component {
         navigate('Principal');
       }
     })
+
+    const animationDuration = 1000,
+      animatedBounciness = 20;
+
+    Animated.spring(
+      this.imageTransform.scale,
+      {
+        toValue: 1,
+        duration: animationDuration,
+        useNativeDriver: true,
+        bounciness: animatedBounciness
+      }
+    ).start();
+
+    Animated.spring(
+      this.imageTransform.translate,
+      {
+        toValue: 0,
+        duration: animationDuration,
+        useNativeDriver: true,
+        bounciness: animatedBounciness
+      }
+    ).start();
+
   }
 
   componentWillUnmount() {
     this.unsubscribe();
+  }
+
+  constructor() {
+    super()
+    this.imageTransform = {
+      scale: new Animated.Value(1.342),
+      translate: new Animated.Value(16)
+    }
   }
 
   render() {
@@ -114,11 +150,27 @@ class Principal extends Component {
         <StatusBar backgroundColor={colors.primaryDark}
           animated />
         <View style={{ alignItems: 'center' }}>
-          <Image source={require("@assets/images/logo_gray.png")}
-            style={{ width: 150, height: 150 }}></Image>
+          <Animated.Image
+            source={require("@assets/images/logo_gray.png")}
+            style={[
+              styles.imageStyle,
+              {
+                transform: [
+                  { scaleX: this.imageTransform.scale },
+                  { scaleY: this.imageTransform.scale },
+                  { translateY: this.imageTransform.translate }
+                ]
+              }
+            ]}
+          />
         </View>
         <View>
-          <ActivityIndicator size="large" color="white" style={styles.loader} />
+          <LoadingSpinner
+            style={styles.loaderStyle}
+            isVisible={true}
+            size={45}
+            type={"WanderingCubes"}
+            color={"#ffffff"} />
         </View>
       </View>
     )
@@ -132,9 +184,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.primaryDark
   },
-  loader: {
+  loaderStyle: {
     marginTop: 30
-  }
+  },
+  imageStyle: {
+    width: 150, height: 150
+  },
 })
 
 export default withNavigation(Principal)

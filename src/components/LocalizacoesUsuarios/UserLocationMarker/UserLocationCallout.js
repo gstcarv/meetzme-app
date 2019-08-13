@@ -77,7 +77,7 @@ export default class UserLocationCallout extends Component {
         formattedDuration = formattedDuration.replace(':', "h")
       } else {
         formattedDuration = moment.utc(duration.value * 1000).format('mm');
-        formattedDuration.toUpperCase()
+        formattedDuration += "MIN";
       }
 
       this.setState({

@@ -22,7 +22,7 @@ import {
   StackActions
 } from 'react-navigation'
 
-import LoadingModal from '@/components/NovoEvento/LoadingModal'
+import SavingEventModal from '@/components/NovoEvento/SavingEventModal'
 import BackBar from '@/components/BackBar'
 import ConvidadosSearchField from '@/components/NovoEvento/ConvidadosSearchField'
 import ConvidadosListRow from '@/components/NovoEvento/ConvidadosListRow'
@@ -190,7 +190,7 @@ class SelecionarConvidados extends Component {
           />
         </Animated.View>
 
-        <LoadingModal visible={this.state.loading} />
+        <SavingEventModal visible={this.state.loading} />
 
       </View>
     )

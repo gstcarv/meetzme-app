@@ -11,7 +11,6 @@ import LoggedUserStore from './LoggedUserStore'
 
 const firestoreRef = firebase.firestore();
 
-
 class EventsStore {
 
   @observable acceptedEvents = []
@@ -19,7 +18,7 @@ class EventsStore {
   @observable eventsID = []
   @observable lastUserCreatedEvent = "2D4yNTHxb4tNEI2S5ZYa"
 
-  @action clearLastUserCreatedEvent(){
+  @action clearLastUserCreatedEvent() {
     this.lastUserCreatedEvent = null
   }
 
@@ -39,7 +38,7 @@ class EventsStore {
     })
   }
 
-  getByID(id){
+  getByID(id) {
     return this.acceptedEvents.find(ev => ev.id == id)
   }
 
@@ -61,7 +60,7 @@ class EventsStore {
             // Adiciona no Store de Eventos Pendentes
             let eventExists = this.pendingEvents.some(event => event.id == doc.id);
             if (!eventExists) {
-              if(doc.data().endTrackingDatetime > now){
+              if (doc.data().endTrackingDatetime > now) {
                 this.pendingEvents.unshift({
                   id: doc.id,
                   ...doc.data()
@@ -79,6 +78,19 @@ class EventsStore {
 
         })
       })
+  }
+
+  async refreshEventData(eventID) {
+    let eventData = await firestoreRef
+      .collection('events')
+      .doc(eventID)
+      .get();
+
+    let oldEventIndex = this.acceptedEvents.findIndex(event => event.id == eventID)
+    this.acceptedEvents[oldEventIndex] = {
+      id: eventID,
+      ...eventData.data()
+    };
   }
 
   @action sortPendingEvents() {
@@ -121,7 +133,7 @@ class EventsStore {
     // Adiciona no Store
     acceptedEvents.forEach(event => {
       if (!this.eventsID.includes(event.id)) {
-        if(event.data().endTrackingDatetime > now){
+        if (event.data().endTrackingDatetime > now) {
           this.eventsID.push(event.id)
           this.acceptedEvents.push({
             id: event.id,
@@ -144,26 +156,29 @@ class EventsStore {
     for (let invitedUser in invites) {
       let inviteState = invites[invitedUser];
       if (inviteState == true) {
-
-        const userRef = firestoreRef
-          .collection('users')
-          .doc(invitedUser)
-
-        let user = await userRef.get();
-
-        let participantEventInfo = await userRef
-          .collection('acceptedEvents')
-          .doc(eventID)
-          .get();
-
-        users.push({
-          uid: user.id,
-          ...user.data(),
-          ...participantEventInfo.data()
-        })
+        users.push(await this.getParticipantData(invitedUser, eventID))
       }
     }
     return users;
+  }
+
+  async getParticipantData(userID, eventID) {
+    const userRef = firestoreRef
+      .collection('users')
+      .doc(userID)
+
+    let user = await userRef.get();
+
+    let participantEventInfo = await userRef
+      .collection('acceptedEvents')
+      .doc(eventID)
+      .get();
+
+    return {
+      uid: user.id,
+      ...user.data(),
+      ...participantEventInfo.data()
+    }
   }
 
   @computed
