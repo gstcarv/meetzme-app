@@ -1,8 +1,14 @@
+import React from 'react'
+
 import {
   createAppContainer,
   createSwitchNavigator,
   createStackNavigator
 } from 'react-navigation'
+
+
+import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
+import { Transition } from 'react-native-reanimated';
 
 import {
   fromRight
@@ -22,7 +28,7 @@ const LoadingScreen = createStackNavigator({
   transitionConfig: () => fromRight() 
 })
 
-const Routes = createSwitchNavigator(
+const Routes = createAnimatedSwitchNavigator(
   {
     Guest,
     Logged: Logged,
@@ -30,7 +36,16 @@ const Routes = createSwitchNavigator(
   },
   {
     initialRouteName: 'Loading',
-    headerMode: 'none',
+    headerMode: 'none',transition: (
+      <Transition.Together>
+        <Transition.Out
+          type="slide-bottom"
+          durationMs={400}
+          interpolation="easeInOut"
+        />
+        <Transition.In type="fade" durationMs={500} />
+      </Transition.Together>
+    ),
   }
 )
 
