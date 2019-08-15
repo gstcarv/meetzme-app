@@ -46,7 +46,7 @@ class Aceitos extends Component {
   goToEvent(eventID) {
     let event = this.props.EventsStore.getByID(eventID);
 
-    if(new Date(Date.now()) >= event.initTrackingDatetime){
+    if (new Date(Date.now()) >= event.initTrackingDatetime) {
       this.props.navigation.navigate('LocalizacoesUsuarios', { eventID })
     } else {
       this.refs.eventBottomSheet.open(eventID, true);
@@ -58,14 +58,15 @@ class Aceitos extends Component {
     const { EventsStore } = this.props
 
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollView style={styles.container}
-          overScrollMode="always"
-          ref={ref => this.eventsScrollView = ref}
-        >
+      <View style={styles.container}>
 
-          {
-            EventsStore.acceptedEvents.length > 0 &&
+        {
+          EventsStore.acceptedEvents.length > 0 &&
+
+          <ScrollView style={styles.scrollViewContainer}
+            overScrollMode="always"
+            ref={ref => this.eventsScrollView = ref}
+          >
 
             <View>
               <SearchField
@@ -88,22 +89,26 @@ class Aceitos extends Component {
                 style={{ marginBottom: 40 }}
               />
             </View>
-          }
+          </ScrollView>
+        }
 
-          {
-            EventsStore.acceptedEvents.length == 0 &&
+        {
+          EventsStore.acceptedEvents.length > 0 &&
+          <EventInfoBottomSheet
+            ref="eventBottomSheet"
+          />
+        }
 
-            <View style={styles.emptyContainer}>
-              <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
-              <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
-              <Line spaceVertical={15} />
-            </View>
-          }
+        {
+          EventsStore.acceptedEvents.length == 0 &&
 
-        </ScrollView>
-        <EventInfoBottomSheet
-          ref="eventBottomSheet"
-        />
+          <View style={styles.emptyContainer}>
+            <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
+            <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
+            <Line spaceVertical={15} />
+          </View>
+        }
+
       </View>
     )
   }
@@ -114,14 +119,16 @@ export default withNavigation(Aceitos)
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F9FAFC",
-    padding: 20,
     flex: 1,
+    padding: 20
+  },
+  scrollViewContainer: {
+    flex: 1
   },
   emptyContainer: {
     flex: 1,
-    marginTop: 20,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   emptyText: {
     fontFamily: fonts.primary,

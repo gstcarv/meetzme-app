@@ -59,37 +59,51 @@ class Pendentes extends Component {
     const { EventsStore } = this.props
 
     return (
-      <ScrollView
-        style={styles.container}
-        overScrollMode="always">
+      <View style={styles.container}>
 
         {
+
           EventsStore.pendingEvents.length > 0 &&
 
-          <SearchField
-            placeholder="Digite o nome do Evento"
-            onChangeText={searchText => this.setState({ searchText })}
-          />
+          <ScrollView
+            style={styles.scrollViewContainer}
+            overScrollMode="always">
 
-        }
 
-        <View style={styles.eventosContainer}>
+            <SearchField
+              placeholder="Digite o nome do Evento"
+              onChangeText={searchText => this.setState({ searchText })}
+            />
 
-          <FlatList
-            data={toJS(EventsStore.searchPendingEvents(this.state.searchText))}
-            renderItem={({ item }) => (
-              <PendingEventCard
-                eventData={item}
-                onPress={() => this.openEventSheet(item.id)} />
-            )}
-            keyExtractor={(convite) => convite.id}
-            numColumns={2}
-          />
-        </View>
+            <View style={styles.eventosContainer}>
 
-        {
-          EventsStore.pendingEvents.length > 0 &&
-          <Line spaceVertical={15} />
+              <FlatList
+                data={toJS(EventsStore.searchPendingEvents(this.state.searchText))}
+                renderItem={({ item }) => (
+                  <PendingEventCard
+                    eventData={item}
+                    onPress={() => this.openEventSheet(item.id)} />
+                )}
+                keyExtractor={(convite) => convite.id}
+                numColumns={2}
+              />
+            </View>
+
+            {
+              EventsStore.pendingEvents.length > 0 &&
+              <Line spaceVertical={15} />
+            }
+
+
+            <EventInfoBottomSheet
+              ref="eventBottomSheet"
+              onNext={(infoEvento) => {
+                this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })
+              }}
+              onRecuse={this._onRecuseEvent.bind(this)}
+            />
+
+          </ScrollView>
         }
 
         {
@@ -102,16 +116,7 @@ class Pendentes extends Component {
           </View>
         }
 
-
-        <EventInfoBottomSheet
-          ref="eventBottomSheet"
-          onNext={(infoEvento) => {
-            this.props.navigation.navigate('LocalizacaoEventoPendente', { infoEvento })
-          }}
-          onRecuse={this._onRecuseEvent.bind(this)}
-        />
-
-      </ScrollView>
+      </View>
     )
   }
 }
@@ -121,9 +126,12 @@ export default withNavigation(Pendentes)
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F9FAFC",
-    paddingHorizontal: 20,
+    flex: 1,
     paddingTop: 20,
-    flex: 1
+    paddingHorizontal: 20
+  },
+  scrollViewContainer: {
+    flex: 1,
   },
   eventosContainer: {
     flex: 1,
@@ -132,7 +140,6 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     flex: 1,
-    marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center'
   },
