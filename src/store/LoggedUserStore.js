@@ -5,6 +5,8 @@ import {
 
 import firebase, { firestore } from 'react-native-firebase'
 
+import Geolocation from 'react-native-geolocation-service';
+
 import { AsyncStorage } from 'react-native'
 
 class LoggedUserStore {
@@ -112,13 +114,13 @@ class LoggedUserStore {
 
   async getLocation() {
     return new Promise(function (resolve, reject) {
-      navigator.geolocation.getCurrentPosition(
+      Geolocation.getCurrentPosition(
         async pos => {
           this.lastLocation = pos.coords;
           resolve(pos.coords)
         },
         err => { reject(err) },
-        { enableHighAccuracy: true, timeout: 10000 }
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       )
     });
   }

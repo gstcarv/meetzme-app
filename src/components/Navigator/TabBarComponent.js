@@ -7,7 +7,7 @@ import {
   Easing,
   TouchableNativeFeedback,
   Text
-} from "react-native";
+} from "react-native";  
 
 import { TouchableRipple } from 'react-native-paper'
 
@@ -17,6 +17,8 @@ import fonts from '@/resources/fonts'
 import ToolbarTitle from '@/store/ToolbarTitle'
 
 import EventBus from 'eventing-bus';
+
+// import { withNavigation } from 'react-navigation'
 
 export default class TabBarComponent extends React.Component {
 
@@ -33,12 +35,7 @@ export default class TabBarComponent extends React.Component {
   }
 
   componentWillMount() {
-    EventBus.on('moveLineToEventTab', () => {
-      if(this.state.atualRouteIndex != 1){
-        this.setState({ atualRouteIndex: 1 })
-        this.moveLine.bind(this)
-      }
-    })
+   
   }
 
   moveLine() {

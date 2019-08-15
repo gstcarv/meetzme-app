@@ -3,6 +3,7 @@ package com.meetzme;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.react.rnspinkit.RNSpinkitPackage;
 import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;
 import com.rnnestedscrollview.RNNestedScrollViewPackage;
@@ -42,6 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFusedLocationPackage(),
             new RNSpinkitPackage(),
             new RNAndroidLocationEnablerPackage(),
             new RNNestedScrollViewPackage(),
