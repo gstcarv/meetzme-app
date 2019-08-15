@@ -23,6 +23,8 @@ import firebase from 'react-native-firebase'
 import STRINGS from '@/resources/strings'
 import COLORS from '@/resources/colors'
 
+import EventBus from 'eventing-bus'
+
 export default class App extends Component {
 
   createNotificationChannels() {
@@ -132,7 +134,11 @@ export default class App extends Component {
           LoggedUserStore={LoggedUserStore}
           EventsStore={EventsStore}
           NotificationsStore={NotificationsStore}>
-          <NavigationStack />
+          <NavigationStack 
+            onNavigationStateChange={() => {
+              EventBus.publish("bindTabLine");
+            }}
+          />
         </MobxProvider>
       </PaperProvider>
     )

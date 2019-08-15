@@ -55,7 +55,7 @@ export default class AppMapView extends Component {
 
   render() {
 
-    this.userRegion = {
+    this.cameraRegion = {
       center: {
         latitude: this.state.userLocation.latitude,
         longitude: this.state.userLocation.longitude,
@@ -77,7 +77,7 @@ export default class AppMapView extends Component {
 
     return (
       <MapView style={[styles.mapview, this.props.style]}
-        camera={this.userRegion}
+        camera={this.cameraRegion}
         provider={PROVIDER_GOOGLE}
         showsMyLocationButton={false}
         showsCompass={false}

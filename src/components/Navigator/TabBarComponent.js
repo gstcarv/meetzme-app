@@ -7,7 +7,7 @@ import {
   Easing,
   TouchableNativeFeedback,
   Text
-} from "react-native";  
+} from "react-native";
 
 import { TouchableRipple } from 'react-native-paper'
 
@@ -18,9 +18,9 @@ import ToolbarTitle from '@/store/ToolbarTitle'
 
 import EventBus from 'eventing-bus';
 
-// import { withNavigation } from 'react-navigation'
+import { withNavigation } from 'react-navigation'
 
-export default class TabBarComponent extends React.Component {
+class TabBarComponent extends React.Component {
 
   index = 0
 
@@ -34,8 +34,17 @@ export default class TabBarComponent extends React.Component {
     this.routeButtonsPositions = []
   }
 
-  componentWillMount() {
-   
+  componentDidMount() {
+    // Move a linha da tabbar quando a rota é alterada de modo indireto (sem clicar nas tabs)
+    EventBus.on('bindTabLine', _ => {
+      const tabIndex = this.props.navigation.state.index;
+      if(tabIndex != this.state.atualRouteIndex){
+        this.setState({
+          atualRouteIndex: tabIndex ? tabIndex : 0
+        })
+        this.moveLine();
+      }
+    })
   }
 
   moveLine() {
@@ -128,6 +137,8 @@ export default class TabBarComponent extends React.Component {
     );
   }
 }
+
+export default withNavigation(TabBarComponent)
 
 const styles = StyleSheet.create({
   container: {
