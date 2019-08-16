@@ -22,7 +22,7 @@ import TogglableFloatButton from '@/components/LocalizacoesUsuarios/TogglableFlo
 
 import colors from '@/resources/colors'
 
-import { inject, observer } from 'mobx-react/native'
+import { inject } from 'mobx-react/native'
 import { toJS } from 'mobx'
 
 import LoggedUserStore from '@/store/LoggedUserStore'
@@ -92,7 +92,7 @@ class LocalizacoesUsuarios extends Component {
       .collection('events')
       .doc(eventID)
       .onSnapshot(async snap => {
-        const oldParticipants = this.state.infoEvento.participants,
+        const oldParticipants = this.state.participants,
           newParticipants = snap.data().participants;
 
         for (let userID in newParticipants) {
