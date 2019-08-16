@@ -92,7 +92,7 @@ class LocalizacoesUsuarios extends Component {
       .collection('events')
       .doc(eventID)
       .onSnapshot(async snap => {
-        const oldParticipants = this.state.participants,
+        const oldParticipants = this.state.infoEvento.participants,
           newParticipants = snap.data().participants;
 
         for (let userID in newParticipants) {
