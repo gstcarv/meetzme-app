@@ -60,6 +60,7 @@ export default class AppMapView extends Component {
         latitude: this.state.userLocation.latitude,
         longitude: this.state.userLocation.longitude,
       },
+      altitude: 5,
       pitch: 3,
       heading: 5,
       zoom: 14,

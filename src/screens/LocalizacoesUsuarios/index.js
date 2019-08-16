@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
+  StatusBar
 } from 'react-native'
 
 import {
@@ -267,7 +268,6 @@ class LocalizacoesUsuarios extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-
         <CoordinatorLayout style={{ flex: 1 }}>
           {getMap()}
           <MapBottomSheet
