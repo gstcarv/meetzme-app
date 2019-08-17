@@ -25,7 +25,19 @@ import COLORS from '@/resources/colors'
 
 import EventBus from 'eventing-bus'
 
+import moment from 'moment'
+import momentPTBR from 'moment/src/locale/pt-br';
+
 export default class App extends Component {
+
+  prepareLocale(locale) {
+    for (const key in locale) {
+      if (locale.hasOwnProperty(key)) {
+        locale[key.substring(1)] = locale[key];
+      }
+    }
+    return locale;
+  }
 
   createNotificationChannels() {
     // Criando o Canal de Notificação para Eventos
@@ -47,6 +59,8 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
+
+    moment.defineLocale('pt-br', this.prepareLocale(momentPTBR));
 
     // Pedir Permissão para ativar GPS
     RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})

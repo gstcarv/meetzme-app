@@ -2270,7 +2270,7 @@ fbjs-scripts@^1.0.0:
     semver "^5.1.0"
     through2 "^2.0.0"
 
-fbjs@^0.8.0, fbjs@^0.8.9:
+fbjs@^0.8.0, fbjs@^0.8.4, fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -5053,6 +5053,14 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-addons-shallow-compare@15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
+  integrity sha1-GYoAuR/DdiPbZKKP0XtZa6NicC8=
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
+
 react-clone-referenced-element@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-clone-referenced-element/-/react-clone-referenced-element-1.1.0.tgz#9cdda7f2aeb54fea791f3ab8c6ab96c7a77d0158"
@@ -5271,6 +5279,14 @@ react-native-snackbar@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/react-native-snackbar/-/react-native-snackbar-0.5.3.tgz#deabb9ab5bc9eb79a162b46b79ad4d0bf1409c3d"
   integrity sha512-qgMTv4GXZ1yAcqyuWr+KQ68mv7n3GY49hW2oTf0uaFuV5SuUw4wA+ERqwFSxtM4dE7+1TnW9Ivsc7EpHdSPpGw==
+
+react-native-snap-carousel@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-snap-carousel/-/react-native-snap-carousel-3.8.0.tgz#9372222d61d37d0a8a3bec423d135d0caa1b7595"
+  integrity sha512-YtDZLv2Di77HfnH4yf+NyyYyISPNjrnjXDQLrzOkG9kkSlho/BROgHLQKGRLg3C2YSUMArFOePrb9CH3yeV5FA==
+  dependencies:
+    prop-types "^15.6.1"
+    react-addons-shallow-compare "15.6.2"
 
 react-native-spinkit@^1.4.1:
   version "1.4.1"

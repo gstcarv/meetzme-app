@@ -5,8 +5,7 @@ import {
   View,
   ScrollView,
   RefreshControl,
-  FlatList,
-  Dimensions
+  FlatList
 } from 'react-native'
 
 import TimelineEvent from '@/components/Eventos/TimelineEvent'
@@ -29,15 +28,9 @@ import {
 
 import { toJS } from 'mobx'
 
-import Carousel from 'react-native-snap-carousel';
+import EventBus from 'eventing-bus'
 
 import EventInfoBottomSheet from '@/components/Eventos/EventInfoBottomSheet';
-import EventCard from '@/components/Eventos/EventCard';
-
-const { 
-  width: screenWidth, 
-  height: screenHeight 
-} = Dimensions.get('window');
 
 @inject('EventsStore')
 @observer
@@ -64,51 +57,51 @@ class Aceitos extends Component {
 
     const { EventsStore } = this.props
 
-    var hasEvent = EventsStore.acceptedEvents.length > 0;
-
     return (
       <View style={styles.container}>
 
         {
-          hasEvent &&
-          <Carousel
-            ref={ref => this.eventsSlider = ref}
-            data={toJS(EventsStore.acceptedEvents)}
-            renderItem={({ item }) => (
-              <EventCard
-                eventData={item}
-                onPress={this.goToEvent.bind(this)}
+          EventsStore.acceptedEvents.length > 0 &&
+
+          <ScrollView style={styles.scrollViewContainer}
+            overScrollMode="always"
+            ref={ref => this.eventsScrollView = ref}
+          >
+
+            <View>
+              <SearchField
+                placeholder="Digite o nome do Evento"
+                onChangeText={searchText => this.setState({ searchText })}
               />
-            )}
-            sliderWidth={screenWidth}
-            itemWidth={screenWidth - 10}
-            layout={'stack'} layoutCardOffset={20}
-            slideStyle={{ 
-              justifyContent: 'center',
-              alignItems: 'center',
-              overflow: 'visible',
-              paddingVertical: 15,
-              paddingHorizontal: 25,
-            }}
-            firstItem={EventsStore.acceptedEvents.length - 1}
-            activeAnimationType={'spring'}
-          />
+
+              <FlatList
+                data={toJS(EventsStore.searchAcceptedEvents(this.state.searchText))}
+                keyExtractor={item => item.id}
+                renderItem={
+                  ({ item, index }) => (
+                    <TimelineEvent
+                      eventData={item}
+                      rowIndex={index}
+                      onPress={this.goToEvent.bind(this)}
+                    />
+                  )
+                }
+                style={{ marginBottom: 40 }}
+              />
+            </View>
+          </ScrollView>
         }
 
         {
-          // hasEvent &&
-          
-        }
-
-        {
-          hasEvent &&
+          EventsStore.acceptedEvents.length > 0 &&
           <EventInfoBottomSheet
             ref="eventBottomSheet"
           />
         }
 
         {
-          !hasEvent &&
+          EventsStore.acceptedEvents.length == 0 &&
+
           <View style={styles.emptyContainer}>
             <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
             <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
@@ -127,8 +120,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#F9FAFC",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20
   },
   scrollViewContainer: {
     flex: 1
