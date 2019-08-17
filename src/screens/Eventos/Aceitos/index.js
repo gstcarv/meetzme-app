@@ -29,14 +29,14 @@ import {
 
 import { toJS } from 'mobx'
 
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import EventInfoBottomSheet from '@/components/Eventos/EventInfoBottomSheet';
 import EventCard from '@/components/Eventos/EventCard';
 
-const { 
-  width: screenWidth, 
-  height: screenHeight 
+const {
+  width: screenWidth,
+  height: screenHeight
 } = Dimensions.get('window');
 
 @inject('EventsStore')
@@ -46,7 +46,7 @@ class Aceitos extends Component {
   constructor(props) {
     super();
     this.state = {
-      searchText: ""
+      eventSliderActiveIndex: props.EventsStore.acceptedEvents.length - 1
     }
   }
 
@@ -81,23 +81,31 @@ class Aceitos extends Component {
               />
             )}
             sliderWidth={screenWidth}
-            itemWidth={screenWidth - 10}
-            layout={'stack'} layoutCardOffset={20}
-            slideStyle={{ 
+            itemWidth={screenWidth - 90}
+            slideStyle={{
               justifyContent: 'center',
               alignItems: 'center',
               overflow: 'visible',
-              paddingVertical: 15,
-              paddingHorizontal: 25,
+              paddingVertical: 5,
             }}
             firstItem={EventsStore.acceptedEvents.length - 1}
             activeAnimationType={'spring'}
+            activeAnimationOptions={{
+              friction: 4,
+              tension: 10
+            }}
           />
         }
 
         {
-          // hasEvent &&
-          
+          hasEvent &&
+          <Pagination
+            dotsLength={EventsStore.acceptedEvents.length}
+            dotColor={'#212121'}
+            inactiveDotColor={"#212121"}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+          />
         }
 
         {

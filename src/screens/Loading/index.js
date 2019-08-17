@@ -168,8 +168,8 @@ class Principal extends Component {
           <LoadingSpinner
             style={styles.loaderStyle}
             isVisible={true}
-            size={45}
-            type={"WanderingCubes"}
+            size={35}
+            type={"Wave"}
             color={"#ffffff"} />
         </View>
       </View>

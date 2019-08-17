@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   View,
   ImageBackground,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from 'react-native'
 
 import fonts from '@/resources/fonts'
@@ -48,13 +49,12 @@ export default class EventCard extends Component {
 
 
     return (
-      <TouchableScale
+      <TouchableOpacity
         style={styles.cardContainer}
         onPress={() => {
           this.props.onPress(id)
         }}
-        rippleColor="rgba(0, 0, 0, .32)"
-        useForeground={true}
+        activeOpacity={0.9}
       >
         <View style={{ flex: 1 }}>
           <ImageBackground source={{ uri: imageURL }}
@@ -93,7 +93,7 @@ export default class EventCard extends Component {
             <Text style={styles.eventDate}>{eventYear}</Text>
           </View>
         </View>
-      </TouchableScale>
+      </TouchableOpacity>
     )
   }
 }
@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     backgroundColor: '#fff',
-    elevation: 10,
-    padding: 4,
+    elevation: 2,
+    padding: 4
   },
   overlay: {
     flex: 1,
@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     position: 'absolute',
-    top: -10,
-    right: -10,
+    top: 5,
+    right: 5,
     width: 80,
     height: 80,
     backgroundColor: 'white',

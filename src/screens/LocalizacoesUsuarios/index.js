@@ -59,7 +59,9 @@ class LocalizacoesUsuarios extends Component {
   }
 
   fitAllMarkers() {
-    this.mapview.map.fitToElements(true)
+    if(this.mapview.map){
+      this.mapview.map.fitToElements(true)
+    }
   }
 
   centerUserMarker() {
