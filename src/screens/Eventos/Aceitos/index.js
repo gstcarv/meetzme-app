@@ -86,9 +86,8 @@ class Aceitos extends Component {
               justifyContent: 'center',
               alignItems: 'center',
               overflow: 'visible',
-              paddingVertical: 5,
+              paddingVertical: 12,
             }}
-            firstItem={EventsStore.acceptedEvents.length - 1}
             activeAnimationType={'spring'}
             activeAnimationOptions={{
               friction: 4,
@@ -105,6 +104,7 @@ class Aceitos extends Component {
             inactiveDotColor={"#212121"}
             inactiveDotOpacity={0.4}
             inactiveDotScale={0.6}
+            activeDotIndex={-1}
           />
         }
 

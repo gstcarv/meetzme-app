@@ -63,7 +63,7 @@ export default class App extends Component {
     moment.defineLocale('pt-br', this.prepareLocale(momentPTBR));
 
     // Pedir Permissão para ativar GPS
-    RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
+    RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({ interval: 10000, fastInterval: 5000 })
       .catch(() => {
         Snackbar.show({
           title: 'Para usar o MeetzMe sem problemas, pedimos que você ative o GPS',
@@ -71,7 +71,7 @@ export default class App extends Component {
           backgroundColor: '#b71b25'
         })
       });
-      
+
     // Evento ao Receber Alterações na Localização
     DeviceEventEmitter.addListener('onLocationChanged', coordinates => {
       LoggedUserStore.sendLocation(coordinates)
@@ -106,9 +106,9 @@ export default class App extends Component {
           .setBody(notification.body)
           .setData(notification.data)
           .android.setAutoCancel(true)
-          .android.setChannelId(notificationChannel) // e.g. the id you chose above
-          .android.setSmallIcon('ic_launcher') // create this icon in Android Studio
-          .android.setColor(COLORS.primaryColor) // you can set a color here
+          .android.setChannelId(notificationChannel)
+          .android.setSmallIcon('ic_notification')
+          .android.setColor(COLORS.primaryColor)
           .android.setPriority(firebase.notifications.Android.Priority.High);
 
         if (notificationChannel == STRINGS.CHANNELS.EVENTS) {
@@ -148,7 +148,7 @@ export default class App extends Component {
           LoggedUserStore={LoggedUserStore}
           EventsStore={EventsStore}
           NotificationsStore={NotificationsStore}>
-          <NavigationStack 
+          <NavigationStack
             onNavigationStateChange={() => {
               EventBus.publish("bindTabLine");
             }}

@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.content.Context;
+import android.graphics.Color;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -102,7 +103,6 @@ public class LocationListenerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         startForeground(1, this.getNotification());
         Log.wtf(TAG, "onStartCommand");
         return START_STICKY;
@@ -113,13 +113,14 @@ public class LocationListenerService extends Service {
 
         String notificationText = "Sua Localização está sendo compartilhada pelo MeetzMe";
 
-        int icon = context.getResources().getIdentifier("ic_launcher", "mipmap", context.getPackageName());
+        int icon = context.getResources().getIdentifier("ic_notification", "drawable", context.getPackageName());
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), Channels.SHARE_LOCATION)
             .setContentTitle("Compartilhando Localização")
             .setContentText(notificationText)
             .setContentInfo("MeetzMe")
             .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText))
             .setSmallIcon(icon)
+            .setColor(Color.parseColor("#353f4b"))
             .build();
         return notification;
     }

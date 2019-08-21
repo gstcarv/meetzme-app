@@ -49,6 +49,14 @@
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyBGgQ68-4tZvO_nGU4BMNUjReZBwx9zzKw"/>
 
+      <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/ic_notification" />
+
+      <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/primary" />
+
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
