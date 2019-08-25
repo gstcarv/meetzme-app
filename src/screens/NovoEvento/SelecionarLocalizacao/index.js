@@ -150,10 +150,10 @@ class SelecionarLocalizacao extends Component {
   _onFitButtonPress() {
     this.mapview.map.fitToCoordinates(this.state.directionResult.coordinates, {
       edgePadding: {
-        left: 35,
-        right: 35,
+        left: 100,
+        right: 100,
         top: 50,
-        bottom: 550
+        bottom: 600
       }
     })
   }

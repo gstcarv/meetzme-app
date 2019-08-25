@@ -32,6 +32,7 @@ import {
   inject,
   observer
 } from 'mobx-react/native'
+import { Button } from '@/components/Forms';
 
 @inject('ContactsStore')
 @inject('EventsStore')
@@ -145,7 +146,12 @@ class SelecionarConvidados extends Component {
           barStyle="dark-content"
           animated />
 
-        <BackBar />
+        <BackBar
+          rightButton="person-add"
+          onRightButtonPressed={() => {
+            this.props.navigation.navigate('Procurar')
+          }}
+        />
 
         <ScrollView style={{ paddingBottom: 55 }}>
           <View style={{
@@ -162,7 +168,12 @@ class SelecionarConvidados extends Component {
               style={{ marginTop: 25 }}
               onChangeText={text => ContactsStore.search(text)}
             />
-            <Text style={{ color: "#ccc" }}>Selecione os Convidados</Text>
+
+            {
+              numContatos > 0 &&
+              <Text style={{ color: "#ccc" }}>Selecione os Convidados</Text>
+            }
+
           </View>
 
           <FlatList
@@ -170,9 +181,33 @@ class SelecionarConvidados extends Component {
             keyExtractor={item => item.id}
             renderItem={
               ({ item, index }) =>
-                <ConvidadosListRow data={item} rowIndex={index} onToggleSelect={this._onToggleUserSelect.bind(this)} />
+                <ConvidadosListRow 
+                  data={item} 
+                  rowIndex={index} 
+                  onToggleSelect={this._onToggleUserSelect.bind(this)}
+                  isActive={this.state.convidados.includes(item.id)}
+                />
             }
           />
+
+
+        {
+          ContactsStore.searchContacts.length == 0 && numContatos > 0 &&
+          <Text style={[defaultStyles.titleWhite, styles.emptyText]}>
+            Não encontrado nenhum contato com esse nome. Escreveu certo?
+          </Text>
+      }
+
+        { 
+          numContatos == 0 &&
+          <View style={styles.noContactsContainer}>
+            <Text style={[defaultStyles.titleWhite, { textAlign: 'center' }]}>Você ainda não tem nenhum contato! Bora adicionar?</Text>
+            <Button mode="contained"
+              style={{ marginTop: 10 }}
+              icon="person-add"
+              onPress={() => this.props.navigation.navigate('Procurar')}>Adicionar Contatos</Button>
+          </View>
+        }
 
         </ScrollView>
 
@@ -202,6 +237,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 15,
     right: 15
+  },
+  noContactsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: { 
+    textAlign: 'center', 
+    margin: 8,
+    fontSize: 20
   }
 })
 

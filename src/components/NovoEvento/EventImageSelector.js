@@ -22,7 +22,14 @@ export default class UserImageSelector extends Component {
         [
           {
             text: "Ok",
-            onPress: () => Permissions.request("storage")
+            onPress: () => {
+              Permissions.request("storage")
+              .then(r => {
+                if(r == 'authorized'){
+                  this.selectImage()
+                }
+              })
+            }
           }
         ]
       );

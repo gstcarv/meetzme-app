@@ -94,7 +94,7 @@ export default class Procurar extends Component {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={colors.primaryDark}
-          animated />
+          animated barStyle="light-content"/>
         <BackBar
           color={colors.primaryDark}
           noElevation
@@ -110,7 +110,7 @@ export default class Procurar extends Component {
 
           this.state.isEmptyText == false &&
           usersLenght > 0 &&
-          <ScrollView style={styles.svContainer}
+          <ScrollView contentContainerStyle={styles.svContainer}
             keyboardShouldPersistTaps="always"
             keyboardDismissMode='on-drag'
             onScroll={() => Keyboard.dismiss()}>
@@ -134,9 +134,6 @@ export default class Procurar extends Component {
                 }
               />
             </View>
-
-            <Line spaceVertical={20} />
-
           </ScrollView>
         }
 

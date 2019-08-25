@@ -16,10 +16,10 @@ import colors from '@/resources/colors'
 
 export default class ConvidadosListRow extends Component {
 
-  constructor(){
+  constructor(props){
     super()
     this.state = {
-      isActive: false
+      isActive: props.isActive || false
     }
   }
 

@@ -19,7 +19,7 @@ class BackBar extends Component {
       <Appbar theme={{
         colors: {
           primary: this.props.color || "#fff",
-        }
+        } 
       }}
         style={{
           elevation: this.props.noElevation ? 0 : 3
@@ -34,6 +34,12 @@ class BackBar extends Component {
             title={this.props.title}
           />
         }
+
+      {
+        this.props.rightButton &&
+        <Appbar.Action icon={this.props.rightButton} onPress={this.props.onRightButtonPressed} 
+              color={defaultStyles.titleWhite.color}/>
+      }
 
       </Appbar>
     )

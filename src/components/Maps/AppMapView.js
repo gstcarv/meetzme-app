@@ -91,8 +91,8 @@ export default class AppMapView extends Component {
         customMapStyle={require("@assets/mapstyle.json")}
         ref={ref => this.map = ref}
         mapPadding={{
-          left: 22,
-          right: 22,
+          // left: 22,
+          // right: 22,
         }}
         toolbarEnabled={false}
         {...this.props}>
