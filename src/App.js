@@ -19,14 +19,18 @@ import NotificationsStore from '@/store/NotificationsStore'
 // Firebase
 import firebase from 'react-native-firebase'
 
-// RESOURCES
+// Resources
 import STRINGS from '@/resources/strings'
 import COLORS from '@/resources/colors'
 
 import EventBus from 'eventing-bus'
 
+// Moment
 import moment from 'moment'
 import momentPTBR from 'moment/src/locale/pt-br';
+
+// Reactotron [DEBUG]
+import Reactotron from 'reactotron-react-native';
 
 export default class App extends Component {
 
@@ -37,6 +41,13 @@ export default class App extends Component {
       }
     }
     return locale;
+  }
+
+  connectReactotron(){
+    console.tron = Reactotron
+      .configure()
+      .useReactNative()
+      .connect()
   }
 
   createNotificationChannels() {
@@ -61,6 +72,7 @@ export default class App extends Component {
   async componentDidMount() {
 
     moment.defineLocale('pt-br', this.prepareLocale(momentPTBR));
+    this.connectReactotron();
 
     // Pedir Permissão para ativar GPS
     RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({ interval: 10000, fastInterval: 5000 })
@@ -82,10 +94,8 @@ export default class App extends Component {
 
     this.createNotificationChannels()
 
-    this.unsubcribscribeLocalNotificationOpened =
-      firebase.notifications().onNotificationOpened(notification => {
-
-      })
+    this.unsubcribscribeLocalNotificationOpened = 
+      firebase.notifications().onNotificationOpened(notification => { })
 
     // Evento ao Receber a Notificação
     this.unsubcribscribeNotificationReceiver =
@@ -134,9 +144,7 @@ export default class App extends Component {
     // Evento ao Receber a Notificação [App Fechado]
     this.unsubcribscribePushNotificationOpened =
       firebase.notifications().getInitialNotification()
-        .then(notification => {
-
-        })
+        .then(notification => { })
 
   }
 
