@@ -34,7 +34,7 @@ import { Snackbar } from 'react-native-paper'
 
 Array.prototype.checkDifferences = function (a) {
   return this.filter(function (i) {
-      return a.indexOf(i) === -1;
+    return a.indexOf(i) === -1;
   });
 };
 
@@ -142,8 +142,8 @@ class LocalizacoesUsuarios extends Component {
           const exitedParticipant = arrOldParticipants.checkDifferences(arrNewParticipants)[0]
 
           // Remove do Mapa
-          const participantData  = this.state.participants.find(user => user.uid == exitedParticipant);
-          
+          const participantData = this.state.participants.find(user => user.uid == exitedParticipant);
+
           this.setState({
             participants: this.state.participants.filter(u => u.uid != exitedParticipant)
           })
@@ -232,6 +232,19 @@ class LocalizacoesUsuarios extends Component {
     })
   }
 
+  _onUserSelection(userData) {
+    const {
+      lastLocation: userLastLocation
+    } = this.state.participants.find(u => u.uid == userData.uid)
+
+    this.mapview.map.animateCamera({
+      center: userLastLocation,
+      pitch: 30,
+      zoom: 15,
+    })
+
+  }
+
   render() {
 
     const {
@@ -252,11 +265,14 @@ class LocalizacoesUsuarios extends Component {
           <AppMapView
             moveOnMarkerPress={true}
             ref={ref => this.mapview = ref}
-            onPositionLoaded={(userLocation) => this.setState({ userLocation })}>
-
+            onPositionLoaded={(userLocation) => this.setState({ userLocation })}
+            mapPadding={{
+              bottom: 70,
+              top: 70
+            }}>
 
             {
-              this.state.participants.map(user => {
+              this.state.participants.map((user, index) => {
                 return (
                   <View>
                     <UserLocationMarker
@@ -267,9 +283,7 @@ class LocalizacoesUsuarios extends Component {
                       image={user.photoURL}
                       key={user.uid}
                       transportMode={user.transportMode}
-                      ref={
-                        ref => this.mapMarkers[user.uid] = ref
-                      }
+                      ref={ ref => this.mapMarkers[user.uid] = ref }
                     />
                   </View>
                 )
@@ -305,10 +319,11 @@ class LocalizacoesUsuarios extends Component {
     return (
       <View style={{ flex: 1 }}>
         <CoordinatorLayout style={{ flex: 1 }}>
-          {getMap()}
+          { getMap() }
           <MapBottomSheet
             eventData={{ info: infoEvento, participants }}
             onStateChange={this._onBottomSheetStateChanged.bind(this)}
+            onUserSelection={(user) => this._onUserSelection(user)}
           />
         </CoordinatorLayout>
         <TogglableFloatButton
@@ -339,9 +354,7 @@ class LocalizacoesUsuarios extends Component {
           >
             {this.state.snackbar.message}
           </Snackbar>
-
         </View>
-
       </View>
     )
   }

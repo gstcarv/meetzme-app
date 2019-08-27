@@ -127,6 +127,7 @@ export default class BottomSheetContent extends Component {
               <ContatoRow
                 data={item}
                 rowIndex={index}
+                onPress={this.props.onUserSelection}
               />
             )
           }

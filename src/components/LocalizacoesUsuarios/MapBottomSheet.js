@@ -83,6 +83,10 @@ class MapBottomSheet extends Component {
                 EventsStore.exitEvent(this.props.eventData.info)
                 this.props.navigation.navigate('EventosAceitos')
               }}
+              onUserSelection={(item) => {
+                this.bottomSheet.setBottomSheetState(4)
+                this.props.onUserSelection(item);
+              }}
             />
           </View>
         </BottomSheetBehavior>
