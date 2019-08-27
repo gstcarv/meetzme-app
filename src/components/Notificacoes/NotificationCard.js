@@ -27,7 +27,7 @@ export default class NotificationCard extends Component {
 
     return (
       <TouchableRipple style={styles.touchableContainer}
-        onPress={() => { }}>
+        onPress={this.props.onPress}>
         <View style={styles.container}>
           <View style={styles.imageContainer}>
             <Image

@@ -87,6 +87,7 @@ class Aceitos extends Component {
               alignItems: 'center',
               overflow: 'visible',
               paddingVertical: 12,
+              paddingBottom: EventsStore.acceptedEvents.length == 1 ? 40 : 12
             }}
             activeAnimationType={'spring'}
             activeAnimationOptions={{
