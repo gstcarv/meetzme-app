@@ -29,11 +29,11 @@ export default class ContatoRow extends Component {
       <View>
         {
           this.props.isFirstFromChar == true &&
-            <View style={styles.alphabeticListIndicator}>
-              <Text style={styles.charStyle}>
-                { name && name.charAt(0).toUpperCase()}
-              </Text>
-            </View>
+          <View style={styles.alphabeticListIndicator}>
+            <Text style={styles.charStyle}>
+              {name && name.charAt(0).toUpperCase()}
+            </Text>
+          </View>
         }
         <TouchableRipple style={styles.rowContainer}
           onPress={() => {
@@ -41,7 +41,7 @@ export default class ContatoRow extends Component {
           }}>
           <View style={styles.contactContainer}>
             <Surface style={styles.avatarSurface}>
-              <Image source={{uri: photoURL}}
+              <Image source={{ uri: photoURL }}
                 style={styles.profileImage}
               />
             </Surface>
@@ -50,7 +50,7 @@ export default class ContatoRow extends Component {
               <Text style={styles.rowSubtitle}>{username}</Text>
             </View>
             {
-              !this.props.noIcon &&
+              (!this.props.noIcon && !this.props.hasAdminBadge) &&
               <IconButton
                 icon={this.props.icon || "more-vert"}
                 style={styles.moreButton}
@@ -59,6 +59,20 @@ export default class ContatoRow extends Component {
                 }}
               />
             }
+
+
+            {
+              this.props.hasAdminBadge && (
+                <View style={styles.adminBadge}>
+                  <Text style={{
+                    fontFamily: fonts.primaryBold,
+                    color: "#fff",
+                    fontSize: 10
+                  }}>ADMIN</Text>
+                </View>
+              )
+            }
+
           </View>
         </TouchableRipple>
       </View>
@@ -111,5 +125,14 @@ const styles = StyleSheet.create({
   charStyle: {
     marginLeft: 15,
     color: "#99A9B3"
+  },
+  adminBadge: {
+    alignSelf: 'flex-end',
+    marginTop: 3,
+    backgroundColor: colors.primaryColor,
+    padding: 5,
+    borderRadius: 5,
+    position: 'absolute',
+    right: 0
   }
 })

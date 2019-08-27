@@ -145,6 +145,7 @@ export default class BottomSheetContent extends Component {
                 data={item}
                 rowIndex={index}
                 onPress={this.props.onUserSelection}
+                hasAdminBadge={adminID == item.uid}
               />
             )
           }
