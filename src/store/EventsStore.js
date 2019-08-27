@@ -321,6 +321,26 @@ class EventsStore {
   }
 
   @action
+  async exitEvent(event) {
+    const {
+      id: eventID,
+      participants
+    } = event;
+
+    let userID = LoggedUserStore.get().uid
+
+    delete participants[userID]
+
+    this.acceptedEvents =
+      this.acceptedEvents.filter(atualEvent => atualEvent.id != event.id)
+
+    await firestoreRef
+      .collection('events')
+      .doc(eventID)
+      .update({ participants })
+  }
+
+  @action
   async undoRecuse(event) {
     const userID = LoggedUserStore.get().uid;
 

@@ -5,7 +5,8 @@ import {
   Image,
   Dimensions,
   FlatList,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  Alert
 } from 'react-native'
 
 import ContatoRow from "@/components/Contatos/ContatoRow"
@@ -21,6 +22,8 @@ import FAIcon from 'react-native-vector-icons/FontAwesome5'
 import {
   Text
 } from 'react-native-paper'
+
+import { Button } from '@/components/Forms'
 
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
@@ -42,8 +45,20 @@ export default class BottomSheetContent extends Component {
     }
   }
 
-  async componentDidMount() {
-    
+  exitEvent(event){
+    Alert.alert(
+      "Sair do Evento",
+      "Tem certeza que deseja sair do Evento? Os outros participantes não poderão ver sua localização!",
+      [
+        {
+          text: "Cancelar"
+        },
+        {
+          text: 'Sair do Evento', 
+          onPress: () => this.props.onExitEvent()
+        },
+      ],
+    )
   }
 
   getNestedScroll() {
@@ -53,7 +68,6 @@ export default class BottomSheetContent extends Component {
   render() {
 
     const {
-      id,
       title,
       datetime,
       description,
@@ -61,14 +75,14 @@ export default class BottomSheetContent extends Component {
       imageURL
     } = this.props.eventData.info;
 
-    let formattedDateTime =  moment(new Date(datetime)).format("DD/MM/YYYY H:mm");
+    let formattedDateTime = moment(new Date(datetime)).format("DD/MM/YYYY H:mm");
     formattedDateTime = formattedDateTime.replace(':', 'h');
 
     return (
       <NestedScrollView style={styles.container}
         ref={ref => this.NestedScrollView = ref}>
-        <TouchableNativeFeedback onPress={() => {}}
-        useForeground={true}>
+        <TouchableNativeFeedback onPress={() => { }}
+          useForeground={true}>
           <View>
             <Image
               style={styles.image}
@@ -117,6 +131,11 @@ export default class BottomSheetContent extends Component {
             )
           }
         />
+
+        <Button mode="contained"
+          style={{ margin: 15 }}
+          icon="exit-to-app"
+          onPress={() => this.exitEvent(this.props.eventData.info)}>Sair do Evento</Button>
 
       </NestedScrollView>
     )

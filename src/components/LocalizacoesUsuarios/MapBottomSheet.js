@@ -21,6 +21,8 @@ import BottomSheetContent from './BottomSheetContent'
 
 import { withNavigation } from 'react-navigation'
 
+import EventsStore from '@/store/EventsStore'
+
 class MapBottomSheet extends Component {
 
   constructor() {
@@ -77,6 +79,10 @@ class MapBottomSheet extends Component {
             <BottomSheetContent
               ref={ref => this.sheetContent = ref}
               eventData={this.props.eventData}
+              onExitEvent={() => {
+                EventsStore.exitEvent(this.props.eventData.info)
+                this.props.navigation.navigate('EventosAceitos')
+              }}
             />
           </View>
         </BottomSheetBehavior>

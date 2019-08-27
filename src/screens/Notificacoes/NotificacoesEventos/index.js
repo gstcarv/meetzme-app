@@ -23,9 +23,9 @@ export default class NotificacoesEventos extends Component {
   _onNotificationCardPress(data) {
     const { navigation } = this.props;
     if (data.description.includes("aceitou")) {
-      navigation.navigate('Aceitos');
+      navigation.navigate('EventosAceitos');
     } else if (data.description.includes("convidou")) {
-      navigation.navigate('Pendentes');
+      navigation.navigate('EventosPendentes');
     }
   }
 
