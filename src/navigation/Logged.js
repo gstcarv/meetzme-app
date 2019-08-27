@@ -17,6 +17,7 @@ import Procurar from '@/screens/Procurar'
 import Perfil from '@/screens/Perfil'
 import LocalizacaoEventoPendente from '@/screens/LocalizacaoEventoPendente'
 import LocalizacoesUsuarios from '@/screens/LocalizacoesUsuarios'
+import ConvidarNovoUsuario from '@/screens/LocalizacoesUsuarios/ConvidarNovoUsuario'
 
 export default createStackNavigator(
   {
@@ -31,7 +32,8 @@ export default createStackNavigator(
     // Aceitar Evento
     LocalizacaoEventoPendente,
     // Localizações dos Usuários no Evento
-    LocalizacoesUsuarios
+    LocalizacoesUsuarios,
+    ConvidarNovoUsuario
   },
   {
     initialRouteName: 'Home',

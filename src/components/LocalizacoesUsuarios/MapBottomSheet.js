@@ -79,6 +79,11 @@ class MapBottomSheet extends Component {
             <BottomSheetContent
               ref={ref => this.sheetContent = ref}
               eventData={this.props.eventData}
+              openInviteScreen={() => {
+                this.props.navigation.navigate('ConvidarNovoUsuario', {
+                  eventData: this.props.eventData.info
+                });
+              }}
               onExitEvent={() => {
                 EventsStore.exitEvent(this.props.eventData.info)
                 this.props.navigation.navigate('EventosAceitos')

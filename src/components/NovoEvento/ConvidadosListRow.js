@@ -34,18 +34,21 @@ export default class ConvidadosListRow extends Component {
     const { name, username, photoURL } = this.props.data;
     const { isActive } = this.state;
 
+    const disabled = this.props.alreadyInEvent;
+
     return (
-      <TouchableRipple style={styles.rowContainer}
-        onPress={() => this.toggleActive()}>
+      <TouchableRipple style={[styles.rowContainer, { opacity: disabled ? .4 : 1}]}
+        onPress={() => this.toggleActive()}
+        disabled={disabled || false}>
         <View style={styles.contactContainer}>
           <Checkbox
              color="#80A6E8"
-             status={isActive ? 'checked' : 'unchecked'}
+             status={isActive || disabled ? 'checked' : 'unchecked'}
           />
           <Surface style={styles.avatarSurface}>
             <Image source={{ uri: photoURL }}
               style={[styles.profileImage, {
-                borderColor: this.state.isActive ? "#80A6E8" : "white"
+                borderColor: this.state.isActive || disabled ? "#80A6E8" : "white"
               }]}
             />
           </Surface>

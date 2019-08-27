@@ -34,6 +34,7 @@ const { height } = Dimensions.get('window')
 import moment from 'moment'
 
 import EventsStore from '@/store/EventsStore'
+import LoggedUserStore from '@/store/LoggedUserStore';
 
 export default class BottomSheetContent extends Component {
 
@@ -45,7 +46,7 @@ export default class BottomSheetContent extends Component {
     }
   }
 
-  exitEvent(event){
+  exitEvent(event) {
     Alert.alert(
       "Sair do Evento",
       "Tem certeza que deseja sair do Evento? Os outros participantes não poderão ver sua localização!",
@@ -54,7 +55,7 @@ export default class BottomSheetContent extends Component {
           text: "Cancelar"
         },
         {
-          text: 'Sair do Evento', 
+          text: 'Sair do Evento',
           onPress: () => this.props.onExitEvent()
         },
       ],
@@ -65,9 +66,14 @@ export default class BottomSheetContent extends Component {
     return this.NestedScrollView
   }
 
+  openInviteScreen(){
+    this.props.openInviteScreen();
+  }
+
   render() {
 
     const {
+      adminID,
       title,
       datetime,
       description,
@@ -77,6 +83,8 @@ export default class BottomSheetContent extends Component {
 
     let formattedDateTime = moment(new Date(datetime)).format("DD/MM/YYYY H:mm");
     formattedDateTime = formattedDateTime.replace(':', 'h');
+
+    const isAdmin = adminID == LoggedUserStore.get().uid;
 
     return (
       <NestedScrollView style={styles.container}
@@ -118,6 +126,15 @@ export default class BottomSheetContent extends Component {
 
           <Text style={styles.title}>Participantes</Text>
         </View>
+
+        {
+          isAdmin &&
+          <Button mode="outlined"
+            style={{ margin: 15 }}
+            icon="mail"
+            onPress={() => { this.openInviteScreen() }}>Convidar Novo Usuário</Button>
+        }
+
         <FlatList
           data={this.props.eventData.participants}
           keyExtractor={item => item.uid}

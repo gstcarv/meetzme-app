@@ -341,6 +341,21 @@ class EventsStore {
   }
 
   @action
+  async inviteUsers(event, newUsers){
+    const {
+      id: eventID,
+      participants
+    } = event;
+
+    newUsers.forEach(user => participants[user] = null)
+
+    await firestoreRef
+      .collection('events')
+      .doc(eventID)
+      .update({ participants })
+  }
+
+  @action
   async undoRecuse(event) {
     const userID = LoggedUserStore.get().uid;
 
