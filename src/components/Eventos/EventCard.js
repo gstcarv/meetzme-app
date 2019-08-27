@@ -101,9 +101,9 @@ export default class EventCard extends Component {
 const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
-    width: "100%",
+    width: '100%',
     backgroundColor: '#fff',
-    elevation: 2,
+    elevation: 5,
     padding: 4
   },
   overlay: {

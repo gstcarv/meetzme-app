@@ -5125,6 +5125,11 @@ react-native-bottom-sheet-behavior@^1.0.0:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-cards-slider@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-cards-slider/-/react-native-cards-slider-0.1.2.tgz#213489c48064929a7e76ac0e9352cb60a59bfd03"
+  integrity sha1-ITSJxIBkkpp+dqwOk1LLYKWb/QM=
+
 react-native-firebase@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.2.1.tgz#2904ccc80880930ea72fa152eae3c7f53a0d5e1c"

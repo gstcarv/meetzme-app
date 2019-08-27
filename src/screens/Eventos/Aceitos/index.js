@@ -29,7 +29,7 @@ import {
 
 import { toJS } from 'mobx'
 
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import CardSlider from 'react-native-cards-slider';
 
 import EventInfoBottomSheet from '@/components/Eventos/EventInfoBottomSheet';
 import EventCard from '@/components/Eventos/EventCard';
@@ -69,45 +69,24 @@ class Aceitos extends Component {
     return (
       <View style={styles.container}>
 
-        {
-          hasEvent &&
-          <Carousel
-            ref={ref => this.eventsSlider = ref}
-            data={toJS(EventsStore.acceptedEvents)}
-            renderItem={({ item }) => (
-              <EventCard
-                eventData={item}
-                onPress={this.goToEvent.bind(this)}
-              />
-            )}
-            sliderWidth={screenWidth}
-            itemWidth={screenWidth - 90}
-            slideStyle={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              overflow: 'visible',
-              paddingVertical: 12,
-              paddingBottom: EventsStore.acceptedEvents.length == 1 ? 40 : 12
-            }}
-            activeAnimationType={'spring'}
-            activeAnimationOptions={{
-              friction: 4,
-              tension: 10
-            }}
-          />
-        }
-
-        {
-          hasEvent &&
-          <Pagination
-            dotsLength={EventsStore.acceptedEvents.length}
-            dotColor={'#212121'}
-            inactiveDotColor={"#212121"}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-            activeDotIndex={-1}
-          />
-        }
+        <CardSlider
+          style={styles.slider}
+          ref={ref => this._cardSlider = ref}
+          nestedScrollEnabled
+          onContentSizeChange={(contentWidth, contentHeight) => {
+            this._cardSlider.slider.scrollToEnd({ animated: true });
+          }}>
+          {
+            toJS(EventsStore.acceptedEvents).map(event => (
+              <View style={styles.slideContainer}>
+                <EventCard
+                  eventData={event}
+                  onPress={this.goToEvent.bind(this)}
+                />
+              </View>
+            ))
+          }
+        </CardSlider>
 
         {
           hasEvent &&
@@ -124,7 +103,6 @@ class Aceitos extends Component {
             <Line spaceVertical={15} />
           </View>
         }
-
       </View>
     )
   }
@@ -134,10 +112,17 @@ export default withNavigation(Aceitos)
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F9FAFC",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F9FAFC"
+  },
+  slideContainer: {
+    paddingVertical: 10,
+    height: '100%',
+  },
+  slider: {
+    paddingVertical: 20
   },
   scrollViewContainer: {
     flex: 1
