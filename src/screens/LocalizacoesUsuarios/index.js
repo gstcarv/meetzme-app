@@ -32,6 +32,12 @@ import { LocationListener } from '@/modules'
 
 import { Snackbar } from 'react-native-paper'
 
+Array.prototype.checkDifferences = function (a) {
+  return this.filter(function (i) {
+      return a.indexOf(i) === -1;
+  });
+};
+
 @inject('EventsStore')
 class LocalizacoesUsuarios extends Component {
 
@@ -59,7 +65,7 @@ class LocalizacoesUsuarios extends Component {
   }
 
   fitAllMarkers() {
-    if(this.mapview.map){
+    if (this.mapview.map) {
       this.mapview.map.fitToElements(true, {
         bottom: 400
       })
@@ -97,31 +103,56 @@ class LocalizacoesUsuarios extends Component {
       .collection('events')
       .doc(eventID)
       .onSnapshot(async snap => {
+
+        // Participantes
         const oldParticipants = this.state.infoEvento.participants,
           newParticipants = snap.data().participants;
 
-        for (let userID in newParticipants) {
-          let inviteState = newParticipants[userID];
-          if (inviteState != oldParticipants[userID]) {
-            if (inviteState == true) {
-              const { EventsStore } = this.props;
+        // Tamanhos dos objetos
+        const oldLength = Object.keys(oldParticipants).length,
+          newLength = Object.keys(newParticipants).length
 
-              let participantData = await EventsStore.getParticipantData(userID, this.eventID);
-
-              this.setState({
-                participants: [
-                  ...this.state.participants,
-                  participantData
-                ]
-              })
-
-              this.watchParticipant(participantData)
-
-              this.showSnackbar(participantData.name + " aceitou o convite!");
+        if (newLength == oldLength) {
+          // Algum convidado aceitou ou recusou o convite para o Evento
+          for (let userID in newParticipants) {
+            // Verifica se o estado do convite é o mesmo
+            let inviteState = newParticipants[userID];
+            if (inviteState != oldParticipants[userID]) {
+              // Se o Convite for aceito, adiciona no mapa e começa a ouvir a locazalição
+              if (inviteState == true) {
+                const { EventsStore } = this.props;
+                let participantData = await EventsStore.getParticipantData(userID, this.eventID);
+                this.setState({
+                  participants: [
+                    ...this.state.participants,
+                    participantData
+                  ]
+                })
+                this.watchParticipant(participantData)
+                this.showSnackbar(participantData.name + " aceitou o convite!");
+              }
             }
           }
-        }
+        } else if (newLength < oldLength) {
+          // Alguém saiu do Evento
+          const arrOldParticipants = Object.keys(oldParticipants),
+            arrNewParticipants = Object.keys(newParticipants);
 
+          // Pega a Diferença entre as arrays para descobrir o participante que saiu do Evento
+          const exitedParticipant = arrOldParticipants.checkDifferences(arrNewParticipants)[0]
+
+          // Remove do Mapa
+          const participantData  = this.state.participants.find(user => user.uid == exitedParticipant);
+          
+          this.setState({
+            participants: this.state.participants.filter(u => u.uid != exitedParticipant)
+          })
+
+          this.showSnackbar(participantData.name + " saiu do Evento");
+
+        } else if (newLength > oldLength) {
+          // Alguém foi convidado para o Evento
+        }
       })
   }
 
@@ -192,7 +223,7 @@ class LocalizacoesUsuarios extends Component {
 
   }
 
-  showSnackbar(message){
+  showSnackbar(message) {
     this.setState({
       snackbar: {
         message,
@@ -310,7 +341,7 @@ class LocalizacoesUsuarios extends Component {
           </Snackbar>
 
         </View>
-        
+
       </View>
     )
   }
