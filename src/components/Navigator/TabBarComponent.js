@@ -1,12 +1,10 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import {
   View,
-  TouchableHighlight,
   StyleSheet,
   Animated,
   Easing,
-  TouchableNativeFeedback,
-  Text
+  Text,
 } from "react-native";
 
 import { TouchableRipple } from 'react-native-paper'
@@ -20,35 +18,26 @@ import EventBus from 'eventing-bus';
 
 import { withNavigation } from 'react-navigation'
 
-class TabBarComponent extends React.Component {
+class TabBarComponent extends PureComponent {
 
-  index = 0
+  atualRouteIndex = 0
 
-  constructor() {
-    super();
-    this.state = {
-      atualRouteIndex: 0,
-    }
-
-    this.lineOffset = new Animated.Value(20)
-    this.routeButtonsPositions = []
-  }
+  lineOffset = new Animated.Value(20)
+  routeButtonsPositions = []
 
   componentDidMount() {
     // Move a linha da tabbar quando a rota é alterada de modo indireto (sem clicar nas tabs)
     EventBus.on('bindTabLine', _ => {
       const tabIndex = this.props.navigation.state.index;
-      if(tabIndex != this.state.atualRouteIndex){
-        this.setState({
-          atualRouteIndex: tabIndex ? tabIndex : 0
-        })
+      if(tabIndex != this.atualRouteIndex){
+        this.atualRouteIndex = tabIndex ? tabIndex : 0
         this.moveLine();
       }
     })
   }
 
   moveLine() {
-    const { atualRouteIndex } = this.state
+    const { atualRouteIndex } = this
 
     let posX = this.routeButtonsPositions[atualRouteIndex].x;
     Animated.spring(this.lineOffset, {
@@ -56,12 +45,8 @@ class TabBarComponent extends React.Component {
       duration: 350,
       easing: Easing.easing,
       useNativeDriver: true,
-      bounciness: 10
+      bounciness: 12.5
     }).start()
-  }
-
-  componentDidUpdate() {
-    this.moveLine()
   }
 
   _onButtonLayout(e, index) {
@@ -97,15 +82,16 @@ class TabBarComponent extends React.Component {
               <TouchableRipple
                 key={routeIndex}
                 onLayout={(e) => this._onButtonLayout(e, routeIndex)}
-                onPress={(e) => {
+                onPress={async (e) => {
                   if (!isMainButton) {
-                    this.setState({ atualRouteIndex: routeIndex })
+                    this.atualRouteIndex = routeIndex;
+                    this.moveLine()
                     ToolbarTitle.set(getLabelText({ route }))
                     onTabPress({ route });
                   }
                 }}
                 useForeground={true}
-                rippleColor={"#ddd"}
+                rippleColor={"#eaeaea"}
                 borderless={!isMainButton}>
                 <View style={styles.tabButton}
                 >

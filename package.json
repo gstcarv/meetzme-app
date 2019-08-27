@@ -35,7 +35,7 @@
     "react-native-image-crop-picker": "^0.22.0",
     "react-native-input-scroll-view": "^1.8.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
-    "react-native-maps": "^0.23.0",
+    "react-native-maps": "^0.25.0",
     "react-native-maps-directions": "https://github.com/bramus/react-native-maps-directions.git",
     "react-native-material-ripple": "^0.8.0",
     "react-native-nested-scroll-view": "^8.0.0",
@@ -64,10 +64,10 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
+    "jetifier": "^1.5.1",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.6.3",
-    "reactotron-react-native": "^3.6.5",
-    "jetifier": "^1.5.1"
+    "reactotron-react-native": "^3.6.5"
   },
   "jest": {
     "preset": "react-native"

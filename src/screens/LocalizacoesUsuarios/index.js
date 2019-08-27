@@ -60,7 +60,9 @@ class LocalizacoesUsuarios extends Component {
 
   fitAllMarkers() {
     if(this.mapview.map){
-      this.mapview.map.fitToElements(true)
+      this.mapview.map.fitToElements(true, {
+        bottom: 400
+      })
     }
   }
 
@@ -220,6 +222,7 @@ class LocalizacoesUsuarios extends Component {
             moveOnMarkerPress={true}
             ref={ref => this.mapview = ref}
             onPositionLoaded={(userLocation) => this.setState({ userLocation })}>
+
 
             {
               this.state.participants.map(user => {

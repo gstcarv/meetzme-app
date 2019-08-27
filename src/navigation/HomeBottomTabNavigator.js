@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
+
+import { Dimensions } from 'react-native'
 
 import {
   createBottomTabNavigator,
@@ -63,6 +65,10 @@ var BottomNavigator = createBottomTabNavigator({
     tabBarOptions: {
       inactiveTintColor: "#D6D6D6",
       activeTintColor: colors.primaryColor
+    },
+    initialLayout: {
+      height:  100,
+      width: Dimensions.get('window').width,
     }
   }
 )

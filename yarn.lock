@@ -5218,10 +5218,10 @@ react-native-keyboard-aware-scroll-view@^0.8.0:
     lodash.isequal "^4.5.0"
     prop-types "^15.6.0"
 
-react-native-maps@^0.23.0:
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.23.0.tgz#edbfdcad0e42190627eb1c8067eaba5965c8f81e"
-  integrity sha512-qxOIQGsDtQXQlSJdXMW1wg8pvLaVYdbiIolB7tZTTgTGgIA/hDxXwZbQZ08c4KDD6/VTk8krfd1APaHkqvh6og==
+react-native-maps@^0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.25.0.tgz#81bc51eb50e33811a9e1c345cc48869413ead67d"
+  integrity sha512-PFJuW1pt+HnnnN0m0OGk29RSvICFVkK/DScX6cUk0SuCSN2DAHx0y6y57lZyYXcYqU4J4usNpfxgp/ccjASDiw==
 
 react-native-material-ripple@^0.8.0:
   version "0.8.0"
