@@ -42,7 +42,7 @@ class SelecionarLocalizacao extends Component {
         duration: 0
       },
       locationName: null,
-      transportMode: "DRIVING",
+      transportMode: "driving",
       centerLocationHidden: true
     }
   }

@@ -78,7 +78,7 @@ class Aceitos extends Component {
           }}>
           {
             toJS(EventsStore.acceptedEvents).map(event => (
-              <View style={styles.slideContainer}>
+              <View style={styles.slideContainer} key={event.id}>
                 <EventCard
                   eventData={event}
                   onPress={this.goToEvent.bind(this)}

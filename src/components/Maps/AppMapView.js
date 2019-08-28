@@ -83,7 +83,6 @@ export default class AppMapView extends Component {
         showsMyLocationButton={false}
         showsCompass={false}
         showsBuildings={false}
-        showsIndoors={false}
         showsTraffic={false}
         maxZoomLevel={16.7}
         rotateEnabled={false}

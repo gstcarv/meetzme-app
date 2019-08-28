@@ -47,13 +47,12 @@ class ContactsStore {
         })
 
         this.sortContacts();
-
       }
     })
   }
 
-  sortContacts(){
-    this.contacts = toJS(this.contacts).sort((a,b) => {
+  sortContacts() {
+    this.contacts = toJS(this.contacts).sort((a, b) => {
       var x = a.name.toLowerCase();
       var y = b.name.toLowerCase();
       return x < y ? -1 : x > y ? 1 : 0;
@@ -119,7 +118,7 @@ class ContactsStore {
   }
 
   @action
-  clearSearch(){
+  clearSearch() {
     this.searchText = ""
   }
 

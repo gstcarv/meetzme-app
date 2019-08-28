@@ -29,7 +29,7 @@ export default class UserLocationMarker extends Component {
     this.markerRef.animateMarkerToCoordinate({
       latitude,
       longitude,
-      duration: 2500
+      duration: 4500
     })
   }
 

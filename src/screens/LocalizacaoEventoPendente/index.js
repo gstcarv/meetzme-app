@@ -35,7 +35,7 @@ class LocalizacaoEventoPendente extends Component {
       },
       infoEvento: {},
       directionResult: {},
-      transportMode: "DRIVING"
+      transportMode: "driving"
     }
   }
 

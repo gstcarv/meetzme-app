@@ -51,7 +51,7 @@ class LocalizacoesUsuarios extends Component {
       },
       infoEvento: {},
       directionResult: {},
-      transportMode: "DRIVING",
+      transportMode: "driving",
       participants: [],
       snackbar: {
         visible: false,
@@ -265,6 +265,7 @@ class LocalizacoesUsuarios extends Component {
           <AppMapView
             moveOnMarkerPress={true}
             ref={ref => this.mapview = ref}
+            loadingBackgroundColor="#DEE3E6"
             onPositionLoaded={(userLocation) => this.setState({ userLocation })}
             mapPadding={{
               bottom: 70,
@@ -366,7 +367,7 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: '#DEE3E6',
     justifyContent: 'center',
     alignItems: 'center'
   },

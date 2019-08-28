@@ -39,14 +39,14 @@ class CircleThumbnail extends Component {
 
 const styles = StyleSheet.create({
   circle: {
-    width: 80,
-    height: 80,
+    width: 110,
+    height: 110,
     borderStyle: 'dashed',
-    borderColor: '#D2D2D2',
-    borderWidth: 1,
+    borderColor: '#ccc',
+    borderWidth: 2,
     marginHorizontal: 5,
     borderRadius: 100,
-    padding: 3
+    padding: 5
   },
   image: {
     width: '100%',

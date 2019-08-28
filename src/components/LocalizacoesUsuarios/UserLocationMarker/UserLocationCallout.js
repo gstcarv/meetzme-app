@@ -37,7 +37,6 @@ export default class UserLocationCallout extends Component {
       bicycling: "bicycle",
       walking: "walking"
     }
-
   }
 
   componentDidMount(){
@@ -116,7 +115,7 @@ export default class UserLocationCallout extends Component {
           <View style={styles.bottomBoxLine}></View>
         </View>
           <FAIcon
-            name={this.icons[this.props.transportMode]}
+            name={this.icons[this.props.transportMode.toLowerCase()]}
             size={23}
             color={"#cacaca"}
             style={styles.transportModeIndicator}
