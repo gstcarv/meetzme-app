@@ -86,7 +86,7 @@ apply from: "../../node_modules/react-native/react.gradle"
  * Upload all the APKs to the Play Store and people will download
  * the correct one based on the CPU architecture of their device.
  */
-def enableSeparateBuildPerCPUArchitecture = false
+def enableSeparateBuildPerCPUArchitecture = true
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
@@ -138,6 +138,7 @@ android {
     }
     buildTypes {
         release {
+            shrinkResources true
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
@@ -207,7 +208,6 @@ configurations.all {
         force 'org.webkit:android-jsc:r236355'
         force "com.google.android.gms:play-services-tasks:15.0.1"
         force 'com.google.android.gms:play-services-gcm:16.1.0'
-        force 'com.android.support:support-v4:27.1.0'
     }
 }
 

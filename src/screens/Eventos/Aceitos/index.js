@@ -69,24 +69,27 @@ class Aceitos extends Component {
     return (
       <View style={styles.container}>
 
-        <CardSlider
-          style={styles.slider}
-          ref={ref => this._cardSlider = ref}
-          nestedScrollEnabled
-          onContentSizeChange={(contentWidth, contentHeight) => {
-            this._cardSlider.slider.scrollToEnd({ animated: true });
-          }}>
-          {
-            toJS(EventsStore.acceptedEvents).map(event => (
-              <View style={styles.slideContainer} key={event.id}>
-                <EventCard
-                  eventData={event}
-                  onPress={this.goToEvent.bind(this)}
-                />
-              </View>
-            ))
-          }
-        </CardSlider>
+        {
+          hasEvent &&
+          <CardSlider
+            style={styles.slider}
+            ref={ref => this._cardSlider = ref}
+            nestedScrollEnabled
+            onContentSizeChange={(contentWidth, contentHeight) => {
+              this._cardSlider.slider.scrollToEnd({ animated: true });
+            }}>
+            {
+              toJS(EventsStore.acceptedEvents).map(event => (
+                <View style={styles.slideContainer} key={event.id}>
+                  <EventCard
+                    eventData={event}
+                    onPress={this.goToEvent.bind(this)}
+                  />
+                </View>
+              ))
+            }
+          </CardSlider>
+        }
 
         {
           hasEvent &&
