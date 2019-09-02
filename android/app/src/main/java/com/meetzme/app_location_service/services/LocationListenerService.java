@@ -3,8 +3,11 @@ package com.meetzme.app_location_service.services;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -111,6 +114,18 @@ public class LocationListenerService extends Service {
     private Notification getNotification(){
         Context context = getApplicationContext();
 
+        Intent cancelLocationIntent = new Intent(context, CancelListenerReceiver.class);
+        cancelLocationIntent.putExtra("action","cancel_location");
+
+        PendingIntent pIntentCancel =
+                PendingIntent.getBroadcast(context,1, cancelLocationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action action =
+                new NotificationCompat.Action.Builder(
+                        0, "Parar de Localizar", pIntentCancel
+                ).build();
+
+
         String notificationText = "Sua Localização está sendo compartilhada pelo MeetzMe";
 
         int icon = context.getResources().getIdentifier("ic_notification", "drawable", context.getPackageName());
@@ -121,6 +136,7 @@ public class LocationListenerService extends Service {
             .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText))
             .setSmallIcon(icon)
             .setColor(Color.parseColor("#353f4b"))
+            .addAction(action)
             .build();
         return notification;
     }
@@ -128,5 +144,19 @@ public class LocationListenerService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public static class CancelListenerReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ReactApplicationContext appContext = AppBackgroundLocationListenerModule.REACT_APP_CONTEXT;
+
+            Log.wtf(TAG, "Received Cancel");
+
+            if(appContext != null){
+                appContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("onCancelListenerPressed", null);
+            }
+        }
     }
 }

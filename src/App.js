@@ -89,6 +89,10 @@ export default class App extends Component {
       LoggedUserStore.sendLocation(coordinates)
     })
 
+    DeviceEventEmitter.addListener('onCancelListenerPressed', () => {
+      LoggedUserStore.stopLocationListener()
+    })
+
     // Escuta as Alterações no TOKEN
     firebase.messaging().onTokenRefresh(async token => await LoggedUserStore.updateToken(token))
 

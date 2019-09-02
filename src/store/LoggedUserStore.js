@@ -9,6 +9,8 @@ import Geolocation from 'react-native-geolocation-service';
 
 import { AsyncStorage } from 'react-native'
 
+import { LocationListener } from '@/modules'
+
 class LoggedUserStore {
   @observable info = {}
   @observable lastLocation = {}
@@ -134,6 +136,10 @@ class LoggedUserStore {
   @action async loggout(){
     await firebase.auth().signOut()
     this.info = {}
+  }
+
+  async stopLocationListener(){
+    LocationListener.stopService()
   }
 
 }

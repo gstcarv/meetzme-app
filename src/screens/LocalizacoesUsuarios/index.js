@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-  StatusBar
+  StatusBar,
+  DeviceEventEmitter
 } from 'react-native'
 
 import {
@@ -58,6 +59,61 @@ class LocalizacoesUsuarios extends Component {
         message: "HelloWorld"
       }
     }
+  }
+
+  async componentDidMount() {
+    this.watchLocations = []
+
+    // Pega a ID do Evento
+    const eventID = this.props.navigation.getParam('eventID');
+
+    this.eventID = eventID;
+
+    // Inicia o Service de Localizaçãp
+    LocationListener.startService()
+
+    DeviceEventEmitter.addListener('onCancelListenerPressed', () => {
+      try {
+        if(this.props.navigation.state.routeName == "LocalizacoesUsuarios"){
+          this.props.navigation.navigate('Eventos')
+        }
+      } catch { }
+    })
+
+    // Pega as Informações do Evento
+    const { EventsStore } = this.props;
+
+    await EventsStore.refreshEventData(eventID);
+
+    infoEvento = toJS(EventsStore.acceptedEvents).find(event => event.id == eventID)
+    this.setState({ infoEvento })
+
+    this.watchEventActions(eventID);
+
+    // Pega os Participantes do Evento
+    let participants = await EventsStore.getEventParticipants(eventID)
+
+    // Mostra os Float Action Buttons
+    this.FABCenterCamera.show(600)
+    this.FABSeeAllMarkers.show(1000)
+
+    // Pega em Tempo Real a Localização de cada participante
+    participants.forEach(async participant => {
+      this.watchParticipant(participant)
+    })
+
+    this.setState({ participants })
+
+    setTimeout(() => {
+      this.setState({
+        loading: false
+      })
+    }, 500)
+
+    setTimeout(() => {
+      this.fitAllMarkers();
+    }, 2000)
+
   }
 
   componentWillMount() {
@@ -176,53 +232,6 @@ class LocalizacoesUsuarios extends Component {
       })
   }
 
-  async componentDidMount() {
-    this.watchLocations = []
-
-    // Pega a ID do Evento
-    const eventID = this.props.navigation.getParam('eventID');
-
-    this.eventID = eventID;
-
-    // Inicia o Service de Localizaçãp
-    LocationListener.startService()
-
-    // Pega as Informações do Evento
-    const { EventsStore } = this.props;
-
-    await EventsStore.refreshEventData(eventID);
-
-    infoEvento = toJS(EventsStore.acceptedEvents).find(event => event.id == eventID)
-    this.setState({ infoEvento })
-
-    this.watchEventActions(eventID);
-
-    // Pega os Participantes do Evento
-    let participants = await EventsStore.getEventParticipants(eventID)
-
-    // Mostra os Float Action Buttons
-    this.FABCenterCamera.show(600)
-    this.FABSeeAllMarkers.show(1000)
-
-    // Pega em Tempo Real a Localização de cada participante
-    participants.forEach(async participant => {
-      this.watchParticipant(participant)
-    })
-
-    this.setState({ participants })
-
-    setTimeout(() => {
-      this.setState({
-        loading: false
-      })
-    }, 500)
-
-    setTimeout(() => {
-      this.fitAllMarkers();
-    }, 2000)
-
-  }
-
   showSnackbar(message) {
     this.setState({
       snackbar: {
@@ -285,7 +294,7 @@ class LocalizacoesUsuarios extends Component {
                       uid={user.uid}
                       key={user.uid}
                       transportMode={user.transportMode}
-                      ref={ ref => this.mapMarkers[user.uid] = ref }
+                      ref={ref => this.mapMarkers[user.uid] = ref}
                     />
                   </View>
                 )
@@ -320,13 +329,13 @@ class LocalizacoesUsuarios extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <StatusBar 
+        <StatusBar
           translucent
           animated
           backgroundColor="transparent"
         />
         <CoordinatorLayout style={{ flex: 1 }}>
-          { getMap() }
+          {getMap()}
           <MapBottomSheet
             eventData={{ info: infoEvento, participants }}
             onStateChange={this._onBottomSheetStateChanged.bind(this)}

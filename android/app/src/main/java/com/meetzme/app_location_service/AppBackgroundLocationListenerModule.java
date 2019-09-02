@@ -51,7 +51,7 @@ public class AppBackgroundLocationListenerModule extends ReactContextBaseJavaMod
   public void stopService() {
     if(isLocationServiceRunning()){
       Intent serviceIntent = new Intent(getContext(), LocationListenerService.class);
-      getContext().startService(serviceIntent);
+      getContext().stopService(serviceIntent);
     }
   }
 
