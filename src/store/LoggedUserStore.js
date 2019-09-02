@@ -139,7 +139,17 @@ class LoggedUserStore {
   }
 
   async stopLocationListener(){
+    // Para de Localizar
     LocationListener.stopService()
+
+    // Manda pro banco q o usuário pausou a localização
+    const { uid } = this.info;
+    await firebase.firestore()
+      .collection('users')
+      .doc(uid)
+      .update({
+        isLocationStopped: true
+      })
   }
 
 }

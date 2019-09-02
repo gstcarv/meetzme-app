@@ -157,7 +157,8 @@ class Principal extends Component {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={colors.primaryDark}
-          animated />
+          animated
+          translucent />
         <View style={{ alignItems: 'center' }}>
           <Animated.Image
             source={require("@assets/images/logo_gray.png")}

@@ -72,12 +72,8 @@ class LocalizacoesUsuarios extends Component {
     // Inicia o Service de Localizaçãp
     LocationListener.startService()
 
-    DeviceEventEmitter.addListener('onCancelListenerPressed', () => {
-      try {
-        if(this.props.navigation.state.routeName == "LocalizacoesUsuarios"){
-          this.props.navigation.navigate('Eventos')
-        }
-      } catch { }
+    this.subEventEmitterListener = DeviceEventEmitter.addListener('onCancelListenerPressed', () => {
+      this.props.navigation.navigate('Eventos')
     })
 
     // Pega as Informações do Evento
@@ -118,6 +114,10 @@ class LocalizacoesUsuarios extends Component {
 
   componentWillMount() {
     this.mapMarkers = []
+  }
+
+  componentWillUnmount(){
+    this.subEventEmitterListener.remove()
   }
 
   fitAllMarkers() {
