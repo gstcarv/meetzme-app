@@ -3,9 +3,8 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
+  StatusBar
 } from 'react-native'
-
-import firebase from 'react-native-firebase'
 
 import { withNavigation } from 'react-navigation'
 
@@ -14,13 +13,11 @@ import MapDirections from '@/components/Maps/MapDirections'
 import DirectionInfoBox from '@/components/Maps/DirectionInfoBox'
 import UserMapMarker from '@/components/Maps/UserMapMarker'
 import DestinationMapMarker from '@/components/Maps/DestinationMapMarker'
-import FitFloatButton from '@/components/Maps/FitFloatButton'
-import CenterLocationFloatButton from '@/components/Maps/CenterLocationFloatButton'
 
 import BackButton from '@/components/BackButton'
 import colors from '@/resources/colors'
 
-import { inject, observer } from 'mobx-react/native'
+import { inject } from 'mobx-react/native'
 
 @inject('EventsStore')
 class LocalizacaoEventoPendente extends Component {
@@ -98,6 +95,12 @@ class LocalizacaoEventoPendente extends Component {
     if (this.state.loading == false) {
       return (
         <View style={{ flex: 1 }}>
+
+          <StatusBar 
+            translucent
+            backgroundColor="transparent"
+          />
+
           <AppMapView
             ref={ref => this.mapview = ref}
             onPositionLoaded={(userLocation) => this.setState({ userLocation })}

@@ -66,7 +66,6 @@ export default class AppMapView extends Component {
       zoom: 14,
     }
 
-
     const getChildren = () => {
       const { children } = this.props
       if(typeof children == 'array'){

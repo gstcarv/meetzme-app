@@ -25,7 +25,7 @@ class BackButton extends Component {
               padding: 10,
               position: 'absolute',
               left: 6,
-              top: 6,
+              top: 25,
               ...this.props.style
           }}>
         <FAIcon name="arrow-left" 

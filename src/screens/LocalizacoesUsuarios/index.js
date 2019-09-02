@@ -282,6 +282,7 @@ class LocalizacoesUsuarios extends Component {
                       title={user.uid == uid ? "Você" : user.name}
                       isOtherUser={user.uid != uid}
                       image={user.photoURL}
+                      uid={user.uid}
                       key={user.uid}
                       transportMode={user.transportMode}
                       ref={ ref => this.mapMarkers[user.uid] = ref }
@@ -319,6 +320,11 @@ class LocalizacoesUsuarios extends Component {
 
     return (
       <View style={{ flex: 1 }}>
+        <StatusBar 
+          translucent
+          animated
+          backgroundColor="transparent"
+        />
         <CoordinatorLayout style={{ flex: 1 }}>
           { getMap() }
           <MapBottomSheet

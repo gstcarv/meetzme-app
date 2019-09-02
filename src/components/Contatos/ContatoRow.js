@@ -47,7 +47,7 @@ export default class ContatoRow extends Component {
             </Surface>
             <View style={styles.contactInfoContainer}>
               <Text style={styles.rowTitle}>{name}</Text>
-              <Text style={styles.rowSubtitle}>{username}</Text>
+              <Text style={styles.rowSubtitle}>@{username.replace("@", '')}</Text>
             </View>
             {
               (!this.props.noIcon && !this.props.hasAdminBadge) &&
@@ -127,12 +127,11 @@ const styles = StyleSheet.create({
     color: "#99A9B3"
   },
   adminBadge: {
-    alignSelf: 'flex-end',
-    marginTop: 3,
+    alignSelf: 'center',
     backgroundColor: colors.primaryColor,
     padding: 5,
     borderRadius: 5,
     position: 'absolute',
-    right: 0
+    right: 0,
   }
 })

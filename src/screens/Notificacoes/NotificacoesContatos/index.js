@@ -22,7 +22,7 @@ export default class NotificacoesContatos extends Component {
     let notificationsData = toJS(this.props.NotificationsStore.contactsNotifications);
 
     return (
-      <ScrollView>
+      <ScrollView style={styles.container}>
 
         <FlatList
           data={notificationsData}
@@ -48,6 +48,9 @@ export default class NotificacoesContatos extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#F9FAFC"
+  },
   notificationsFlatList: {
     padding: 15,
   }

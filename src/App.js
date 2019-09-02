@@ -119,7 +119,7 @@ export default class App extends Component {
           .android.setChannelId(notificationChannel)
           .android.setSmallIcon('ic_notification')
           .android.setColor(COLORS.primaryColor)
-          .android.setPriority(firebase.notifications.Android.Priority.High);
+          .android.setPriority(firebase.notifications.Android.Priority.Low);
 
         if (notificationChannel == STRINGS.CHANNELS.EVENTS) {
           const eventID = notification.data.event_id ? notification.data.event_id : "undefined"

@@ -34,6 +34,8 @@ import CardSlider from 'react-native-cards-slider';
 import EventInfoBottomSheet from '@/components/Eventos/EventInfoBottomSheet';
 import EventCard from '@/components/Eventos/EventCard';
 
+import { isEventInited } from '@/utils/events'
+
 const {
   width: screenWidth,
   height: screenHeight
@@ -52,8 +54,8 @@ class Aceitos extends Component {
 
   goToEvent(eventID) {
     let event = this.props.EventsStore.getByID(eventID);
-
-    if (new Date(Date.now()) >= event.initTrackingDatetime) {
+    
+    if (isEventInited(event)) {
       this.props.navigation.navigate('LocalizacoesUsuarios', { eventID })
     } else {
       this.refs.eventBottomSheet.open(eventID, true);

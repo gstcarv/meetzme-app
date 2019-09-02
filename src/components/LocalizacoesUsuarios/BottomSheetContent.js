@@ -6,7 +6,8 @@ import {
   Dimensions,
   FlatList,
   TouchableNativeFeedback,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native'
 
 import ContatoRow from "@/components/Contatos/ContatoRow"
@@ -66,7 +67,7 @@ export default class BottomSheetContent extends Component {
     return this.NestedScrollView
   }
 
-  openInviteScreen(){
+  openInviteScreen() {
     this.props.openInviteScreen();
   }
 
@@ -138,7 +139,6 @@ export default class BottomSheetContent extends Component {
         <FlatList
           data={this.props.eventData.participants}
           keyExtractor={item => item.uid}
-
           renderItem={
             ({ item, index }) => (
               <ContatoRow
@@ -149,7 +149,13 @@ export default class BottomSheetContent extends Component {
               />
             )
           }
+
         />
+
+        {
+          this.props.eventData.participants.length == 0 &&
+          <ActivityIndicator color={colors.primaryColor}/>
+        }
 
         <Button mode="contained"
           style={{ margin: 15 }}

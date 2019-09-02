@@ -5,24 +5,39 @@ import TouchableScale from 'react-native-touchable-scale'
 
 import { withNavigation } from 'react-navigation'
 
+import EventsStore from '@/store/EventsStore';
+
+import { isEventInited } from '@/utils/events';
+
+import Snackbar from 'react-native-snackbar';
+
 class CircleThumbnail extends Component {
+
+  _onPress() {
+    const { navigate } = this.props.navigation
+    if (this.props.id) {
+      if (isEventInited(EventsStore.getByID(this.props.id))) {
+        navigate('LocalizacoesUsuarios', {
+          eventID: this.props.id
+        })
+      } else {
+        Snackbar.show({
+          title: 'A localização desse evento ainda não começou',
+          duration: Snackbar.LENGTH_SHORT,
+          backgroundColor: '#b71b25'
+        })
+      }
+    } else {
+      navigate('EventosAceitos')
+    }
+  }
+
   render() {
 
     return (
       <TouchableScale
         style={styles.circle}
-        onPress={
-          () => {
-            const { navigate } = this.props.navigation
-            if (this.props.id) {
-              navigate('LocalizacoesUsuarios', {
-                eventID: this.props.id
-              })
-            } else {
-              navigate('EventosAceitos')
-            }
-          }
-        }>
+        onPress={() => this._onPress()}>
         {
           !this.props.empty &&
 

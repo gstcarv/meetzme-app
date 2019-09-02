@@ -39,7 +39,16 @@ class Principal extends Component {
 
     let isWatchingEvents = false;
 
+    authStateChanged = false;
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
+
+      // Verifica se a autenticação já foi feita (evitar pegar dados 2 vezes)
+      if(authStateChanged){
+        return;
+      } else {
+        authStateChanged = true;
+      }
+
       // Pega os dados do usuário do AsyncStorage
       const userData = await AsyncStorage.getItem("USER_DATA");
       if (auth) {

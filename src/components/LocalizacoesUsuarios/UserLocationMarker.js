@@ -35,7 +35,11 @@ export default class UserLocationMarker extends Component {
 
   render() {
 
-    const userData = LoggedUserStore.get()
+    console.tron.log(this.props)
+
+    const loggedUserData = LoggedUserStore.get()
+
+    let isTheLoggedUser = loggedUserData.uid == this.props.uid;
 
     return (
       <Marker coordinate={this.props.coordinate}
@@ -50,7 +54,9 @@ export default class UserLocationMarker extends Component {
             <View style={{
               height: 63,
             }}>
-              <View style={styles.markerContainer}>
+              <View style={[styles.markerContainer, { 
+                backgroundColor: isTheLoggedUser ? "#4c6d91" : colors.primaryColor
+               }]}>
                 <Image
                   source={{ uri: this.props.image }}
                   imageStyle={{ borderRadius: 100 }}
@@ -74,36 +80,6 @@ export default class UserLocationMarker extends Component {
 }
 
 const styles = StyleSheet.create({
-  locationIndicator: {
-    borderWidth: 1,
-    borderRadius: 100,
-    borderColor: "#fff",
-    width: 6,
-    height: 6,
-    backgroundColor: "#80a6e8",
-    position: 'absolute'
-  },
-  wave: {
-    borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  wave1: {
-    width: 80,
-    height: 80,
-    backgroundColor: 'rgba(128, 166, 232, .2)',
-    margin: 3
-  },
-  wave2: {
-    width: 65,
-    height: 65,
-    backgroundColor: 'rgba(128, 166, 232, .4)'
-  },
-  wave3: {
-    width: 50,
-    height: 50,
-    backgroundColor: 'rgba(128, 166, 232, .5)'
-  },
   image: {
     width: 35,
     height: 35,

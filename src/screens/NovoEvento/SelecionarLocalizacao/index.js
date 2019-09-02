@@ -190,7 +190,8 @@ class SelecionarLocalizacao extends Component {
 
           <StatusBar
             animated
-            backgroundColor="#eee"
+            backgroundColor="transparent"
+            translucent
             barStyle="dark-content" 
           />
 
@@ -253,7 +254,7 @@ class SelecionarLocalizacao extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   mapview: {
     flex: 1,
@@ -261,7 +262,8 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#DEE3E6'
   }
 })
 

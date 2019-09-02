@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withNavigation } from 'react-navigation'
 import { Appbar } from 'react-native-paper';
 import defaultStyles from '@/resources/defaultStyles'
+import { StatusBar } from 'react-native' 
 
 class BackBar extends Component {
 
@@ -22,7 +23,8 @@ class BackBar extends Component {
         } 
       }}
         style={{
-          elevation: this.props.noElevation ? 0 : 3
+          elevation: this.props.noElevation ? 0 : 3,
+          marginTop: StatusBar.currentHeight
         }}>
         <Appbar.BackAction
           onPress={this._goBack.bind(this)}

@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   BackHandler,
-  SafeAreaView
+  SafeAreaView,
+  StatusBar
 } from 'react-native'
 
 import {
@@ -28,7 +29,8 @@ class MapBottomSheet extends Component {
   constructor() {
     super()
     this.state = {
-      BottomSheetState: 4
+      BottomSheetState: 4,
+      statusBarColor: 'transparent'
     }
   }
 
@@ -64,7 +66,10 @@ class MapBottomSheet extends Component {
         <BottomSheetBehavior
           onStateChange={(e) => {
             if (this.props.onStateChange) this.props.onStateChange(e.nativeEvent.state)
-            this.setState({ BottomSheetState: e.nativeEvent.state })
+            this.setState({ 
+              BottomSheetState: e.nativeEvent.state,
+              statusBarColor: e.nativeEvent.state == 4 ? "transparent" : colors.primaryDark
+            })
           }}
           peekHeight={70}
           hideable={false}
@@ -72,6 +77,11 @@ class MapBottomSheet extends Component {
           ref={ref => this.bottomSheet = ref}
           state={BottomSheetBehavior.STATE_COLLAPSED}>
           <View style={{ backgroundColor: colors.primaryDark }}>
+            <StatusBar
+              animated
+              translucent
+              backgroundColor={this.state.statusBarColor}
+            />
             <BottomSheetHeader
               onMenuIconPress={this._onMenuIconPress.bind(this)}
               onReturnButtonPress={this._onBottomSheetonReturnButtonPress.bind(this)}

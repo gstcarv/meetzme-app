@@ -17,7 +17,7 @@ export default class GooglePlacesSearch extends Component {
 
   hide() {
     Animated.timing(this.searchTranslateValue, {
-      toValue: -130,
+      toValue: -140,
       duration: 1000,
       delay: 300,
       useNativeDriver: true
@@ -49,7 +49,7 @@ export default class GooglePlacesSearch extends Component {
       <Animated.View style={{
         paddingHorizontal: 20,
         position: 'absolute',
-        top: 60,
+        top: 80,
         width: "100%",
         transform: [
           {

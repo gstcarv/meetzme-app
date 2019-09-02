@@ -112,7 +112,6 @@ class Pendentes extends Component {
           <View style={styles.emptyContainer}>
             <SLIcon name="envelope-open" size={150} color="#eee"></SLIcon>
             <Text style={styles.emptyText}>Nenhum convite pendente. Tem muitos compromissos?</Text>
-            <Line spaceVertical={15} />
           </View>
         }
 

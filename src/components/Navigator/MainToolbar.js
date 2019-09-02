@@ -4,27 +4,17 @@ import {
   StyleSheet,
   View,
   StatusBar,
-  Image,
-  AsyncStorage,
-  Animated
+  Image
 } from 'react-native'
-
-import {
-  IconButton
-} from 'react-native-paper'
 
 import {
   withNavigation
 } from 'react-navigation'
 
-import Transition from 'react-navigation-fluid-transitions'
-
 import TouchableScale from 'react-native-touchable-scale'
 
 import colors from '@/resources/colors'
 import fonts from '@/resources/fonts'
-
-import EventBus from 'eventing-bus'
 
 import { inject, observer } from 'mobx-react/native'
 
@@ -47,6 +37,7 @@ class MainToolbar extends Component {
         <StatusBar 
           backgroundColor={colors.primaryDark}
           animated
+          translucent
           barStyle="light-content"
         />
         <View style={styles.toolbarContainer}>
@@ -68,7 +59,9 @@ class MainToolbar extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    overflow: 'hidden'
+    overflow: 'hidden',
+    paddingTop: StatusBar.currentHeight,
+    backgroundColor: colors.primaryDark
   },
   toolbarContainer: {
     height: 60,
