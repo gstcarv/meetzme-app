@@ -97,12 +97,12 @@ class Login extends Component {
       <KeyboardAwareScrollView style={styles.scrollView}
         keyboardShouldPersistTaps='always'
         innerRef={ref => this.loginScrollView = ref}>
-        <StatusBar backgroundColor={colors.primaryDark} />
+        <StatusBar backgroundColor={colors.primaryDark} animated />
         <View style={styles.header}>
           <BackButton path="Principal" />
           <Waves>
             <Image source={require("@assets/images/logo_gray.png")}
-              style={{ width: 90, height: 90 }}></Image>
+              style={{ width: 80, height: 80 }}></Image>
           </Waves>
         </View>
         <View style={styles.loginForm}>
@@ -154,10 +154,10 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#343D49",
-    height: 250,
+    height: 300,
     justifyContent: "space-around",
     alignItems: "center",
-    padding: 10
+    paddingVertical: 30
   },
   loginTitle: {
     bottom: 0,

@@ -23,11 +23,13 @@ class Principal extends Component {
     return (
       <ImageBackground style={styles.container}
                        source={require("@assets/images/main-background.jpg")}>
-        <StatusBar backgroundColor={colors.primaryDark} 
-                   animated />
+        <StatusBar backgroundColor="transparent"
+                   translucent
+                   animated 
+        />
         <View style={{alignItems: 'center'}}>
           <Image source={require("@assets/images/logo_gray.png")}
-                 style={{ width: 170, height: 170 }}></Image>
+                 style={{ width: 170, height: 170, marginTop: 70 }}></Image>
           <Text style={styles.appTitle}>MeetzMe</Text>
         </View>
         <View style={{marginTop: 30}}>

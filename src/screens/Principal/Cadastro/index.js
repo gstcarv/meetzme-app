@@ -118,6 +118,7 @@ class Cadastro extends Component {
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#F5F5F5"
           barStyle="dark-content"
+          translucent
           animated 
         />
 
