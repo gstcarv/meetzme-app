@@ -66,7 +66,7 @@ class LoggedUserStore {
   async updateData({ name }) {
 
     const { uid } = this.info;
-    
+
     // Atualiza os dados Store
     this.info.name = name
 
@@ -127,18 +127,32 @@ class LoggedUserStore {
     });
   }
 
-  async getAndSendLocation(){
+  async getAndSendLocation() {
     try {
       this.sendLocation(await this.getLocation())
-    } catch {}
+    } catch { }
   }
-  
-  @action async loggout(){
+
+  @action async loggout() {
     await firebase.auth().signOut()
     this.info = {}
   }
 
-  async stopLocationListener(){
+  async startLocationListener() {
+    // Comça a localizar
+    LocationListener.startService()
+    
+    // Manda pro banco q o usuário começou a localização
+    const { uid } = this.info;
+    await firebase.firestore()
+      .collection('users')
+      .doc(uid)
+      .update({
+        isRunningLocation: true
+      })
+  }
+
+  async stopLocationListener() {
     // Para de Localizar
     LocationListener.stopService()
 
@@ -148,7 +162,7 @@ class LoggedUserStore {
       .collection('users')
       .doc(uid)
       .update({
-        isLocationStopped: true
+        isRunningLocation: false
       })
   }
 

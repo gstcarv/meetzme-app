@@ -25,6 +25,7 @@
     "react-native-bottom-sheet-behavior": "^1.0.0",
     "react-native-cards-slider": "^0.1.2",
     "react-native-firebase": "^5.2.1",
+    "react-native-flash-message": "^0.1.13",
     "react-native-geocoding": "^0.3.0",
     "react-native-geolocation-service": "^3.0.0",
     "react-native-gesture-handler": "^1.0.14",

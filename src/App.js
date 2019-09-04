@@ -29,6 +29,9 @@ import EventBus from 'eventing-bus'
 import moment from 'moment'
 import momentPTBR from 'moment/src/locale/pt-br';
 
+// Flash Message
+import FlashMessage from "react-native-flash-message";
+
 // Reactotron [DEBUG]
 import Reactotron from 'reactotron-react-native';
 
@@ -43,7 +46,7 @@ export default class App extends Component {
     return locale;
   }
 
-  connectReactotron(){
+  connectReactotron() {
     console.tron = Reactotron
       .configure()
       .useReactNative()
@@ -98,7 +101,7 @@ export default class App extends Component {
 
     this.createNotificationChannels()
 
-    this.unsubcribscribeLocalNotificationOpened = 
+    this.unsubcribscribeLocalNotificationOpened =
       firebase.notifications().onNotificationOpened(notification => { })
 
     // Evento ao Receber a Notificação
@@ -149,24 +152,29 @@ export default class App extends Component {
     this.unsubcribscribePushNotificationOpened =
       firebase.notifications().getInitialNotification()
         .then(notification => { })
-
   }
 
   render() {
     return (
-      <PaperProvider theme={PaperThemes.primary}>
-        <MobxProvider
-          ContactsStore={ContactsStore}
-          LoggedUserStore={LoggedUserStore}
-          EventsStore={EventsStore}
-          NotificationsStore={NotificationsStore}>
-          <NavigationStack
-            onNavigationStateChange={() => {
-              EventBus.publish("bindTabLine");
-            }}
-          />
-        </MobxProvider>
-      </PaperProvider>
+      <React.Fragment>
+        <PaperProvider theme={PaperThemes.primary}>
+          <MobxProvider
+            ContactsStore={ContactsStore}
+            LoggedUserStore={LoggedUserStore}
+            EventsStore={EventsStore}
+            NotificationsStore={NotificationsStore}>
+            <NavigationStack
+              onNavigationStateChange={() => {
+                EventBus.publish("bindTabLine");
+              }}
+            />
+          </MobxProvider>
+        </PaperProvider>
+        <FlashMessage 
+          position="top" 
+          hideStatusBar
+        />
+      </React.Fragment>
     )
   }
 

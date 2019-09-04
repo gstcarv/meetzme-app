@@ -29,9 +29,7 @@ import { toJS } from 'mobx'
 
 import LoggedUserStore from '@/store/LoggedUserStore'
 
-import { LocationListener } from '@/modules'
-
-import { Snackbar } from 'react-native-paper'
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 Array.prototype.checkDifferences = function (a) {
   return this.filter(function (i) {
@@ -54,10 +52,7 @@ class LocalizacoesUsuarios extends Component {
       directionResult: {},
       transportMode: "driving",
       participants: [],
-      snackbar: {
-        visible: false,
-        message: "HelloWorld"
-      }
+      usersListenersStates: {},
     }
   }
 
@@ -70,7 +65,7 @@ class LocalizacoesUsuarios extends Component {
     this.eventID = eventID;
 
     // Inicia o Service de Localizaçãp
-    LocationListener.startService()
+    LoggedUserStore.startLocationListener();
 
     this.subEventEmitterListener = DeviceEventEmitter.addListener('onCancelListenerPressed', () => {
       this.props.navigation.navigate('Eventos')
@@ -98,7 +93,7 @@ class LocalizacoesUsuarios extends Component {
       this.watchParticipant(participant)
     })
 
-    this.setState({ participants })
+    await this.setState({ participants })
 
     setTimeout(() => {
       this.setState({
@@ -112,11 +107,81 @@ class LocalizacoesUsuarios extends Component {
 
   }
 
+  watchParticipant(participant) {
+    usersRef = firebase.firestore().collection('users');
+    let watch = usersRef
+      .doc(participant.uid)
+      .onSnapshot(snap => {
+
+        const {
+          latitude,
+          longitude
+        } = snap.data().lastLocation
+
+        const {
+          name,
+          isRunningLocation
+        } = snap.data()
+
+        const uid = snap.id;
+
+        const { disabledLocations } = this.state
+
+        if (this.state.loading) {
+          this.setState({
+            usersListenersStates: {
+              [uid]: isRunningLocation
+            }
+          })
+        } else {
+          if (isRunningLocation != this.state.usersListenersStates[uid]) {
+            console.tron.log(this.state)
+            this.setState({
+              usersListenersStates: {
+                [uid]: isRunningLocation
+              }
+            })
+            if (!isRunningLocation) {
+              this._onParticipantLocationChanged({
+                isRunningLocation,
+                uid,
+                title: "Localização",
+                message: `${name} desativou a localização`
+              })
+            } else {
+              this._onParticipantLocationChanged({
+                isRunningLocation,
+                uid,
+                title: "Localização",
+                message: `${name} ativou a localização`
+              })
+            }
+          }
+        }
+
+        if (this.mapMarkers[uid]) {
+          this.mapMarkers[uid].update({
+            latitude,
+            longitude,
+            isRunningLocation
+          })
+        }
+      })
+  }
+
+  _onParticipantLocationChanged({ uid, isRunningLocation, message, title }) {
+    this.showFlashMessage(title, message);
+    this.setState({
+      usersListenersStates: {
+        [uid]: isRunningLocation
+      }
+    })
+  }
   componentWillMount() {
     this.mapMarkers = []
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.subEventEmitterListener.remove()
   }
 
@@ -185,7 +250,8 @@ class LocalizacoesUsuarios extends Component {
                   ]
                 })
                 this.watchParticipant(participantData)
-                this.showSnackbar(participantData.name + " aceitou o convite!");
+
+                this.showFlashMessage("Aceitaram o convite!", participantData.name + " aceitou o convite!");
               }
             }
           }
@@ -204,7 +270,7 @@ class LocalizacoesUsuarios extends Component {
             participants: this.state.participants.filter(u => u.uid != exitedParticipant)
           })
 
-          this.showSnackbar(participantData.name + " saiu do Evento");
+          this.showFlashMessage("Alguém saiu!", participantData.name + " saiu do Evento");
 
         } else if (newLength > oldLength) {
           // Alguém foi convidado para o Evento
@@ -212,33 +278,14 @@ class LocalizacoesUsuarios extends Component {
       })
   }
 
-  watchParticipant(participant) {
-    usersRef = firebase.firestore().collection('users');
-    let watch = usersRef
-      .doc(participant.uid)
-      .onSnapshot(snap => {
-
-        const {
-          latitude,
-          longitude
-        } = snap.data().lastLocation
-
-        if (this.mapMarkers[snap.id]) {
-          this.mapMarkers[snap.id].update({
-            latitude,
-            longitude
-          })
-        }
-      })
-  }
-
-  showSnackbar(message) {
-    this.setState({
-      snackbar: {
-        message,
-        visible: true
-      }
-    })
+  showFlashMessage(title, message) {
+    showMessage({
+      message: title,
+      description: message,
+      type: "default",
+      backgroundColor: colors.primaryDark,
+      color: "#fff"
+    });
   }
 
   _onUserSelection(userData) {
@@ -251,7 +298,6 @@ class LocalizacoesUsuarios extends Component {
       pitch: 30,
       zoom: 15,
     })
-
   }
 
   render() {
@@ -291,6 +337,7 @@ class LocalizacoesUsuarios extends Component {
                       title={user.uid == uid ? "Você" : user.name}
                       isOtherUser={user.uid != uid}
                       image={user.photoURL}
+                      isDisabled={user.isRunningLocation != true ? true : false}
                       uid={user.uid}
                       key={user.uid}
                       transportMode={user.transportMode}
@@ -361,15 +408,9 @@ class LocalizacoesUsuarios extends Component {
         <View style={{
           position: 'absolute',
           width: '100%',
-          height: 70,
+          height: 90,
           top: 0
         }}>
-          <Snackbar
-            visible={this.state.snackbar.visible}
-            onDismiss={() => this.setState({ snackbar: { visible: false } })}
-          >
-            {this.state.snackbar.message}
-          </Snackbar>
         </View>
       </View>
     )
@@ -388,8 +429,5 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 200
-  },
-  snackbarStyle: {
-
   }
 })

@@ -10,11 +10,6 @@ import {
   Text
 } from 'react-native-paper'
 
-import colors from '@/resources/colors'
-import fonts from '@/resources/fonts'
-
-import firebase from 'react-native-firebase'
-
 import EventCircleSlider from '@/components/Dashboard/EventCircleSlider'
 
 import { inject, observer } from 'mobx-react/native'
