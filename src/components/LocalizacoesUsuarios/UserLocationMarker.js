@@ -5,7 +5,9 @@ import {
   Image
 } from 'react-native'
 
-import { Marker, Callout } from 'react-native-maps'
+import { Marker } from 'react-native-maps'
+
+import EventBus from 'eventing-bus'
 
 import UserLocationCallout from './UserLocationMarker/UserLocationCallout'
 
@@ -19,8 +21,17 @@ export default class UserLocationMarker extends Component {
     super();
     this.state = {
       tracksViewChanges: false,
-      isDisabled: props.isDisabled || false
+      isDisabled: props.isDisabled || false,
+      isFocused: false
     }
+  }
+
+  componentDidMount(){
+    EventBus.on('unfocusAllMarkers', () => {
+      this.setState({
+        isFocused: false
+      })
+    })
   }
 
   async update({ latitude, longitude, isRunningLocation }) {
@@ -39,7 +50,13 @@ export default class UserLocationMarker extends Component {
       duration: 4500
     })
   }
-
+  
+  focusMarker(){
+    EventBus.publish('unFocusAllMarkers');
+    this.setState({
+      isFocused: true
+    })
+  }
 
   render() {
 
@@ -51,16 +68,13 @@ export default class UserLocationMarker extends Component {
       }
     }
 
-    console.tron.log(this.props)
-
     const loggedUserData = LoggedUserStore.get()
-
-    let isTheLoggedUser = loggedUserData.uid == this.props.uid;
 
     return (
       <Marker coordinate={this.props.coordinate}
         calloutOffset={{ x: -50, y: 28 }}
         tracksViewChanges={false}
+        onPress={this.focusMarker.bind(this)}
         ref={
           ref => this.markerRef = ref
         }>
@@ -93,7 +107,12 @@ export default class UserLocationMarker extends Component {
         <UserLocationCallout
           {...this.props}
           renderAgain={() => {
-
+            if(this.state.isFocused){
+              this.markerRef.hideCallout();
+              setTimeout(() => {
+                this.markerRef.showCallout();
+              }, 10)
+            }
           }}
           ref={
             ref => this.calloutRef = ref

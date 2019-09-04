@@ -79,6 +79,10 @@ export default class UserLocationCallout extends Component {
         formattedDuration += "MIN";
       }
 
+      if(formattedDuration.charAt(0) == "0"){
+        formattedDuration = formattedDuration.substr(1)
+      }
+
       this.setState({
         distance: formattedDistance,
         duration: formattedDuration

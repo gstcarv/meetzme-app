@@ -29,6 +29,8 @@ import { toJS } from 'mobx'
 
 import LoggedUserStore from '@/store/LoggedUserStore'
 
+import EventBus from 'eventing-bus'
+
 import { showMessage, hideMessage } from "react-native-flash-message";
 
 Array.prototype.checkDifferences = function (a) {
@@ -135,13 +137,12 @@ class LocalizacoesUsuarios extends Component {
           })
         } else {
           if (isRunningLocation != this.state.usersListenersStates[uid]) {
-            console.tron.log(this.state)
             this.setState({
               usersListenersStates: {
                 [uid]: isRunningLocation
               }
             })
-            if (!isRunningLocation) {
+            if (isRunningLocation == false) {
               this._onParticipantLocationChanged({
                 isRunningLocation,
                 uid,
@@ -322,11 +323,11 @@ class LocalizacoesUsuarios extends Component {
             ref={ref => this.mapview = ref}
             loadingBackgroundColor="#DEE3E6"
             onPositionLoaded={(userLocation) => this.setState({ userLocation })}
+            onPress={() => EventBus.publish('unfocusAllMarkers')}
             mapPadding={{
               bottom: 70,
               top: 70
             }}>
-
             {
               this.state.participants.map((user, index) => {
                 return (
