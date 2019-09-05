@@ -26,15 +26,26 @@ export default class UserProfileBottomSheet extends Component {
     super();
     this.state = {
       userData: {},
-      isContact: false
+      isContact: false,
+      loading: false
     }
   }
 
-  onAddPress() {
-    this.addContact()
-    this.setState({
-      isContact: true
-    })
+  async onAddPress() {
+    try {
+      this.setLoading(true)
+      await ContactsStore.addContact(this.state.userData)
+      this.setState({
+        isContact: true
+      })
+    } catch {
+      Alert.alert(
+        "Erro",
+        "Não foi possível adicionar o contato, tente novamente mais tarde",
+      )
+    } finally {
+      this.setLoading(false)
+    }
   }
 
   onRemovePress() {
@@ -48,21 +59,28 @@ export default class UserProfileBottomSheet extends Component {
         {
           text: 'Apagar', onPress: () => {
             this.removeContact()
-            this.setState({
-              isContact: false
-            })
           }
         },
       ],
     )
   }
 
-  async addContact() {
-    await ContactsStore.addContact(this.state.userData)
-  }
-
   async removeContact() {
-    await ContactsStore.removeContact(this.state.userData) 
+    try {
+      this.setLoading(true)
+      await ContactsStore.removeContact(this.state.userData)
+      this.setState({
+        isContact: false
+      })
+    } catch {
+      Alert.alert(
+        "Erro",
+        "Não foi possível remover o contato, tente novamente mais tarde",
+      )
+    } finally {
+      this.setLoading(false)
+    }
+
   }
 
   open(userData) {
@@ -72,6 +90,10 @@ export default class UserProfileBottomSheet extends Component {
     })
 
     this.EventSheet.open()
+  }
+
+  setLoading(isLoading) {
+    this.setState({ loading: isLoading })
   }
 
   render() {
@@ -114,6 +136,8 @@ export default class UserProfileBottomSheet extends Component {
               mode="outlined"
               small
               style={styles.buttonStyle}
+              loading={this.state.loading}
+              disabled={this.state.loading}
               onPress={this.onAddPress.bind(this)}>Adicionar</Button>
           }
 
@@ -124,6 +148,8 @@ export default class UserProfileBottomSheet extends Component {
               mode="contained"
               small
               style={styles.buttonStyle}
+              loading={this.state.loading}
+              disabled={this.state.loading}
               onPress={this.onRemovePress.bind(this)}>Já é um contato</Button>
           }
 

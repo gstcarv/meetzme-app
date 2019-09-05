@@ -61,24 +61,21 @@ class ContactsStore {
 
   @action
   async addContact(contactData) {
-    try {
-      // Adiciona Contato ao USuário Logado
-      await firestoreRef
-        .collection('users')
-        .doc(LoggedUserStore.get().uid)
-        .collection('contacts')
-        .add({
-          uid: contactData.id,
-          addedAt: new Date(Date.now())
-        })
+    // Adiciona Contato ao USuário Logado
+    await firestoreRef
+      .collection('users')
+      .doc(LoggedUserStore.get().uid)
+      .collection('contacts')
+      .add({
+        uid: contactData.id,
+        addedAt: new Date(Date.now())
+      })
 
-      // Adiciona nas Array de Contatos
-      this.contactsID.push(contactData.id)
-      this.contacts.push(contactData)
+    // Adiciona nas Array de Contatos
+    this.contactsID.push(contactData.id)
+    this.contacts.push(contactData)
 
-      this.sortContacts();
-
-    } catch (e) { }
+    this.sortContacts();
   }
 
   @action

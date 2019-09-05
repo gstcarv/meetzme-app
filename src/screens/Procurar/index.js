@@ -53,7 +53,8 @@ export default class Procurar extends Component {
         let searchUsers = await this.firestoreRef
           .collection('users')
           .orderBy("name")
-          .startAt(text).endAt(text + "\uf8ff")
+          .startAt(text)
+          .endAt(text + "\uf8ff")
           .limit(20)
           .get();
 
@@ -100,10 +101,10 @@ export default class Procurar extends Component {
           noElevation
           title="Procurar"
         />
+        
         <SearchToolbar
           onChangeText={this.search.bind(this)}
           loading={this.state.loading}
-
         />
 
         {
