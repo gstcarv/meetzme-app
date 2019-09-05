@@ -29,9 +29,6 @@ import EventBus from 'eventing-bus'
 import moment from 'moment'
 import momentPTBR from 'moment/src/locale/pt-br';
 
-// Flash Message
-import FlashMessage from "react-native-flash-message";
-
 // Reactotron [DEBUG]
 import Reactotron from 'reactotron-react-native';
 
@@ -170,10 +167,6 @@ export default class App extends Component {
             />
           </MobxProvider>
         </PaperProvider>
-        <FlashMessage 
-          position="top" 
-          hideStatusBar
-        />
       </React.Fragment>
     )
   }

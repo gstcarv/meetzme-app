@@ -31,7 +31,7 @@ import LoggedUserStore from '@/store/LoggedUserStore'
 
 import EventBus from 'eventing-bus'
 
-import { showMessage, hideMessage } from "react-native-flash-message";
+import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
 
 Array.prototype.checkDifferences = function (a) {
   return this.filter(function (i) {
@@ -280,13 +280,15 @@ class LocalizacoesUsuarios extends Component {
   }
 
   showFlashMessage(title, message) {
-    showMessage({
-      message: title,
-      description: message,
-      type: "default",
-      backgroundColor: colors.primaryDark,
-      color: "#fff"
-    });
+    if(this.FlashMessage){
+      this.FlashMessage.showMessage({
+        message: title,
+        description: message,
+        type: "default",
+        backgroundColor: colors.primaryDark,
+        color: "#fff"
+      });
+    }
   }
 
   _onUserSelection(userData) {
@@ -390,6 +392,13 @@ class LocalizacoesUsuarios extends Component {
             onUserSelection={(user) => this._onUserSelection(user)}
           />
         </CoordinatorLayout>
+        <FlashMessage 
+          position="top" 
+          hideStatusBar
+          ref={
+            ref => this.FlashMessage = ref
+          }
+        />
         <TogglableFloatButton
           icon="gps-fixed"
           onPress={this.centerUserMarker.bind(this)}
