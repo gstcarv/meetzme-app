@@ -11,6 +11,10 @@ import { AsyncStorage } from 'react-native'
 
 import { LocationListener } from '@/modules'
 
+import ContactsStore from '@/store/ContactsStore';
+import NotificationsStore from '@/store/NotificationsStore';
+import EventsStore from '@/store/EventsStore';
+
 class LoggedUserStore {
   @observable info = {}
   @observable lastLocation = {}
@@ -136,6 +140,9 @@ class LoggedUserStore {
   @action async loggout() {
     await firebase.auth().signOut()
     this.info = {}
+    ContactsStore.clearStore();
+    NotificationsStore.clearStore();
+    EventsStore.clearStore();
   }
 
   async startLocationListener() {

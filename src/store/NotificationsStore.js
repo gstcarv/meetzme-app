@@ -46,6 +46,12 @@ class NotificationsStore {
     return this.get().filter(notification => notification.type == "contacts")
   }
 
+  @action
+  clearStore(){
+    this.notifications = []
+    this.fetched = false
+  }
+
 }
 
 export default new NotificationsStore();

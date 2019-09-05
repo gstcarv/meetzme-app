@@ -49,12 +49,19 @@ class Principal extends Component {
         authStateChanged = true;
       }
 
+
       // Pega os dados do usuário do AsyncStorage
-      const userData = await AsyncStorage.getItem("USER_DATA");
+      let storagedUserData = JSON.parse(await AsyncStorage.getItem("USER_DATA"));
       if (auth) {
         const AuthUser = auth._user;
 
-        if (!userData || JSON.parse(userData).uid != AuthUser.uid) {
+        console.tron.log("LOADING", AuthUser.uid)
+
+        if(storagedUserData.uid && storagedUserData.uid != AuthUser.uid){
+          await AsyncStorage.clear()
+        }
+
+        if (!storagedUserData || storagedUserData.uid != AuthUser.uid) {
           // Pega as Informações do Usuários
           const { displayName, email, phoneNumber, photoURL, uid } = AuthUser;
 
@@ -88,7 +95,7 @@ class Principal extends Component {
           const StorageData = JSON.stringify(toJS(LoggedUserStore.get()));
           await AsyncStorage.setItem("USER_DATA", StorageData)
         } else {
-          LoggedUserStore.setUser(JSON.parse(userData))
+          LoggedUserStore.setUser(storagedUserData)
         }
 
         // Começa a ouvir as atualizações dos Contatos e Eventos

@@ -25,6 +25,8 @@ class ContactsStore {
       .collection('contacts')
       .get();
 
+    console.tron.log("CONTACT_STORE", LoggedUserStore.get().uid)
+
     // Adiciona os Usuários na Array
     userContacts.forEach(async contact => {
       let uid = contact.data().uid
@@ -130,6 +132,13 @@ class ContactsStore {
       return name.includes(searchText)
         || username.includes(searchText)
     })
+  }
+
+  @action
+  clearStore(){
+    this.contacts = []
+    this.contactsID = []
+    this.searchText = ""
   }
 
 }

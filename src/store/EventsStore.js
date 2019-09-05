@@ -372,6 +372,14 @@ class EventsStore {
         }
       }, { merge: true })
   }
+
+  @action
+  clearStore(){
+    this.pendingEvents = []
+    this.acceptedEvents = []
+    this.eventsID = []
+  }
+
 }
 
 export default new EventsStore()
