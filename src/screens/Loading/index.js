@@ -43,7 +43,7 @@ class Principal extends Component {
     this.unsubscribe = firebase.auth().onAuthStateChanged(async auth => {
 
       // Verifica se a autenticação já foi feita (evitar pegar dados 2 vezes)
-      if(authStateChanged){
+      if (authStateChanged) {
         return;
       } else {
         authStateChanged = true;
@@ -57,7 +57,7 @@ class Principal extends Component {
 
         console.tron.log("LOADING", AuthUser.uid)
 
-        if(storagedUserData.uid && storagedUserData.uid != AuthUser.uid){
+        if (storagedUserData.uid && storagedUserData.uid != AuthUser.uid) {
           await AsyncStorage.clear()
         }
 
@@ -123,8 +123,8 @@ class Principal extends Component {
       }
     })
 
-    const animationDuration = 1000,
-      animatedBounciness = 20;
+    const animationDuration = 2000,
+      animatedBounciness = 30;
 
     Animated.spring(
       this.imageTransform.scale,
@@ -155,8 +155,8 @@ class Principal extends Component {
   constructor() {
     super()
     this.imageTransform = {
-      scale: new Animated.Value(1.342),
-      translate: new Animated.Value(16)
+      scale: new Animated.Value(1),
+      translate: new Animated.Value(24)
     }
   }
 
@@ -182,12 +182,11 @@ class Principal extends Component {
           />
         </View>
         <View>
-          <LoadingSpinner
+          <ActivityIndicator
+            size="large"
+            color={"#eee"}
             style={styles.loaderStyle}
-            isVisible={true}
-            size={35}
-            type={"Wave"}
-            color={"#ffffff"} />
+          />
         </View>
       </View>
     )
@@ -202,10 +201,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryDark
   },
   loaderStyle: {
-    marginTop: 30
+    marginTop: 50,
+    marginLeft: 4
   },
   imageStyle: {
-    width: 150, height: 150
+    width: 200, height: 200
   },
 })
 

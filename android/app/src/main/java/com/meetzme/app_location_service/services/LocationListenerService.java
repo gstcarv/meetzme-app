@@ -87,8 +87,11 @@ public class LocationListenerService extends Service {
         mLocationManager = getSystemService(LocationManager.class);
         Log.wtf(TAG,"onCreate");
 
+        // In miliseconds
+        long listenerInterval = 4 * 1000;
+
         if(isPermissionGranted()){
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, mLocationListener);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, listenerInterval, 5, mLocationListener);
         }
 
     }
