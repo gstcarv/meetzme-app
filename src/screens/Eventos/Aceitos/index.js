@@ -3,14 +3,7 @@ import {
   Text,
   StyleSheet,
   View,
-  ScrollView,
-  RefreshControl,
-  FlatList,
-  Dimensions
 } from 'react-native'
-
-import TimelineEvent from '@/components/Eventos/TimelineEvent'
-import SearchField from '@/components/SearchField'
 
 import fonts from '@/resources/fonts'
 
@@ -35,11 +28,6 @@ import EventInfoBottomSheet from '@/components/Eventos/EventInfoBottomSheet';
 import EventCard from '@/components/Eventos/EventCard';
 
 import { isEventInited } from '@/utils/events'
-
-const {
-  width: screenWidth,
-  height: screenHeight
-} = Dimensions.get('window');
 
 @inject('EventsStore')
 @observer

@@ -53,15 +53,15 @@ class Principal extends Component {
       // Pega os dados do usuário do AsyncStorage
       let storagedUserData = JSON.parse(await AsyncStorage.getItem("USER_DATA"));
       if (auth) {
+
         const AuthUser = auth._user;
-
-        console.tron.log("LOADING", AuthUser.uid)
-
-        if (storagedUserData.uid && storagedUserData.uid != AuthUser.uid) {
+        
+        if (storagedUserData != null && storagedUserData.uid != AuthUser.uid) {
           await AsyncStorage.clear()
         }
 
         if (!storagedUserData || storagedUserData.uid != AuthUser.uid) {
+
           // Pega as Informações do Usuários
           const { displayName, email, phoneNumber, photoURL, uid } = AuthUser;
 
