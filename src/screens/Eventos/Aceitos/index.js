@@ -12,7 +12,8 @@ import SLIcon from 'react-native-vector-icons/SimpleLineIcons'
 import { withNavigation } from 'react-navigation'
 
 import {
-  Line
+  Line,
+  Button
 } from '@/components/Forms'
 
 import {
@@ -42,12 +43,16 @@ class Aceitos extends Component {
 
   goToEvent(eventID) {
     let event = this.props.EventsStore.getByID(eventID);
-    
+
     if (isEventInited(event)) {
       this.props.navigation.navigate('LocalizacoesUsuarios', { eventID })
     } else {
       this.refs.eventBottomSheet.open(eventID, true);
     }
+  }
+
+  openNewEventScreen(){
+    this.props.navigation.push('NovoEvento')
   }
 
   render() {
@@ -93,7 +98,10 @@ class Aceitos extends Component {
           <View style={styles.emptyContainer}>
             <SLIcon name="ghost" size={150} color="#eee"></SLIcon>
             <Text style={styles.emptyText}>Nada por aqui! Que tal criar um novo evento?</Text>
-            <Line spaceVertical={15} />
+            <Line spaceVertical={8} />
+            <Button mode="contained"
+              style={{ marginTop: 20 }}
+              onPress={() => this.openNewEventScreen()}>Vamos lá!</Button>
           </View>
         }
       </View>
