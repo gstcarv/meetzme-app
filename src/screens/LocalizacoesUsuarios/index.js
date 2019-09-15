@@ -4,7 +4,8 @@ import {
   View,
   ActivityIndicator,
   StatusBar,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  SafeAreaView
 } from 'react-native'
 
 import {
@@ -59,6 +60,9 @@ class LocalizacoesUsuarios extends Component {
   }
 
   async componentDidMount() {
+
+    this.mounted = true;
+
     this.watchLocations = []
 
     // Pega a ID do Evento
@@ -87,8 +91,10 @@ class LocalizacoesUsuarios extends Component {
     let participants = await EventsStore.getEventParticipants(eventID)
 
     // Mostra os Float Action Buttons
-    this.FABCenterCamera.show(600)
-    this.FABSeeAllMarkers.show(1000)
+    if (this.mounted) {
+      this.FABCenterCamera.show(600)
+      this.FABSeeAllMarkers.show(1000)
+    }
 
     // Pega em Tempo Real a Localização de cada participante
     participants.forEach(async participant => {
@@ -104,7 +110,9 @@ class LocalizacoesUsuarios extends Component {
     }, 500)
 
     setTimeout(() => {
-      this.fitAllMarkers();
+      if (this.mounted) {
+        this.fitAllMarkers();
+      }
     }, 2000)
 
   }
@@ -178,19 +186,22 @@ class LocalizacoesUsuarios extends Component {
       }
     })
   }
+
   componentWillMount() {
     this.mapMarkers = []
   }
 
   componentWillUnmount() {
     this.subEventEmitterListener.remove()
+    this.mounted = false
   }
 
   fitAllMarkers() {
-    if (this.mapview.map) {
+    if (this.mounted) {
       this.mapview.map.fitToElements(true, {
         bottom: 400
       })
+      this.unFocusAllMarkers();
     }
   }
 
@@ -203,6 +214,8 @@ class LocalizacoesUsuarios extends Component {
         pitch: 30,
         zoom: 15,
       })
+
+      this.unFocusAllMarkers();
     } catch {
       LoggedUserStore.getAndSendLocation()
     }
@@ -280,7 +293,7 @@ class LocalizacoesUsuarios extends Component {
   }
 
   showFlashMessage(title, message) {
-    if(this.FlashMessage){
+    if (this.FlashMessage) {
       this.FlashMessage.showMessage({
         message: title,
         description: message,
@@ -292,15 +305,27 @@ class LocalizacoesUsuarios extends Component {
   }
 
   _onUserSelection(userData) {
-    const {
-      lastLocation: userLastLocation
-    } = this.state.participants.find(u => u.uid == userData.uid)
+    let userLastLocation = this.mapMarkers[userData.uid].getLastLocation();
 
     this.mapview.map.animateCamera({
       center: userLastLocation,
       pitch: 30,
-      zoom: 15,
+      zoom: 14,
     })
+  }
+
+  _followFocusedMarker(center) {
+    setTimeout(() => {
+      if (this.mounted) {
+        this.mapview.map.animateCamera({
+          center,
+        })
+      }
+    }, 2500)
+  }
+
+  unFocusAllMarkers() {
+    EventBus.publish('unfocusAllMarkers')
   }
 
   render() {
@@ -325,7 +350,8 @@ class LocalizacoesUsuarios extends Component {
             ref={ref => this.mapview = ref}
             loadingBackgroundColor="#DEE3E6"
             onPositionLoaded={(userLocation) => this.setState({ userLocation })}
-            onPress={() => EventBus.publish('unfocusAllMarkers')}
+            onPress={() => this.unFocusAllMarkers()}
+            onPanDrag={() => this.unFocusAllMarkers()}
             mapPadding={{
               bottom: 70,
               top: 70
@@ -340,6 +366,7 @@ class LocalizacoesUsuarios extends Component {
                       title={user.uid == uid ? "Você" : user.name}
                       isOtherUser={user.uid != uid}
                       image={user.photoURL}
+                      followFocusedMarker={(coords) => this._followFocusedMarker(coords)}
                       isDisabled={user.isRunningLocation != true ? true : false}
                       uid={user.uid}
                       key={user.uid}
@@ -378,7 +405,7 @@ class LocalizacoesUsuarios extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <StatusBar
           translucent
           animated
@@ -392,8 +419,8 @@ class LocalizacoesUsuarios extends Component {
             onUserSelection={(user) => this._onUserSelection(user)}
           />
         </CoordinatorLayout>
-        <FlashMessage 
-          position="top" 
+        <FlashMessage
+          position="top"
           hideStatusBar
           ref={
             ref => this.FlashMessage = ref
@@ -420,9 +447,8 @@ class LocalizacoesUsuarios extends Component {
           width: '100%',
           height: 90,
           top: 0
-        }}>
-        </View>
-      </View>
+        }} />
+      </SafeAreaView>
     )
   }
 }

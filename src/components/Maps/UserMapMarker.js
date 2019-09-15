@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import {
-  Text,
   StyleSheet,
   View,
-  ImageBackground,
-  AsyncStorage,
   Image
 } from 'react-native'
 
@@ -13,10 +10,6 @@ import { Marker, Callout } from 'react-native-maps'
 import TouchableScale from 'react-native-touchable-scale'
 
 import LoggedUserStore from '@/store/LoggedUserStore'
-
-import Geocoder from 'react-native-geocoding'
-
-import strings from '@/resources/strings'
 
 export default class UserMapMarker extends Component {
 

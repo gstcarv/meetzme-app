@@ -50,7 +50,6 @@ export default class NotificacoesEventos extends Component {
 
     return (
       <ScrollView style={styles.container}>
-
         <FlatList
           data={notificationsData}
           keyExtractor={(item, index) => index.toString()}
@@ -64,12 +63,6 @@ export default class NotificacoesEventos extends Component {
           }
           style={styles.notificationsFlatList}
         />
-
-        {
-          notificationsData.length == 0 &&
-          <Text style={{ textAlign: 'center' }}>Nenhuma notificação aqui :(</Text>
-        }
-
       </ScrollView>
     )
   }

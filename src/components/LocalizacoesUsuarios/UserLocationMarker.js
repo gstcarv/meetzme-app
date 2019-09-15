@@ -24,6 +24,7 @@ export default class UserLocationMarker extends Component {
       isDisabled: props.isDisabled || false,
       isFocused: false
     }
+    this.lastLocation = props.coordinate
   }
 
   componentDidMount(){
@@ -41,14 +42,25 @@ export default class UserLocationMarker extends Component {
 
     if (isRunningLocation != true) return
 
+    this.lastLocation = { latitude, longitude }
+
     this.calloutRef.updateInfo({
       latitude, longitude
     })
+
     this.markerRef.animateMarkerToCoordinate({
       latitude,
       longitude,
-      duration: 4500
-    })
+    }, 4000)
+
+    if(this.state.isFocused){
+      this.props.followFocusedMarker({ latitude, longitude })
+    }
+
+  }
+
+  getLastLocation(){
+    return this.lastLocation;
   }
   
   focusMarker(){
