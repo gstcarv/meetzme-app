@@ -32,7 +32,7 @@ import LoggedUserStore from '@/store/LoggedUserStore'
 
 import EventBus from 'eventing-bus'
 
-import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
+import FlashMessage from "react-native-flash-message";
 
 Array.prototype.checkDifferences = function (a) {
   return this.filter(function (i) {
@@ -143,7 +143,7 @@ class LocalizacoesUsuarios extends Component {
               [uid]: isRunningLocation
             }
           })
-        } else {
+        } else if (this.lastAcceptedInvite != uid) {
           if (isRunningLocation != this.state.usersListenersStates[uid]) {
             this.setState({
               usersListenersStates: {
@@ -167,6 +167,8 @@ class LocalizacoesUsuarios extends Component {
             }
           }
         }
+
+        this.lastAcceptedInvite = null
 
         if (this.mapMarkers[uid]) {
           this.mapMarkers[uid].update({
@@ -266,6 +268,7 @@ class LocalizacoesUsuarios extends Component {
                 this.watchParticipant(participantData)
 
                 this.showFlashMessage("Aceitaram o convite!", participantData.name + " aceitou o convite!");
+                this.lastAcceptedInvite = userID;
               }
             }
           }
