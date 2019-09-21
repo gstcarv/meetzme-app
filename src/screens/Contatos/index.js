@@ -73,7 +73,7 @@ class Contatos extends Component {
 
           <FlatList
             data={ContactsStore.searchContacts}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.uid}
 
             renderItem={
               ({ item, index }) => (

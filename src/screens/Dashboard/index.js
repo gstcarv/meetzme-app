@@ -19,7 +19,9 @@ import { toJS } from 'mobx';
 @inject('ContactsStore')
 @observer
 class Dashboard extends Component {
+
   render() {
+
 
     const { 
       EventsStore,

@@ -12,7 +12,6 @@ const firestoreRef = firebase.firestore()
 
 class ContactsStore {
   @observable contacts = []
-  @observable contactsID = []
   @observable searchText = ""
 
   @action
@@ -26,20 +25,21 @@ class ContactsStore {
       .get();
 
     // Adiciona os Usuários na Array
+
     userContacts.forEach(async contact => {
       let uid = contact.data().uid
-      if (!this.contactsID.includes(uid)) {
-        this.contactsID.push(uid)
 
-        let contact = await firestoreRef
+      if (!this.isContact({ uid })) {
+        let contactColletion = await firestoreRef
           .collection('users')
           .doc(uid)
           .get();
 
-        const { name, phone, photoURL, username } = contact.data()
+        const { name, phone, photoURL, username } = contactColletion.data()
 
         this.contacts.push({
-          id: contact.id,
+          contactID: contact.id,
+          uid,
           name,
           username: "@" + username,
           phone,
@@ -49,6 +49,15 @@ class ContactsStore {
         this.sortContacts();
       }
     })
+  }
+
+  isContact({ uid }) {
+    let findContact = this.contacts.find(c => c.uid == uid)
+    if (findContact) {
+      return true
+    } else {
+      return false
+    }
   }
 
   sortContacts() {
@@ -62,51 +71,45 @@ class ContactsStore {
   @action
   async addContact(contactData) {
     // Adiciona Contato ao USuário Logado
-    await firestoreRef
+
+    const addedContact = {
+      uid: contactData.uid,
+      addedAt: new Date(Date.now())
+    }
+
+    firestoreRef
       .collection('users')
       .doc(LoggedUserStore.get().uid)
       .collection('contacts')
-      .add({
-        uid: contactData.id,
-        addedAt: new Date(Date.now())
+      .add(addedContact)
+      .then(async docRef => {
+
+        // Adiciona nas Array de Contatos
+        this.contacts.push({
+          contactID: docRef.id,
+          ...contactData,
+          ...addedContact
+        })
+        this.sortContacts();
       })
 
-    // Adiciona nas Array de Contatos
-    this.contactsID.push(contactData.id)
-    this.contacts.push(contactData)
-
-    this.sortContacts();
   }
 
   @action
-  async removeContact(contactToRemove) {
-    try {
-      // Procura Contato para Deletar
-      let deleteContact =
-        await firestoreRef
-          .collection('users')
-          .doc(LoggedUserStore.get().uid)
-          .collection('contacts')
-          .where("uid", "==", contactToRemove.id)
-          .get();
+  async removeContact({ uid }) {
 
-      deleteContact.forEach(async doc => {
-        // Remove da Array de Usuários
-        this.contacts = this.contacts.filter(contact => {
-          return contact.id != contactToRemove.id
-        })
+    const contactID = this.contacts.find(c => c.uid == uid).contactID;
 
-        // Remove da Array de IDS dos Usuários
-        let idIndex = this.contactsID.indexOf(contactToRemove.id)
-        this.contactsID.splice(idIndex, 1)
+    // Procura Contato para Deletar
+    let deleteContact = await firestoreRef
+      .collection('users')
+      .doc(LoggedUserStore.get().uid)
+      .collection('contacts')
+      .doc(contactID)
+      .delete();
 
-        // Remove do Banco
-        await doc.ref.delete()
-
-        this.sortContacts();
-
-      });
-    } catch (e) { }
+    // Remove da Array de Usuários
+    this.contacts = this.contacts.filter(c => c.uid != uid)
   }
 
   @action
@@ -133,9 +136,8 @@ class ContactsStore {
   }
 
   @action
-  clearStore(){
+  clearStore() {
     this.contacts = []
-    this.contactsID = []
     this.searchText = ""
   }
 

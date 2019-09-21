@@ -18,8 +18,6 @@ import Snackbar from 'react-native-snackbar'
 
 import {
   withNavigation,
-  NavigationActions,
-  StackActions
 } from 'react-navigation'
 
 import SavingEventModal from '@/components/NovoEvento/SavingEventModal'
@@ -178,7 +176,7 @@ class SelecionarConvidados extends Component {
 
           <FlatList
             data={ContactsStore.searchContacts}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.uid}
             renderItem={
               ({ item, index }) =>
                 <ConvidadosListRow 

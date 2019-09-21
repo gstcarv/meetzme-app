@@ -356,26 +356,23 @@ class LocalizacoesUsuarios extends Component {
               bottom: 70,
               top: 70
             }}>
+
             {
-              this.state.participants.map((user, index) => {
-                return (
-                  <View>
-                    <UserLocationMarker
-                      coordinate={user.lastLocation}
-                      destination={destination}
-                      title={user.uid == uid ? "Você" : user.name}
-                      isOtherUser={user.uid != uid}
-                      image={user.photoURL}
-                      followFocusedMarker={(coords) => this._followFocusedMarker(coords)}
-                      isDisabled={user.isRunningLocation != true ? true : false}
-                      uid={user.uid}
-                      key={user.uid}
-                      transportMode={user.transportMode}
-                      ref={ref => this.mapMarkers[user.uid] = ref}
-                    />
-                  </View>
-                )
-              })
+              this.state.participants.map((user, index) => (
+                <UserLocationMarker
+                  coordinate={user.lastLocation}
+                  destination={destination}
+                  title={user.uid == uid ? "Você" : user.name}
+                  isOtherUser={user.uid != uid}
+                  image={user.photoURL}
+                  followFocusedMarker={(coords) => this._followFocusedMarker(coords)}
+                  isDisabled={user.isRunningLocation != true ? true : false}
+                  uid={user.uid}
+                  key={user.uid}
+                  transportMode={user.transportMode}
+                  ref={ref => this.mapMarkers[user.uid] = ref}
+                />
+              ))
             }
 
             {

@@ -25,12 +25,12 @@ import FAIcon from 'react-native-vector-icons/FontAwesome5'
 export default class NotificacoesEventos extends Component {
 
   _onNotificationCardPress(data) {
-    const { navigation } = this.props;
-    if (data.description.includes("aceitou")) {
-      navigation.navigate('EventosAceitos');
-    } else if (data.description.includes("convidou")) {
-      navigation.navigate('EventosPendentes');
-    }
+    // const { navigation } = this.props;
+    // if (data.description.includes("aceitou")) {
+    //   navigation.navigate('EventosAceitos');
+    // } else if (data.description.includes("convidou")) {
+    //   navigation.navigate('EventosPendentes');
+    // }
   }
 
   render() {

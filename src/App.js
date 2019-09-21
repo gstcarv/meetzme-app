@@ -69,6 +69,53 @@ export default class App extends Component {
     firebase.notifications().android.createChannel(usersChannel);
   }
 
+  createNotificationReceiver() {
+    // Evento ao Receber a Notificação
+    this.unsubcribscribeNotificationReceiver =
+      firebase.notifications()
+        .onNotification((notification) => {
+          const notificationChannel = notification.data.channel || STRINGS.CHANNELS.EVENTS;
+
+          // Salva a notificação
+          NotificationsStore.addNotification(notification.data);
+
+          // Montando a Notificação
+          const localNotification = new firebase.notifications.Notification({
+            sound: 'default',
+            show_in_foreground: true,
+          })
+            .setNotificationId(notification.notificationId)
+            .setTitle(notification.title)
+            .setSubtitle(notification.subtitle)
+            .setBody(notification.body)
+            .setData(notification.data)
+            .android.setAutoCancel(true)
+            .android.setChannelId(notificationChannel)
+            .android.setSmallIcon('ic_notification')
+            .android.setColor(COLORS.primaryColor)
+            .android.setPriority(firebase.notifications.Android.Priority.Low);
+
+          if (notificationChannel == STRINGS.CHANNELS.EVENTS) {
+            const eventID = notification.data.event_id ? notification.data.event_id : "undefined"
+            const action = new firebase.notifications.Android.Action(eventID, 'ic_launcher', 'Ver Evento');
+            localNotification.android.addAction(action)
+          } else if (notificationChannel == STRINGS.CHANNELS.USERS) {
+            if (!notification.data.already_friend) {
+              const userID = notification.data.user_id ? notification.data.user_id : "undefined"
+              const actionAddUser = new firebase.notifications.Android.Action(userID, 'ic_launcher', 'Adicionar');
+              const actionSeeUser = new firebase.notifications.Android.Action(userID, 'ic_launcher', 'Ver Usuário');
+              localNotification.android.addAction(actionAddUser)
+              localNotification.android.addAction(actionSeeUser)
+            }
+          }
+
+          // Mostrando a Notificação
+          firebase.notifications()
+            .displayNotification(localNotification)
+            .catch(err => console.error(err));
+        });
+  }
+
   async componentDidMount() {
 
     moment.defineLocale('pt-br', this.prepareLocale(momentPTBR));
@@ -97,58 +144,7 @@ export default class App extends Component {
     firebase.messaging().onTokenRefresh(async token => await LoggedUserStore.updateToken(token))
 
     this.createNotificationChannels()
-
-    this.unsubcribscribeLocalNotificationOpened =
-      firebase.notifications().onNotificationOpened(notification => { })
-
-    // Evento ao Receber a Notificação
-    this.unsubcribscribeNotificationReceiver =
-      firebase.notifications().onNotification((notification) => {
-        const notificationChannel = notification.data.channel || STRINGS.CHANNELS.EVENTS;
-
-        // Salva a notificação
-        NotificationsStore.addNotification(notification.data);
-
-        // Montando a Notificação
-        const localNotification = new firebase.notifications.Notification({
-          sound: 'default',
-          show_in_foreground: true,
-        })
-          .setNotificationId(notification.notificationId)
-          .setTitle(notification.title)
-          .setSubtitle(notification.subtitle)
-          .setBody(notification.body)
-          .setData(notification.data)
-          .android.setAutoCancel(true)
-          .android.setChannelId(notificationChannel)
-          .android.setSmallIcon('ic_notification')
-          .android.setColor(COLORS.primaryColor)
-          .android.setPriority(firebase.notifications.Android.Priority.Low);
-
-        if (notificationChannel == STRINGS.CHANNELS.EVENTS) {
-          const eventID = notification.data.event_id ? notification.data.event_id : "undefined"
-          const action = new firebase.notifications.Android.Action(eventID, 'ic_launcher', 'Ver Evento');
-          localNotification.android.addAction(action)
-        } else if (notificationChannel == STRINGS.CHANNELS.USERS) {
-          if (!notification.data.already_friend) {
-            const userID = notification.data.user_id ? notification.data.user_id : "undefined"
-            const actionAddUser = new firebase.notifications.Android.Action(userID, 'ic_launcher', 'Adicionar');
-            const actionSeeUser = new firebase.notifications.Android.Action(userID, 'ic_launcher', 'Ver Usuário');
-            localNotification.android.addAction(actionAddUser)
-            localNotification.android.addAction(actionSeeUser)
-          }
-        }
-
-        // Mostrando a Notificação
-        firebase.notifications()
-          .displayNotification(localNotification)
-          .catch(err => console.error(err));
-      });
-
-    // Evento ao Receber a Notificação [App Fechado]
-    this.unsubcribscribePushNotificationOpened =
-      firebase.notifications().getInitialNotification()
-        .then(notification => { })
+    this.createNotificationReceiver();
   }
 
   render() {

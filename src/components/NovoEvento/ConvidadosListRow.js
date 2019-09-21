@@ -26,7 +26,7 @@ export default class ConvidadosListRow extends Component {
   toggleActive(){
     const { isActive } = this.state;
     this.setState({ isActive: !isActive });
-    if(this.props.onToggleSelect) this.props.onToggleSelect(this.props.data.id)
+    if(this.props.onToggleSelect) this.props.onToggleSelect(this.props.data.uid)
   }
   
   render() {

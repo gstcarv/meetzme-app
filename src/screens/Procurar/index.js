@@ -64,7 +64,7 @@ export default class Procurar extends Component {
           const { name, phone, photoURL, username } = doc.data()
           if(this.props.LoggedUserStore.get().uid != doc.id){
             usuarios.push({
-              id: doc.id,
+              uid: doc.id,
               name,
               username: "@" + username,
               phone,
@@ -84,8 +84,8 @@ export default class Procurar extends Component {
     }
   }
 
-  _onUserPress(data) {
-    this.UserProfileBottomSheet.open(data)
+  _onUserPress(userData) {
+    this.UserProfileBottomSheet.open(userData)
   }
 
   render() {
@@ -120,7 +120,7 @@ export default class Procurar extends Component {
               <Text style={styles.text}>Pessoas</Text>
               <FlatList
                 data={this.state.usuarios}
-                keyExtractor={item => item.id.toString()}
+                keyExtractor={item => item.uid.toString()}
                 keyboardShouldPersistTaps="always"
                 keyboardDismissMode='on-drag'
                 renderItem={
@@ -129,7 +129,7 @@ export default class Procurar extends Component {
                       data={item}
                       rowIndex={index}
                       noIcon
-                      onPress={this._onUserPress.bind(this)}
+                      onPress={this._onUserPress.bind(this, item)}
                     />
                   )
                 }

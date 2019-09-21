@@ -108,7 +108,7 @@ class ConvidarNovoUsuario extends Component {
     );
 
     Snackbar.show({
-      title: 'Os usuário foram convidados para o Evento',
+      title: 'Os usuários foram convidados para o Evento!',
       duration: Snackbar.LENGTH_LONG
     })
 
@@ -162,7 +162,7 @@ class ConvidarNovoUsuario extends Component {
 
           <FlatList
             data={ContactsStore.searchContacts}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.uid}
             renderItem={
               ({ item, index }) =>
                 <ConvidadosListRow 
@@ -170,7 +170,7 @@ class ConvidarNovoUsuario extends Component {
                   rowIndex={index} 
                   onToggleSelect={this._onToggleUserSelect.bind(this)}
                   isActive={this.state.convidados.includes(item.id)}
-                  alreadyInEvent={participants.includes(item.id)}
+                  alreadyInEvent={participants.includes(item.uid)}
                 />
             }
           />

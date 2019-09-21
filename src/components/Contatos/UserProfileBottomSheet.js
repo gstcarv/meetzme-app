@@ -86,7 +86,7 @@ export default class UserProfileBottomSheet extends Component {
   open(userData) {
     this.setState({
       userData,
-      isContact: ContactsStore.contactsID.includes(userData.id)
+      isContact: ContactsStore.isContact(userData)
     })
 
     this.EventSheet.open()
@@ -98,7 +98,7 @@ export default class UserProfileBottomSheet extends Component {
 
   render() {
 
-    const { id, name, username, photoURL } = this.state.userData
+    const { name, username, photoURL } = this.state.userData
 
     return (
       <BottomSheet
@@ -130,7 +130,7 @@ export default class UserProfileBottomSheet extends Component {
         <View style={styles.buttonContainer}>
 
           {
-            this.state.isContact == false &&
+            this.state.isContact == false ?
             <Button color={colors.primaryColor}
               icon="person-add"
               mode="outlined"
@@ -139,11 +139,7 @@ export default class UserProfileBottomSheet extends Component {
               loading={this.state.loading}
               disabled={this.state.loading}
               onPress={this.onAddPress.bind(this)}>Adicionar</Button>
-          }
-
-          {
-            this.state.isContact == true &&
-            <Button color={colors.primaryColor}
+          : <Button color={colors.primaryColor}
               icon="check"
               mode="contained"
               small
