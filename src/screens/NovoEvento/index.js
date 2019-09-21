@@ -5,6 +5,7 @@ import ReactNative, {
   StatusBar,
   DatePickerAndroid,
   TimePickerAndroid,
+  TouchableOpacity,
   Alert
 } from 'react-native'
 
@@ -42,16 +43,17 @@ class NovoEvento extends Component {
       errors: {
         title: null,
         description: null
-      }
+      },
     }
   }
 
   async selectDateTime() {
 
     const now = Date.now();
+    const { eventDateTime: statedEventDate } = this.state
 
     const { action, year, month, day } = await DatePickerAndroid.open({
-      date: now,
+      date: statedEventDate,
       minDate: now
     });
     if (action !== DatePickerAndroid.dismissedAction) {
@@ -61,8 +63,10 @@ class NovoEvento extends Component {
       eventDateTime.setUTCDate(day)
 
       const { action, hour, minute } = await TimePickerAndroid.open({
-        hour: new Date(now).getHours(),
-        minute: new Date(now).getMinutes()
+        hour: statedEventDate.getHours(),
+        minute: statedEventDate.getMinutes(),
+        is24Hour: true,
+        mode: 'spinner'
       });
 
       if (action !== TimePickerAndroid.dismissedAction) {
@@ -189,9 +193,9 @@ class NovoEvento extends Component {
 
             <Line />
 
-            <TouchableRipple onPress={() => this.selectDateTime()}
+            <TouchableOpacity onPress={() => this.selectDateTime()}
               style={styles.fieldDateContainer}
-              rippleColor={"#fff"}>
+              activeOpacity={.6}>
               <TextField
                 label="Data do Evento"
                 maxLength={200}
@@ -199,7 +203,7 @@ class NovoEvento extends Component {
                 value={getDateTimeValue()}
                 disabled
               />
-            </TouchableRipple>
+            </TouchableOpacity>
           </View>
 
           <Button mode="contained"
