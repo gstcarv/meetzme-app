@@ -11,7 +11,6 @@ import com.swmansion.reanimated.ReanimatedPackage;
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.bottomsheetbehavior.BottomSheetBehaviorPackage;
-import com.entria.views.RNViewOverflowPackage;
 import com.azendoo.reactnativesnackbar.SnackbarPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -51,7 +50,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGooglePlacesPackage(),
             new MapsPackage(),
             new BottomSheetBehaviorPackage(),
-            new RNViewOverflowPackage(),
             new SnackbarPackage(),
             new PickerPackage(),
             new RNGestureHandlerPackage(),

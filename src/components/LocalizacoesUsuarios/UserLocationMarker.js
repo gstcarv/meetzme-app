@@ -51,7 +51,7 @@ export default class UserLocationMarker extends Component {
     this.markerRef.animateMarkerToCoordinate({
       latitude,
       longitude,
-    }, 4000)
+    }, 4300)
 
     if(this.state.isFocused){
       this.props.followFocusedMarker({ latitude, longitude })

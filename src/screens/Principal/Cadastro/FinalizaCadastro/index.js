@@ -13,8 +13,6 @@ import {
   withNavigation
 } from 'react-navigation'
 
-import debounce from 'debounce'
-
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import {
