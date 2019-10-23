@@ -8,7 +8,7 @@ O MeetzMe é um aplicativo desenvolvido em React Native como Trabalho de Conclus
 
 O MeetzMe é uma aplicação, inicialmente para dispositivos Android, que tem como objetivo auxiliar a localização de pessoas e eventos em um determinado meio geográfico. Com o MeetzMe é possível conhecer a localização exata e em tempo real de usuários que aceitaram o convite de um determinado evento.
 
-## Desenvolvimento
+## 💻 Desenvolvimento
 
 A aplicação foi desenvolvida em [React Native](https://facebook.github.io/react-native/), tendo Firebase como BackEnd e Base de Dados. Foi utlizado também NodeJS como parte do Cloud Functions do Firebase para o envio de notificações.
 
@@ -31,7 +31,7 @@ Algumas das principais libs utilizadas no projeto:
 | [RN Image Crop Picker](https://github.com/ivpusic/react-native-image-crop-picker) | Recorte de Imagens  |
 
 
-## Algumas telas
+## 📲 Algumas Telas
 
 
 | Principal | Login | Cadastro |
@@ -61,7 +61,7 @@ Algumas das principais libs utilizadas no projeto:
 
  <br />
 
-# 🚀 Instalação
+## 🚀 Instalação
 
 __Importante__: Necessária a instalação da [React Native CLI](https://facebook.github.io/react-native/docs/getting-started)
 
@@ -123,7 +123,7 @@ npx jetify
 react-native run-android
 ```
 
-### Outros erros
+#### Outros erros
 
 Tente:
 ```
@@ -135,9 +135,9 @@ Tente:
 
 <br />
 
-# 🎉 Agradecimentos
+## 🎉 Agradecimentos
 
-## Equipe de Testes
+### Equipe de Testes
 - [Tiago Carvalho](https://github.com/tiagocsilva)
 - [Humberto Barreto](https://www.linkedin.com/in/humberto-barreto-42204116a/)
 - Luis Gustavo Farinelli
